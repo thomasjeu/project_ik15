@@ -3,6 +3,9 @@
 ## Models and helpers
     * Apology: geeft een foutmelding aan user als er iets mis is gegaan of verkeerd is ingevuld
     * Login required: zorgt dat een user is ingelogd om functies uit te voeren
+## Views
+View schetsen staan in het /doc mapje zoals gewenst.
+
 ## Controllers : scherm ja of nee en request type
     * Register JA/POST
     * Log in JA/POST
