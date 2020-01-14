@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+
+    <form class="needs-validation" action="/register" method="post" novalidate>
+        <div class="form-group">
+          <input type="text" class="form-control" id="vc1" name="username" placeholder="Username" required>
+          <div class="invalid-feedback" id="usercheck">
+            Please provide a username
+          </div>
+        </div>
+        <div class="form-group" id="vc02">
+          <input type="password" class="form-control" id="vc2" name="password" placeholder="Password" required>
+          <div class="invalid-feedback" id="passcheck">
+            Please provide a password
+          </div>
+        </div>
+        <div class="form-group" id="vc03">
+          <input type="password" class="form-control" id="vc3" name="confirmation" placeholder="Password (again)" required>
+          <div class="invalid-feedback" id="confirmcheck">
+            Password must be the same as above
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="lastcheck()" type="submit">Submit form</button>
+    </form>
+
+    <script>
+
+      // Check server side if username is already in use
+      let input =document.getElementById('vc1');
+      input.onkeyup = function() {
+        $.get('/check?username='+ input.value, function(check) {
+          // if username is not already taken
+          if (check || input.value == "") {
+            document.getElementById("usercheck").innerHTML = "Please provide a username";
+            input.setAttribute("class", "form-control");
+          }
+          // if username is taken
+          else {
+            document.getElementById("usercheck").innerHTML = "Username is taken";
+            input.setAttribute("class", "form-control is-invalid");
+          }
+        });
+      };
+
+      // Check if password is valid
+      let password =document.getElementById('vc2');
+      password.onkeyup = function() {
+        var bool_pass = false;
+        var array = [];
+        var p_val = password.value;
+        array = p_val.split();
+        for (var char in array) {
+          if (char >= '0' && char <= '9') {
+            bool_pass = true;
+          }
+        }
+        if (bool_pass) {
+          password.setAttribute("class", "form-control");
+          document.getElementById("passcheck").innerHTML = "";
+        }
+        else {
+          password.setAttribute("class", "form-control is-invalid");
+          document.getElementById("passcheck").innerHTML = "Password must contain a number";
+        }
+      };
+
+      // Check if confirmation is the same as password
+      let confirmation =document.getElementById('vc3');
+      confirmation.onkeyup = function() {
+        if (confirmation.value != password.value) {
+          document.getElementById("confirmcheck").innerHTML = "Must be the same as password above";
+          confirmation.setAttribute("class", "form-control is-invalid");
+        }
+        else {
+          // document.getElementById("confirmcheck").innerHTML = "Must be the same as password above";
+          confirmation.setAttribute("class", "form-control");
+        }
+      };
+
+      // https://getbootstrap.com/docs/4.1/components/forms/#validation script for bootstrap validation with some additions
+      (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          var forms = document.getElementsByClassName('needs-validation');
+          // Loop over them and prevent submission
+          var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+
+              // If not all fields are filled on or username is already taken
+              if (form.checkValidity() === false || input.getAttribute("class") == "form-control is-invalid") {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+
+              // All fields have valid input
+              form.classList.add('was-validated');
+            }, false);
+          });
+        }, false);
+      })();
+
+    </script>
+
+{% endblock %}
