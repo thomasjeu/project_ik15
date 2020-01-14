@@ -9,6 +9,7 @@ De vraag naar studieplekken onder studenten is groot, maar het vinden van een go
 ## Schetsen
 ![schets1](https://lh4.googleusercontent.com/2SD-9bwrHMw_U4cKQIwSJbyUrAzmR4QlMtxOrE57MyNMBoIpvcZegdcQ6iWyq91WzL8ZcmELs-uM-27oi9vf9xZSZaFde_Tq9O5ehxNhzSXyirTZgmvi-PFqx4JZzb0Bmz6Yp3K3)
 ![schets2](https://lh6.googleusercontent.com/bze-bhd0OkJ1xY_Rc4YbIVOIsw1xslsC9MD2u_yfnXa_05-X4tydp3UuX878NseUxqbnIBJ_uQcYqF7hIyqbWJ4GYwPYXiFugN8KgDE0)
+
 ​
 ## Features
 1. Een kaart in de applicatie
@@ -22,7 +23,7 @@ De vraag naar studieplekken onder studenten is groot, maar het vinden van een go
 9. Studieplek wordt verborgen voor een bepaalde tijd wanneer het een nog te bepalen aantal likes heeft gekregen
 ​
 ## Minimum viable product
-Gebruikers kunnen publiekelijk foto’s posten met begeleidende tekst. Alle gebruikers kunnen elkaar “volgen” en zo de foto’s bekijken en liken. Gebruikers kunnen in plaats van een eigen foto bekijken ook foto's van random gebruikers.
+Gebruikers kunnen publiekelijk foto’s posten met begeleidende tekst. Alle gebruikers kunnen elkaar “volgen” en zo de foto’s bekijken en liken. Gebruikers kunnen in plaats van een eigen foto ook een gif zoeken uit een online API zoals die van [http://api.giphy.com](http://api.giphy.com).
 ​
 ## Afhankelijkheden
 * Databronnen:
