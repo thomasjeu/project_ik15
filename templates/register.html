@@ -28,8 +28,6 @@
         <button class="btn btn-primary" onclick="lastcheck()" type="submit">Submit form</button>
     </form>
 
-    <p></p>
-
     <script>
 
       // Check server side if username is already in use
@@ -54,15 +52,16 @@
       password.onkeyup = function() {
         var bool_pass = false;
         var p_val = password.value;
+        // Set bool_pass to true if the password contains a number
         for (var i = 0; i < p_val.length; i++) {
           document.getElementById("usercheck").innerHTML = p_val.length;
           if (p_val[i] >= '0' && p_val[i] <= '9') {
             bool_pass = true;
           }
         }
+        // If bool_pass is true or length of password is 0
         if (bool_pass || p_val.length == 0) {
           password.setAttribute("class", "form-control");
-          document.getElementById("passcheck").innerHTML = "";
         }
         else {
           password.setAttribute("class", "form-control is-invalid");
