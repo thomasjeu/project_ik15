@@ -7,7 +7,8 @@ Het doel van onze webapplicatie is het mogelijk maken om studieplekken te delen 
 De vraag naar studieplekken onder studenten is groot, maar het vinden van een goede studieplek is lastig.
 ​
 ## Schetsen
-Schetsen staan in de doc/ map.
+![schets1](https://lh4.googleusercontent.com/2SD-9bwrHMw_U4cKQIwSJbyUrAzmR4QlMtxOrE57MyNMBoIpvcZegdcQ6iWyq91WzL8ZcmELs-uM-27oi9vf9xZSZaFde_Tq9O5ehxNhzSXyirTZgmvi-PFqx4JZzb0Bmz6Yp3K3)
+![schets2](https://lh6.googleusercontent.com/bze-bhd0OkJ1xY_Rc4YbIVOIsw1xslsC9MD2u_yfnXa_05-X4tydp3UuX878NseUxqbnIBJ_uQcYqF7hIyqbWJ4GYwPYXiFugN8KgDE0)
 ​
 ## Features
 1. Een kaart in de applicatie
@@ -21,7 +22,7 @@ Schetsen staan in de doc/ map.
 9. Studieplek wordt verborgen voor een bepaalde tijd wanneer het een nog te bepalen aantal likes heeft gekregen
 ​
 ## Minimum viable product
-Gebruikers kunnen publiekelijk foto’s posten met begeleidende tekst. Alle gebruikers kunnen elkaar “volgen” en zo de foto’s bekijken en liken. Gebruikers kunnen in plaats van een eigen foto bekijken ook foto's van random gebruikers zien.
+Gebruikers kunnen publiekelijk foto’s posten met begeleidende tekst. Alle gebruikers kunnen elkaar “volgen” en zo de foto’s bekijken en liken. Gebruikers kunnen in plaats van een eigen foto bekijken ook foto's van random gebruikers.
 ​
 ## Afhankelijkheden
 * Databronnen:
@@ -35,24 +36,3 @@ Gebruikers kunnen publiekelijk foto’s posten met begeleidende tekst. Alle gebr
     * Profiel pagina veel werk
     * Informatie pagina, combineren met database
     * Ontdekken moeilijk, veel werk
-## Models and helpers
-    * Apology: geeft een foutmelding aan user als er iets mis is gegaan of verkeerd is ingevuld
-    * Login required: zorgt dat een user is ingelogd om functies uit te voeren
-## Controllers : scherm ja of nee en request type
-    * Register JA/POST
-    * Log in JA/POST
-    * Log out NEE/POST
-    * Profile JA/GET
-    * Upload JA/POST
-    * Display_photo JA/GET
-    * Discovery JA/POST
-    * Favorites JA/POST
-    * Settings JA/POST
-    * Following JA/GET
-    * Check(username) NEE/GET
-    *Apology JA/GET
-## Plugins and Frameworks
-    * SQL : [https://docs.microsoft.com/en-us/sql/sql-server/?view=sql-server-ver15](https://docs.microsoft.com/en-us/sql/sql-server/?view=sql-server-ver15)
-    * Flask [http://flask.palletsprojects.com/en/1.1.x/](http://flask.palletsprojects.com/en/1.1.x/)
-    * Werkzeug [https://werkzeug.palletsprojects.com/en/0.15.x/](https://werkzeug.palletsprojects.com/en/0.15.x/)
-    * Bootstrap [https://getbootstrap.com/](https://getbootstrap.com/)
