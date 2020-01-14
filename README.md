@@ -7,10 +7,7 @@ Het doel van onze webapplicatie is het mogelijk maken om studieplekken te delen 
 De vraag naar studieplekken onder studenten is groot, maar het vinden van een goede studieplek is lastig.
 ​
 ## Schetsen
-![Schets1](/webik/project_ik15/WhatsApp Image 2020-01-14 at 15.21.04 (1).jpeg)
-![Schets2](/webik/project_ik15/WhatsApp Image 2020-01-14 at 15.21.04 (2).jpeg)
-![Schets3](/webik/project_ik15/WhatsApp Image 2020-01-14 at 15.21.04 (3).jpeg)
-![Schets4](/webik/project_ik15/WhatsApp Image 2020-01-14 at 15.21.04.jpeg)
+Schetsen staan in de doc/ map.
 ​
 ## Features
 1. Een kaart in de applicatie
