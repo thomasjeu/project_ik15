@@ -5,15 +5,18 @@
 {% endblock %}
 
 {% block main %}
+<link href="styles.css" rel="stylesheet">
 
     <form action = "/profile" method = "post">
 
-            <style>
 
-            img {
+        <style>
+
+        img {
             border-radius: 50%;
             }
-            </style>
+        </style>
+
 
         <body>
 
@@ -29,14 +32,27 @@
             <center><button class="btn btn-primary" type="follow">Follow</button></center>
         {% endif %}
 
+        <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
+        <div class="w3-button w3-padding-16 w3-left w3-button" onclick="clicked()" href="/">Following</div>
+        <div class="w3-right w3-padding-16 w3-button"onclick="clicked()" href="/">Followers</div>
+        <center><div class="w3-center w3-padding-16 w3-button"onclick="clicked()"href="/">Posts</div></center>
+        </div>
+
+        <script>
+        function clicked() {
+        document.getElementById("demo").style.color = "red";
+        }
+        </script>
+
+
+
 
         </body>
 
-        <footer
+
 
         </div>
     </form>
 
 
 {% endblock %}
-
