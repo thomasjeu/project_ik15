@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block main %}
-    <form action="/login" method="post">
+    <center>
+    <form action="/login" method="post" class=>
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" id="username" name="username" placeholder="Username" type="text">
         </div>
@@ -17,6 +18,7 @@
         <input type="button" onclick="window.location.href = '/register';" value="Register"/>
         <!--<button class="btn btn-primary" <a class="nav-link" href="/register">Register</a> </button>-->
     </form>
+    </center>
     <script>
         // function main() {
         //     usercheck();
