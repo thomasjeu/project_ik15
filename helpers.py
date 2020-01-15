@@ -41,44 +41,32 @@ def login_required(f):
     return decorated_function
 
 
-def changepassword():
+def changepassword(password, confirmation, user_id):
     """ Changes password """
 
-    # Ensure password was submitted
-    if not request.form.get("password"):
-        return apology("must provide password")
-
-    # Password confirmation
-    elif not request.form.get("confirmation"):
-        return apology("must provide confirmation of password")
-
     # Check if passwords are similair
-    elif request.form.get("password") != request.form.get("confirmation"):
+    if (password != confirmation):
         return apology("passwords must be the same")
 
     # Hashes the password
-    password = request.form.get("password")
     hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
 
     # Update password in database
-    user_id = session.get("user_id")
+
     db.execute("UPDATE users SET hash=:hash WHERE id=:user_id", user_id=user_id, hash=hash)
 
     # Redirt to index
-    return redirect("/settings")
+    return True
 
-def changeusername():
-    username = request.form.get("username")
-    user_id = session.get("user_id")
+def changeusername(username, user_id):
 
     db.execute("UPDATE users SET username=:username WHERE id=:user_id", user_id=user_id, username=username)
 
-    return redirect("/settings")
+    return True
 
-def changediscription():
-    discription = request.form.get("discription")
-    user_id = session.get("user_id")
+def changediscription(discription, user_id):
+
 
     db.execute("UPDATE users SET discription=:discription WHERE id=:user_id", user_id=user_id, discription=discription)
 
-    return redirect("/settings")
+    return True

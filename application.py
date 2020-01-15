@@ -33,19 +33,28 @@ Session(app)
 db = SQL("sqlite:///admin.db")
 
 
-@app.route("/settings")
+@app.route("/settings", methods=["GET", "POST"])
 @login_required
 def settings():
     if request.method == "POST":
+        print("hoi")
+        username = request.args.get("username")
+        confirmation = request.args.get("confirmation")
+        discription = request.args.get("discription")
+        password = request.args.get("password")
+        user_id = session.get("user_id")
+        print(user_id)
+        print(username)
+        print(password)
 
         if request.args.get("username"):
-            changeusername()
+            changeusername(username, user_id)
 
         if request.args.get("password"):
-            changepassword()
+            changepassword(password, confirmation, user_id)
 
         if request.args.get("discription"):
-            changediscription()
+            changediscription(discription, user_id)
 
         return render_template("settings.html")
 
