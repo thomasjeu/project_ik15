@@ -68,7 +68,6 @@ def settings():
         if request.form.get("discription"):
             changediscription(discription, user_id)
 
-        print("hoii")
         return render_template("settings.html")
 
     # User reached route via GET (as by clicking a link or via redirect)

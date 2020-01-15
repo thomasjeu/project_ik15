@@ -14,7 +14,6 @@ db = SQL("sqlite:///admin.db")
 
 def apology(message, code=400):
     """Render message as an apology to user."""
-    print("hoi")
     def escape(s):
         """
         Escape special characters.
