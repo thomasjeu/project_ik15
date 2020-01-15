@@ -43,6 +43,22 @@ def settings():
         password = request.form.get("password")
         user_id = session.get("user_id")
 
+        # Username already exists
+        if len(db.execute("SELECT * FROM users WHERE username = :username", username=username)) != 0:
+            return apology("username already exists")
+
+        # Check if passwords are similair
+        if (password != confirmation):
+            return apology("passwords must be the same")
+
+        # Check if password meets restrictions
+        if not any(char.isdigit() for char in password):
+            return apology("password must contain number")
+
+        # Check if discription is not too long
+        if len(discription) > 400:
+            return apology("discription is too long")
+
         if request.form.get("username"):
             changeusername(username, user_id)
 
@@ -52,6 +68,7 @@ def settings():
         if request.form.get("discription"):
             changediscription(discription, user_id)
 
+        print("hoii")
         return render_template("settings.html")
 
     # User reached route via GET (as by clicking a link or via redirect)

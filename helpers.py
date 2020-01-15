@@ -14,6 +14,7 @@ db = SQL("sqlite:///admin.db")
 
 def apology(message, code=400):
     """Render message as an apology to user."""
+    print("hoi")
     def escape(s):
         """
         Escape special characters.
@@ -43,10 +44,6 @@ def login_required(f):
 
 def changepassword(password, confirmation, user_id):
     """ Changes password """
-
-    # Check if passwords are similair
-    if (password != confirmation):
-        return apology("passwords must be the same")
 
     # Hashes the password
     hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)

@@ -21,12 +21,40 @@
         <p>Change profile picture:</p>
 
         <p>Change discription:</p>
+        <label for="counter-input" class="label">Character count: <span id="counter-display" class="tag is-success">0</span></label>
         <div class="form-group">
-            <input class="form-control" id="discription" name="discription" placeholder="Discription" type="text">
+            <input class="form-control" id="discription" name="discription" placeholder="Discription" type="text" maxlength='150'>
         </div>
 
         <button class="btn btn-primary" type="submit">Apply changes</button>
 
     </form>
+
+    <script>
+    // source: https://codepen.io/pi/pen/dXbwwa
+    (() => {
+      const counter = (() => {
+        const input = document.getElementById('discription'),
+          display = document.getElementById('counter-display'),
+          changeEvent = (evt) => display.innerHTML = evt.target.value.length,
+          getInput = () => input.value,
+          countEvent = () => input.addEventListener('keyup', changeEvent),
+          init = () => countEvent();
+
+        return {
+          init: init
+        }
+
+      })();
+
+      counter.init();
+
+    })();
+    </script>
+
+
+    </script>
+
+
 
 {% endblock %}
