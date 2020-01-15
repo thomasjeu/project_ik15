@@ -4,3 +4,40 @@
     Profile
 {% endblock %}
 
+{% block main %}
+
+    <form action = "/profile" method = "post">
+
+        <div class="w3-top">
+             <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto">
+                <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+                </div>
+             </div>
+
+
+
+            <style>
+
+            img {
+          border-radius: 50%;
+            }
+        </style>
+
+        <body>
+
+        <center><h1>Profile </h2></center>
+        <div class="w3-row-padding w3-padding-16 w3-center" id="avatar">
+            <p style="text-align:center;"><img src="https://i.imgur.com/7Nwk67T.jpg" alt="Avatar" style="width:200px"></p>
+        </div>
+        <h3>Discription</h3>
+
+        </body>
+
+        <footer
+
+        </div>
+    </form>
+
+
+{% endblock %}
+
