@@ -33,6 +33,12 @@ Session(app)
 db = SQL("sqlite:///admin.db")
 
 
+@app.route("/")
+@login_required
+def profile():
+    return render_template("profile.html")
+
+
 @app.route("/check", methods=["GET"])
 def check():
     """Return true if username available, else false, in JSON format"""
