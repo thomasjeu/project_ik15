@@ -7,7 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required
+from helpers import apology, login_required, changepassword, changeusername, changediscription
 
 # Configure application
 app = Flask(__name__)
@@ -38,7 +38,14 @@ db = SQL("sqlite:///admin.db")
 def settings():
     if request.method == "POST":
 
-        if
+        if request.args.get("username"):
+            changeusername()
+
+        if request.args.get("password"):
+            changepassword()
+
+        if request.args.get("discription"):
+            changediscription()
 
         return render_template("settings.html")
 

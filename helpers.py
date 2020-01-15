@@ -5,7 +5,11 @@ import os
 from cs50 import SQL
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import redirect, render_template, request, session
+from flask_session import Session
 from functools import wraps
+
+# Configure CS50 Library to use SQLite database
+db = SQL("sqlite:///admin.db")
 
 
 def apology(message, code=400):
@@ -37,9 +41,8 @@ def login_required(f):
     return decorated_function
 
 
-def change_password():
+def changepassword():
     """ Changes password """
-
 
     # Ensure password was submitted
     if not request.form.get("password"):
@@ -63,3 +66,9 @@ def change_password():
 
     # Redirt to index
     return redirect("/settings")
+
+def changeusername():
+    return "hoi"
+
+def changediscription():
+    return "hoi"
