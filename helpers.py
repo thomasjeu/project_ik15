@@ -68,7 +68,17 @@ def changepassword():
     return redirect("/settings")
 
 def changeusername():
-    return "hoi"
+    username = request.form.get("username")
+    user_id = session.get("user_id")
+
+    db.execute("UPDATE users SET username=:username WHERE id=:user_id", user_id=user_id, username=username)
+
+    return redirect("/settings")
 
 def changediscription():
-    return "hoi"
+    discription = request.form.get("discription")
+    user_id = session.get("user_id")
+
+    db.execute("UPDATE users SET discription=:discription WHERE id=:user_id", user_id=user_id, discription=discription)
+
+    return redirect("/settings")
