@@ -33,6 +33,21 @@ Session(app)
 db = SQL("sqlite:///admin.db")
 
 
+@app.route("/settings")
+@login_required
+def settings():
+    if request.method == "POST":
+
+        if
+
+        return render_template("settings.html")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("settings.html")
+
+
+
 @app.route("/")
 @login_required
 def profile():
@@ -149,41 +164,6 @@ def register():
     else:
         return render_template("register.html")
 
-
-@app.route("/updatecredentials", methods=["GET", "POST"])
-@login_required
-def change_password():
-    """ Changes password """
-
-    # User reached route via POST (as by submitting a form via POST)
-    if request.method == "POST":
-
-        # Ensure password was submitted
-        if not request.form.get("password"):
-            return apology("must provide password")
-
-        # Password confirmation
-        elif not request.form.get("confirmation"):
-            return apology("must provide confirmation of password")
-
-        # Check if passwords are similair
-        elif request.form.get("password") != request.form.get("confirmation"):
-            return apology("passwords must be the same")
-
-        # Hashes the password
-        password = request.form.get("password")
-        hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
-
-        # Update password in database
-        user_id = session.get("user_id")
-        db.execute("UPDATE users SET hash=:hash WHERE id=:user_id", user_id=user_id, hash=hash)
-
-        # Redirt to index
-        return redirect("/")
-
-    # User reached route via GET (as by clicking a link or via redirect)
-    else:
-        return render_template("updatecredentials.html")
 
 
 def errorhandler(e):
