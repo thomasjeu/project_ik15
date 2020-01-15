@@ -23,7 +23,12 @@
             <p style="text-align:center;"><img src="https://i.imgur.com/7Nwk67T.jpg" alt="Avatar" style="width:200px"></p>
         </div>
         <center> <h3>Hi, i'm using StudySpot!</h3> </center>
-        <center><button class="btn btn-primary" type="follow">Follow</button></center>
+        {% if session.user_id %}
+            <center><button class="btn btn-primary" type="follow" disabled >Follow</button></center>
+        {% else %}
+            <center><button class="btn btn-primary" type="follow">Follow</button></center>
+        {% endif %}
+
 
         </body>
 
