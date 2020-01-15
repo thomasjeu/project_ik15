@@ -63,7 +63,11 @@ def settings():
 @app.route("/")
 @login_required
 def profile():
-    return render_template("profile.html")
+    user_id = session.get("user_id")
+    discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
+    discription = discriptions[0]["discription"]
+
+    return render_template("profile.html", discription=discription)
 
 
 @app.route("/check", methods=["GET"])

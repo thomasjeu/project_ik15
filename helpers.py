@@ -66,7 +66,6 @@ def changeusername(username, user_id):
 
 def changediscription(discription, user_id):
 
-
     db.execute("UPDATE users SET discription=:discription WHERE id=:user_id", user_id=user_id, discription=discription)
 
     return True
