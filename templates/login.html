@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    <form action="/login" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" id="username" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" id="password" name="password" placeholder="Password" type="password">
+        </div>
+        <button class="btn btn-primary" onclick="main()" type="submit">Log In</button>
+    </form>
+    <script>
+        // function main() {
+        //     usercheck();
+        //     $.get('/passwordcheck?password' + password.value, function(check) {
+
+        //     });
+        // }
+
+        // // Check if username is in the database
+        // function usercheck() {
+        //     var username =document.getElementById('username');
+        //     $.get('/check?username='+ username.value, function(check) {
+        //         // if username doesnt exist in the database
+        //         if (check || username.value == "") {
+        //             document.getElementById("usercheck").innerHTML = "Please provide your username";
+        //             username.setAttribute("class", "form-control");
+        //         }
+        //         // if username is exists in the database
+        //         else {
+        //             document.getElementById("usercheck").innerHTML = "Username is incorrect";
+        //             username.setAttribute("class", "form-control is-invalid");
+        //         }
+        //     });
+        // }
+    </script>
+{% endblock %}
