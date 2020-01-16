@@ -43,26 +43,25 @@ def settings():
         password = request.form.get("password")
         user_id = session.get("user_id")
 
-        # Username already exists
-        if len(db.execute("SELECT * FROM users WHERE username = :username", username=username)) != 0:
-            return apology("username already exists")
 
         # Check if passwords are similair
         if (password != confirmation):
             return apology("passwords must be the same")
-
-        # Check if password meets restrictions
-        if not any(char.isdigit() for char in password):
-            return apology("password must contain number")
 
         # Check if discription is not too long
         if len(discription) > 400:
             return apology("discription is too long")
 
         if request.form.get("username"):
+            # Username already exists
+            if len(db.execute("SELECT * FROM users WHERE username = :username", username=username)) != 0:
+                return apology("username already exists")
             changeusername(username, user_id)
 
         if request.form.get("password"):
+            # Check if password meets restrictions
+            if not any(char.isdigit() for char in password):
+                return apology("password must contain number")
             changepassword(password, confirmation, user_id)
 
         if request.form.get("discription"):
