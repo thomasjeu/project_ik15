@@ -67,7 +67,7 @@ def settings():
         if request.form.get("discription"):
             changediscription(discription, user_id)
 
-        return render_template("settings.html")
+        return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
