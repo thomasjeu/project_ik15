@@ -5,54 +5,39 @@
 {% endblock %}
 
 {% block main %}
-<link href="styles.css" rel="stylesheet">
 
     <form action = "/profile" method = "post">
 
+        <div class="w3-top">
+             <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto">
+                <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+                </div>
+             </div>
 
-        <style>
 
-        img {
-            border-radius: 50%;
+
+            <style>
+
+            img {
+          border-radius: 50%;
             }
         </style>
 
-
         <body>
 
-        <center><h1>Username </h2></center>
-
+        <center><h1>Profile </h2></center>
         <div class="w3-row-padding w3-padding-16 w3-center" id="avatar">
             <p style="text-align:center;"><img src="https://i.imgur.com/7Nwk67T.jpg" alt="Avatar" style="width:200px"></p>
         </div>
-        <center> <h3>{{ discription }}</h3> </center>
-        {% if session.user_id %}
-            <center><button class="btn btn-primary" type="follow" disabled >Follow</button></center>
-        {% else %}
-            <center><button class="btn btn-primary" type="follow">Follow</button></center>
-        {% endif %}
-
-        <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
-        <div class="w3-button w3-padding-16 w3-left w3-button" onclick="clicked()" href="/">Following</div>
-        <div class="w3-right w3-padding-16 w3-button"onclick="clicked()" href="/">Followers</div>
-        <center><div class="w3-center w3-padding-16 w3-button"onclick="clicked()"href="/">Posts</div></center>
-        </div>
-
-        <script>
-        function clicked() {
-        document.getElementById("demo").style.color = "red";
-        }
-        </script>
-
-
-
+        <h3>Discription</h3>
 
         </body>
 
-
+        <footer
 
         </div>
     </form>
 
 
 {% endblock %}
+
