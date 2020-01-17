@@ -84,12 +84,12 @@ def profile():
 
     return render_template("profile.html", discription=discription)
 
-@app.route("/following")
+@app.route("/followingprofile")
 @login_required
-def following():
+def followingprof():
     user_id = session.get("user_id")
 
-    return render_template("following.html")
+    return render_template("followingprofile.html")
 
 
 
