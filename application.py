@@ -84,6 +84,14 @@ def profile():
 
     return render_template("profile.html", discription=discription)
 
+@app.route("/following")
+@login_required
+def following():
+    user_id = session.get("user_id")
+
+    return render_template("following.html")
+
+
 
 @app.route("/check", methods=["GET"])
 def check():
