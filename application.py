@@ -105,8 +105,8 @@ def followersprof():
 @login_required
 def upload():
     """Followers as shown on profile"""
-
-    return render_template("upload.html")
+    username = session.get("user_id")
+    return render_template("upload.html", username=username)
 
 
 
