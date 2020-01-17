@@ -88,8 +88,9 @@ def profile():
 @login_required
 def followingprof():
     user_id = session.get("user_id")
-
-    return render_template("followingprofile.html")
+    discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
+    discription = discriptions[0]["discription"]
+    return render_template("followingprofile.html", discription=discription)
 
 
 
