@@ -74,7 +74,6 @@ def settings():
         return render_template("settings.html")
 
 
-
 @app.route("/")
 @login_required
 def profile():
