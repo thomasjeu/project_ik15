@@ -157,7 +157,9 @@ def followingprof():
     user_id = session.get("user_id")
     discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
     discription = discriptions[0]["discription"]
-    return render_template("followingprofile.html", discription=discription)
+    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
+    username = usernames[0]["username"]
+    return render_template("followingprofile.html", discription=discription, username=username)
 
 @app.route("/followersprofile")
 @login_required
@@ -166,7 +168,9 @@ def followersprof():
     user_id = session.get("user_id")
     discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
     discription = discriptions[0]["discription"]
-    return render_template("followersprofile.html", discription=discription)
+    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
+    username = usernames[0]["username"]
+    return render_template("followersprofile.html", discription=discription, username=username)
 
 
 # @app.route("/upload")
