@@ -33,6 +33,19 @@ Session(app)
 db = SQL("sqlite:///admin.db")
 
 
+
+@app.route("/upload", methods=["GET", "POST"])
+@login_required
+def upload():
+    if request.method == "POST":
+        return "hoi"
+    else:
+        return render_template("upload.html")
+
+
+
+
+
 @app.route("/settings", methods=["GET", "POST"])
 @login_required
 def settings():
