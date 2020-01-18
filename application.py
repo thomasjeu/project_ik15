@@ -87,7 +87,6 @@ def settings():
         return render_template("settings.html")
 
 
-
 @app.route("/")
 @login_required
 def profile():
@@ -96,6 +95,33 @@ def profile():
     discription = discriptions[0]["discription"]
 
     return render_template("profile.html", discription=discription)
+
+@app.route("/followingprofile")
+@login_required
+def followingprof():
+    user_id = session.get("user_id")
+    discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
+    discription = discriptions[0]["discription"]
+    return render_template("followingprofile.html", discription=discription)
+
+@app.route("/followersprofile")
+@login_required
+def followersprof():
+    """Followers as shown on profile"""
+    user_id = session.get("user_id")
+    discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
+    discription = discriptions[0]["discription"]
+    return render_template("followersprofile.html", discription=discription)
+
+
+@app.route("/upload")
+@login_required
+def upload():
+    """Followers as shown on profile"""
+    username = session.get("user_id")
+    return render_template("upload.html", username=username)
+
+
 
 
 @app.route("/check", methods=["GET"])
