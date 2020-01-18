@@ -34,7 +34,7 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///admin.db")
 
-app.config["IMAGE_UPLOADS"] = "/home/ubuntu/git/project_ik15/media"
+app.config["IMAGE_UPLOADS"] = "home/ubuntu/git/project_ik15/media"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
@@ -61,9 +61,11 @@ def allowed_image_filesize(filesize):
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
 def upload():
+    print("maat")
     if request.method == "POST":
+        print("gozer")
         if request.files:
-
+            print("aad")
             if "filesize" in request.cookies:
 
                 if not allowed_image_filesize(request.cookies["filesize"]):
@@ -71,23 +73,24 @@ def upload():
                     return redirect(request.url)
 
                 image = request.files["image"]
-
+                print("hoi")
                 if image.filename == "":
                     print("No filename")
                     return redirect(request.url)
-
+                print("hoii")
                 if allowed_image(image.filename):
                     filename = secure_filename(image.filename)
 
                     image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
 
                     print("Image saved")
-
+                    print("hoiii")
                     return redirect(request.url)
 
                 else:
                     print("That file extension is not allowed")
                     return redirect(request.url)
+
 
     return render_template("upload.html")
 
@@ -143,8 +146,10 @@ def profile():
     user_id = session.get("user_id")
     discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
     discription = discriptions[0]["discription"]
+    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
+    username = usernames[0]["username"]
 
-    return render_template("profile.html", discription=discription)
+    return render_template("profile.html", discription=discription, username=username)
 
 @app.route("/followingprofile")
 @login_required
