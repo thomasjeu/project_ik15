@@ -34,7 +34,7 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///admin.db")
 
-app.config["IMAGE_UPLOADS"] = "home/ubuntu/git/project_ik15/media"
+app.config["IMAGE_UPLOADS"] = "/media/"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
@@ -91,7 +91,7 @@ def upload():
                     print("That file extension is not allowed")
                     return redirect(request.url)
 
-
+    print("yo")
     return render_template("upload.html")
 
 
