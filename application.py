@@ -114,12 +114,12 @@ def followersprof():
     return render_template("followersprofile.html", discription=discription)
 
 
-@app.route("/upload")
-@login_required
-def upload():
-    """Followers as shown on profile"""
-    username = session.get("user_id")
-    return render_template("upload.html", username=username)
+# @app.route("/upload")
+# @login_required
+# def upload():
+#     """Followers as shown on profile"""
+#     username = session.get("user_id")
+#     return render_template("upload.html", username=username)
 
 
 
