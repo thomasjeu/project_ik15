@@ -1,60 +1,74 @@
+
 {% extends "layout.html" %}
 
 {% block title %}
-    Settings
+    Upload
 {% endblock %}
 
 {% block main %}
-    <form action="/settings" method="post">
+    <form action="/upload" method="post" enctype="multipart/form-data" >
 
         <p>Upload picture:</p>
+            <div class="form-group">
+              <label>Select image</label>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" name="image" id="image" oninput="filesize(this);">
+                <label class="custom-file-label" for="image">Select image...</label>
+              </div>
+            </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+
+        <!--<p>This spot is named:</p>-->
+        <!--<div class="form-group">-->
+        <!--    <input autocomplete="off" autofocus class="form-control" id="place name" name="place name" placeholder="Name of this spot ..." type="text">-->
+        <!--</div>-->
+
+        <!--<p><label for="counter-input" class="label">Photo discription(max 150):  <span id="counter-display" class="tag is-success">0</span></label></p>-->
+        <!--<div class="form-group">-->
+        <!--    <textarea rows="4" cols="40" input class="form-control" id="discription" name="discription" placeholder="Tell us what's the best about this place or what you loved most about the chairs ... Whatever it is you want to tell us :) " type="text" maxlength='150'>-->
+        <!--        </textarea>-->
+        <!--</div>-->
+
+        <!--<p>Adress</p>-->
+        <!--<div class="form-group">-->
+        <!--    <input autocomplete="off" autofocus class="form-control" id="adress" name="adress" placeholder="Street name" type="text">-->
+        <!--    <input autocomplete="off" autofocus class="form-control" id="adress" name="adress" placeholder="Postal code" type="text">-->
+        <!--    <input autocomplete="off" autofocus class="form-control" id="adress" name="adress" placeholder="City" type="text">-->
+        <!--</div>-->
 
 
 
-        <p>This spot is named:</p>
-        <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" id="place name" name="place name" placeholder="Name of this spot ..." type="text">
-        </div>
-
-        <p><label for="counter-input" class="label">Photo discription(max 150):  <span id="counter-display" class="tag is-success">0</span></label></p>
-        <div class="form-group">
-            <textarea rows="4" cols="40" input class="form-control" id="discription" name="discription" placeholder="Tell us what's the best about this place or what you loved most about the chairs ... Whatever it is you want to tell us :) " type="text" maxlength='150'>
-                </textarea>
-        </div>
-
-        <p>Adress</p>
-        <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" id="adress" name="adress" placeholder="Street name" type="text">
-            <input autocomplete="off" autofocus class="form-control" id="adress" name="adress" placeholder="Postal code" type="text">
-            <input autocomplete="off" autofocus class="form-control" id="adress" name="adress" placeholder="City" type="text">
-        </div>
-
-
-
-        <p><button class="btn btn-primary" type="submit">Upload and post!</button></p>
+        <!--<p><button class="btn btn-primary" type="submit">Upload and post!</button></p>-->
 
     </form>
 
 <script>
     // source: https://codepen.io/pi/pen/dXbwwa
-    (() => {
-      const counter = (() => {
-        const input = document.getElementById('discription'),
-          display = document.getElementById('counter-display'),
-          changeEvent = (evt) => display.innerHTML = evt.target.value.length,
-          getInput = () => input.value,
-          countEvent = () => input.addEventListener('keyup', changeEvent),
-          init = () => countEvent();
+    // (() => {
+    //   const counter = (() => {
+    //     const input = document.getElementById('discription'),
+    //       display = document.getElementById('counter-display'),
+    //       changeEvent = (evt) => display.innerHTML = evt.target.value.length,
+    //       getInput = () => input.value,
+    //       countEvent = () => input.addEventListener('keyup', changeEvent),
+    //       init = () => countEvent();
 
-        return {
-          init: init
-        }
+    //     return {
+    //       init: init
+    //     }
 
-      })();
+    //   })();
 
-      counter.init();
+    //   counter.init();
 
-    })();
+    // })();
+
+
+    function filesize(elem){
+        document.cookie = `filesize=${elem.files[0].size}`;
+      }
+
+
     </script>
 
 {% endblock %}

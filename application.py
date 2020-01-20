@@ -6,8 +6,10 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 
 from helpers import apology, login_required, changepassword, changeusername, changediscription
+
 
 # Configure application
 app = Flask(__name__)
@@ -31,6 +33,70 @@ Session(app)
 
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///admin.db")
+
+app.config["IMAGE_UPLOADS"] = "media/"
+app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
+app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
+
+def allowed_image(filename):
+
+    if not "." in filename:
+        return False
+
+    ext = filename.rsplit(".", 1)[1]
+
+    if ext.upper() in app.config["ALLOWED_IMAGE_EXTENSIONS"]:
+        return True
+    else:
+        return False
+
+def allowed_image_filesize(filesize):
+
+    if int(filesize) <= app.config["MAX_IMAGE_FILESIZE"]:
+        return True
+    else:
+        return False
+
+
+@app.route("/upload", methods=["GET", "POST"])
+@login_required
+def upload():
+    print("maat")
+    if request.method == "POST":
+        print("gozer")
+        if request.files:
+            print("aad")
+            if "filesize" in request.cookies:
+
+                if not allowed_image_filesize(request.cookies["filesize"]):
+                    print("Filesize exceeded maximum limit")
+                    return redirect(request.url)
+
+                image = request.files["image"]
+                print("hoi")
+                if image.filename == "":
+                    print("No filename")
+                    return redirect(request.url)
+                print("hoii")
+                if allowed_image(image.filename):
+                    filename = secure_filename(image.filename)
+                    print(filename)
+                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+
+                    print("Image saved")
+                    print("hoiii")
+                    return redirect(request.url)
+
+                else:
+                    print("That file extension is not allowed")
+                    return redirect(request.url)
+
+    print("yo")
+    return render_template("upload.html")
+
+
+
+
 
 
 @app.route("/settings", methods=["GET", "POST"])
@@ -80,8 +146,10 @@ def profile():
     user_id = session.get("user_id")
     discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
     discription = discriptions[0]["discription"]
+    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
+    username = usernames[0]["username"]
 
-    return render_template("profile.html", discription=discription)
+    return render_template("profile.html", discription=discription, username=username)
 
 @app.route("/followingprofile")
 @login_required
@@ -89,7 +157,9 @@ def followingprof():
     user_id = session.get("user_id")
     discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
     discription = discriptions[0]["discription"]
-    return render_template("followingprofile.html", discription=discription)
+    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
+    username = usernames[0]["username"]
+    return render_template("followingprofile.html", discription=discription, username=username)
 
 @app.route("/followersprofile")
 @login_required
@@ -98,15 +168,17 @@ def followersprof():
     user_id = session.get("user_id")
     discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
     discription = discriptions[0]["discription"]
-    return render_template("followersprofile.html", discription=discription)
+    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
+    username = usernames[0]["username"]
+    return render_template("followersprofile.html", discription=discription, username=username)
 
 
-@app.route("/upload")
-@login_required
-def upload():
-    """Followers as shown on profile"""
-    username = session.get("user_id")
-    return render_template("upload.html", username=username)
+# @app.route("/upload")
+# @login_required
+# def upload():
+#     """Followers as shown on profile"""
+#     username = session.get("user_id")
+#     return render_template("upload.html", username=username)
 
 
 
