@@ -34,7 +34,7 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///admin.db")
 
-app.config["IMAGE_UPLOADS"] = "media/posts"
+app.config["IMAGE_UPLOADS"] = "static/posts"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
@@ -84,7 +84,11 @@ def upload():
                     image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
 
                     print("Image saved")
-                    print("hoiii")
+                    path = "static/posts/" + filename
+
+                    db.execute("INSERT INTO uploads (id, discription, path, title, adress) VALUES (:id, :discription, :path, :title, :adress)", id=session.get("user_id"),
+                    discription=request.form.get("discription"), path=path, title=request.form.get("place name"), adress=request.form.get("adress"))
+
                     return redirect(request.url)
 
                 else:
