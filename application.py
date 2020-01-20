@@ -34,7 +34,7 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///admin.db")
 
-app.config["IMAGE_UPLOADS"] = "media/"
+app.config["IMAGE_UPLOADS"] = "media/posts"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
