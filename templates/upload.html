@@ -24,15 +24,14 @@
 
         <p><label for="counter-input" class="label">Photo discription(max 150):  <span id="counter-display" class="tag is-success">0</span></label></p>
         <div class="form-group">
-            <textarea rows="4" cols="40" input class="form-control" id="discription" name="discription" placeholder="Tell us what's the best about this place or what you loved most about the chairs ... Whatever it is you want to tell us :) " type="text" maxlength='150'>
-                </textarea>
+            <textarea rows="4" cols="40" id="discription" name="discription" placeholder="Tell us what's the best about this place or what you loved most about the chairs ... Whatever it is you want to tell us :) " type="text" maxlength='150'></textarea>
         </div>
 
         <p>Adress</p>
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" id="adress" name="adress" placeholder="Street name" type="text">
-            <input autocomplete="off" autofocus class="form-control" id="adress" name="adress" placeholder="Postal code" type="text">
-            <input autocomplete="off" autofocus class="form-control" id="adress" name="adress" placeholder="City" type="text">
+            <input autocomplete="off" autofocus class="form-control" id="street" name="street" placeholder="Street name" type="text">
+            <input autocomplete="off" autofocus class="form-control" id="postal" name="postal" placeholder="Postal code" type="text">
+            <input autocomplete="off" autofocus class="form-control" id="city" name="city" placeholder="City" type="text">
         </div>
 
 
@@ -44,25 +43,25 @@
 {% endblock %}
 
 <script>
-    // source: https://codepen.io/pi/pen/dXbwwa
-    // (() => {
-    //   const counter = (() => {
-    //     const input = document.getElementById('discription'),
-    //       display = document.getElementById('counter-display'),
-    //       changeEvent = (evt) => display.innerHTML = evt.target.value.length,
-    //       getInput = () => input.value,
-    //       countEvent = () => input.addEventListener('keyup', changeEvent),
-    //       init = () => countEvent();
+    source: https://codepen.io/pi/pen/dXbwwa
+    (() => {
+      const counter = (() => {
+        const input = document.getElementById('discription'),
+          display = document.getElementById('counter-display'),
+          changeEvent = (evt) => display.innerHTML = evt.target.value.length,
+          getInput = () => input.value,
+          countEvent = () => input.addEventListener('keyup', changeEvent),
+          init = () => countEvent();
 
-    //     return {
-    //       init: init
-    //     }
+        return {
+          init: init
+        }
 
-    //   })();
+      })();
 
-    //   counter.init();
+      counter.init();
 
-    // })();
+    })();
 
 
     function filesize(elem){

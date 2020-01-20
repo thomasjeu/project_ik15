@@ -86,8 +86,8 @@ def upload():
                     print("Image saved")
                     path = "static/posts/" + filename
 
-                    db.execute("INSERT INTO uploads (id, discription, path, title, adress) VALUES (:id, :discription, :path, :title, :adress)", id=session.get("user_id"),
-                    discription=request.form.get("discription"), path=path, title=request.form.get("place name"), adress=request.form.get("adress"))
+                    db.execute("INSERT INTO uploads (id, discription, path, title, street, postal, city) VALUES (:id, :discription, :path, :title, :street, :postal, :city)", id=session.get("user_id"),
+                    discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"), postal=request.form.get("postal"), city=request.form.get("city"))
 
                     return redirect(request.url)
 
@@ -152,8 +152,10 @@ def profile():
     discription = discriptions[0]["discription"]
     usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
     username = usernames[0]["username"]
+    posts = db.execute("SELECT path FROM uploads WHERE id=:user_id", user_id=user_id)
 
-    return render_template("profile.html", discription=discription, username=username)
+
+    return render_template("profile.html", discription=discription, username=username, posts=posts)
 
 @app.route("/followingprofile")
 @login_required
