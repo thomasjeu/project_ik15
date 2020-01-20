@@ -293,6 +293,9 @@ def register():
     else:
         return render_template("register.html")
 
+@app.route("/discover", methods=["GET", "POST"])
+def discover():
+    return render_template("discover.html")
 
 
 def errorhandler(e):

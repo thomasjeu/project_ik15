@@ -5,8 +5,18 @@
 {% endblock %}
 
 {% block main %}
-
+<style>
+.transbox {
+  margin: 30px;
+  background-color: #ffffff;
+  border: 1px solid black;
+  opacity: 0.7;
+  filter: alpha(opacity=60);
+}
+</style>
+<div class="transbox" style="max-width:400px;margin:auto">
     <center>
+
     <form action="/login" method="post" class=>
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" id="username" name="username" placeholder="Username" type="text" required>
@@ -23,6 +33,7 @@
     <p>No account? Register now!</p>
     <button onclick="window.location.href = '/register';">Register</button>
     </center>
+</div>
     <script>
         // function main() {
         //     usercheck();
