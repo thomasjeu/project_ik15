@@ -10,15 +10,10 @@ from werkzeug.utils import secure_filename
 from random import seed
 from random import random
 
-<<<<<<< HEAD
 
 from helpers import apology, login_required, changepassword, changeusername, changediscription
 
 
-=======
-from helpers import apology, login_required, changepassword, changeusername, changediscription
-
->>>>>>> 0436290925eaa440e22dad59c2eb3239b4d2afdf
 # Configure application
 app = Flask(__name__)
 
@@ -47,37 +42,6 @@ app.config["PROFILE_UPLOADS"] = "static/profile"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 # app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
-<<<<<<< HEAD
-def allowed_image(filename):
-
-    if not "." in filename:
-        return False
-
-    ext = filename.rsplit(".", 1)[1]
-
-    if ext.upper() in app.config["ALLOWED_IMAGE_EXTENSIONS"]:
-        return True
-    else:
-        return False
-
-def allowed_image_filesize(filesize):
-
-    if int(filesize) <= app.config["MAX_IMAGE_FILESIZE"]:
-        return True
-    else:
-        return False
-
-
-
-@app.route("/discover")
-@login_required
-def discover():
-
-    seed(1)
-    for random in range(10):
-        randomvalue = random()
-        print(randomvalue)
-=======
 
 @app.route("twodiscover")
 @login_required
@@ -102,4 +66,35 @@ def twodiscover():
     return render_template("twodiscover.html", discription=discription, title=title, street=street, postal=postal, city=city)
 
 
->>>>>>> 0436290925eaa440e22dad59c2eb3239b4d2afdf
+def allowed_image(filename):
+
+    if not "." in filename:
+        return False
+
+    ext = filename.rsplit(".", 1)[1]
+
+    if ext.upper() in app.config["ALLOWED_IMAGE_EXTENSIONS"]:
+        return True
+    else:
+        return False
+
+def allowed_image_filesize(filesize):
+
+    if int(filesize) <= app.config["MAX_IMAGE_FILESIZE"]:
+        return True
+    else:
+        return False
+
+
+
+# @app.route("/discover", methods=["GET"])
+# @login_required
+# def discover():
+
+#     post_nummer = db.execute("SELECT postnumber FROM uploads WHERE id=:user_id", user_id=session.get("user_id"))
+#     print(post_nummer)
+#     seed(1)
+#     for random in range(len(post_nummer)):
+#         randomvalue = int(random())
+#         print(randomvalue)
+#     return render_template("discover.html")
