@@ -92,6 +92,7 @@ def upload():
 
             return redirect(request.url)
 
+
         else:
             print("That file extension is not allowed")
             return redirect(request.url)
