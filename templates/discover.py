@@ -50,9 +50,9 @@ def twodiscover():
     discriptions = db.execute("SELECT discription FROM uploads WHERE id=:user_id", user_id=user_id)
     discription = discriptions[0]["discription"]
 
-    posts = db.execute("SELECT path FROM uploads WHERE id=:user_id", user_id=user_id)
-    picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
+    adress_one = db.execute("SELECT adress FROM uploads WHERE id=:user_id", user_id=user_id)
+    adress = adress_one[0]["adress"]
 
-    return render_template("twodiscover.html", discription=discription, title=title)
+    return render_template("twodiscover.html", discription=discription, title=title, adress=adress)
 
 
