@@ -50,9 +50,15 @@ def twodiscover():
     discriptions = db.execute("SELECT discription FROM uploads WHERE id=:user_id", user_id=user_id)
     discription = discriptions[0]["discription"]
 
-    adress_one = db.execute("SELECT adress FROM uploads WHERE id=:user_id", user_id=user_id)
-    adress = adress_one[0]["adress"]
+    street_one = db.execute("SELECT street FROM uploads WHERE id=:user_id", user_id=user_id)
+    street = street_one[0]["street"]
 
-    return render_template("twodiscover.html", discription=discription, title=title, adress=adress)
+    postal_one = db.execute("SELECT postal FROM uploads WHERE id=:user_id", user_id=user_id)
+    postal = postal_one[0]["postal"]
+
+    city_one = db.execute("SELECT city FROM uploads WHERE id=:user_id", user_id=user_id)
+    city = city_one[0]["city"]
+
+    return render_template("twodiscover.html", discription=discription, title=title, street=street, postal=postal, city=city)
 
 
