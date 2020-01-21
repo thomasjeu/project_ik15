@@ -34,7 +34,7 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///admin.db")
 
-app.config["IMAGE_UPLOADS"] = "media/posts"
+app.config["IMAGE_UPLOADS"] = "static/posts"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
@@ -84,7 +84,11 @@ def upload():
                     image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
 
                     print("Image saved")
-                    print("hoiii")
+                    path = "static/posts/" + filename
+
+                    db.execute("INSERT INTO uploads (id, discription, path, title, street, postal, city) VALUES (:id, :discription, :path, :title, :street, :postal, :city)", id=session.get("user_id"),
+                    discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"), postal=request.form.get("postal"), city=request.form.get("city"))
+
                     return redirect(request.url)
 
                 else:
@@ -95,7 +99,10 @@ def upload():
     return render_template("upload.html")
 
 
-
+@app.route("/twodiscover", methods=["GET", "POST"])
+@login_required
+def twodiscover():
+    return render_template("twodiscover.html")
 
 
 
@@ -148,8 +155,10 @@ def profile():
     discription = discriptions[0]["discription"]
     usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
     username = usernames[0]["username"]
+    posts = db.execute("SELECT path FROM uploads WHERE id=:user_id", user_id=user_id)
 
-    return render_template("profile.html", discription=discription, username=username)
+
+    return render_template("profile.html", discription=discription, username=username, posts=posts)
 
 @app.route("/followingprofile")
 @login_required
