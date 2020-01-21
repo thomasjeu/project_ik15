@@ -92,16 +92,9 @@ def upload():
 
                 return redirect(request.url)
 
-<<<<<<< HEAD
             else:
                 print("That file extension is not allowed")
                 return redirect(request.url)
-=======
-
-        else:
-            print("That file extension is not allowed")
-            return redirect(request.url)
->>>>>>> 258c0c24cac5e03170c1b7a1e1af4db70b71456e
 
     print("yo")
     return render_template("upload.html")
