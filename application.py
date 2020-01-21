@@ -341,6 +341,7 @@ def register():
 
 @app.route("/discover", methods=["GET", "POST"])
 def discover():
+
     return render_template("discover.html")
 
 
