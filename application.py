@@ -7,6 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
+import random
 
 from helpers import apology, login_required, changepassword, changeusername, changediscription
 
@@ -333,8 +334,12 @@ def register():
 
 @app.route("/discover", methods=["GET", "POST"])
 def discover():
+    post_number = db.execute("SELECT postnumber FROM uploads")
+    number = random.randint(1,len(post_number))
+    post = db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=number)
 
-    return render_template("discover.html")
+    return render_template("discover.html", post=post)
+
 
 
 def errorhandler(e):
