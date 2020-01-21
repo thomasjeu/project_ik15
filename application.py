@@ -89,8 +89,8 @@ def upload():
                 print("Image saved")
                 path = "static/posts/" + filename
 
-                db.execute("INSERT INTO uploads (id, discription, path, title, street, postal, city) VALUES (:id, :discription, :path, :title, :street, :postal, :city)", id=session.get("user_id"),
-                discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"), postal=request.form.get("postal"), city=request.form.get("city"))
+                db.execute("INSERT INTO uploads (id, discription, path, title, street, postal, city, number) VALUES (:id, :discription, :path, :title, :street, :postal, :city, :number)", id=session.get("user_id"),
+                discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"), postal=request.form.get("postal"), city=request.form.get("city"), number=request.form.get("number"))
 
                 return redirect(request.url)
 
@@ -100,13 +100,6 @@ def upload():
 
     print("yo")
     return render_template("upload.html")
-
-
-@app.route("/twodiscover", methods=["GET", "POST"])
-@login_required
-def twodiscover():
-    return render_template("twodiscover.html")
-
 
 
 @app.route("/settings", methods=["GET", "POST"])
@@ -339,6 +332,35 @@ def discover():
     post = db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=number)
 
     return render_template("discover.html", post=post, number=number)
+
+
+@app.route("/twodiscover")
+@login_required
+def twodiscover():
+    number = request.cookies["postnumber"]
+    print(number)
+    print("joe")
+
+    titles = db.execute("SELECT title FROM uploads WHERE postnumber=:postnumber", postnumber=number)
+    title = titles[0]["title"]
+
+    discriptions = db.execute("SELECT discription FROM uploads WHERE postnumber=:postnumber", postnumber=number)
+    discription = discriptions[0]["discription"]
+
+    street_one = db.execute("SELECT street FROM uploads WHERE postnumber=:postnumber", postnumber=number)
+    street = street_one[0]["street"]
+
+    postal_one = db.execute("SELECT postal FROM uploads WHERE postnumber=:postnumber", postnumber=number)
+    postal = postal_one[0]["postal"]
+
+    city_one = db.execute("SELECT city FROM uploads WHERE postnumber=:postnumber", postnumber=number)
+    city = city_one[0]["city"]
+
+    number_one = db.execute("SELECT number FROM uploads WHERE postnumber=:postnumber", postnumber=number)
+    num = number_one[0]["number"]
+
+    return render_template("twodiscover.html", discription=discription, title=title, street=street, postal=postal, city=city, num=num)
+
 
 
 

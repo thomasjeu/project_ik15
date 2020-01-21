@@ -43,29 +43,30 @@ app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 # app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
 
-@app.route("/twodiscover/<int:number>")
-@login_required
-def twodiscover(number):
+# @app.route("/twodiscover")
+# @login_required
+# def twodiscover():
+#     number = request.cookies["postnumber"]
+#     print(number)
+#     print("joe")
+#     user_id = session.get("user_id")
 
-    print(number)
-    user_id = session.get("user_id")
+#     titles = db.execute("SELECT title FROM users WHERE id=:user_id", user_id=user_id)
+#     title = titles[0]["title"]
 
-    titles = db.execute("SELECT title FROM users WHERE id=:user_id", user_id=user_id)
-    title = titles[0]["title"]
+#     discriptions = db.execute("SELECT discription FROM uploads WHERE id=:user_id", user_id=user_id)
+#     discription = discriptions[0]["discription"]
 
-    discriptions = db.execute("SELECT discription FROM uploads WHERE id=:user_id", user_id=user_id)
-    discription = discriptions[0]["discription"]
+#     street_one = db.execute("SELECT street FROM uploads WHERE id=:user_id", user_id=user_id)
+#     street = street_one[0]["street"]
 
-    street_one = db.execute("SELECT street FROM uploads WHERE id=:user_id", user_id=user_id)
-    street = street_one[0]["street"]
+#     postal_one = db.execute("SELECT postal FROM uploads WHERE id=:user_id", user_id=user_id)
+#     postal = postal_one[0]["postal"]
 
-    postal_one = db.execute("SELECT postal FROM uploads WHERE id=:user_id", user_id=user_id)
-    postal = postal_one[0]["postal"]
+#     city_one = db.execute("SELECT city FROM uploads WHERE id=:user_id", user_id=user_id)
+#     city = city_one[0]["city"]
 
-    city_one = db.execute("SELECT city FROM uploads WHERE id=:user_id", user_id=user_id)
-    city = city_one[0]["city"]
-
-    return render_template("twodiscover.html", discription=discription, title=title, street=street, postal=postal, city=city)
+#     return render_template("twodiscover.html", discription=discription, title=title, street=street, postal=postal, city=city)
 
 
 def allowed_image(filename):
