@@ -73,28 +73,28 @@ def upload():
                 #     print("Filesize exceeded maximum limit")
                 #     return redirect(request.url)
 
-        image = request.files["image"]
-        print("hoi")
-        if image.filename == "":
-            print("No filename")
-            return redirect(request.url)
-        print("hoii")
-        if allowed_image(image.filename):
-            filename = secure_filename(image.filename)
-            print(filename)
-            image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+            image = request.files["image"]
+            print("hoi")
+            if image.filename == "":
+                print("No filename")
+                return redirect(request.url)
+            print("hoii")
+            if allowed_image(image.filename):
+                filename = secure_filename(image.filename)
+                print(filename)
+                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
 
-            print("Image saved")
-            path = "static/posts/" + filename
+                print("Image saved")
+                path = "static/posts/" + filename
 
-            db.execute("INSERT INTO uploads (id, discription, path, title, street, postal, city) VALUES (:id, :discription, :path, :title, :street, :postal, :city)", id=session.get("user_id"),
-            discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"), postal=request.form.get("postal"), city=request.form.get("city"))
+                db.execute("INSERT INTO uploads (id, discription, path, title, street, postal, city) VALUES (:id, :discription, :path, :title, :street, :postal, :city)", id=session.get("user_id"),
+                discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"), postal=request.form.get("postal"), city=request.form.get("city"))
 
-            return redirect(request.url)
+                return redirect(request.url)
 
-        else:
-            print("That file extension is not allowed")
-            return redirect(request.url)
+            else:
+                print("That file extension is not allowed")
+                return redirect(request.url)
 
     print("yo")
     return render_template("upload.html")
@@ -140,6 +140,42 @@ def settings():
 
         if request.form.get("discription"):
             changediscription(discription, user_id)
+
+
+        if request.files:
+            print("aad")
+            print(request.cookies)
+            # if "filesize" in request.cookies:
+
+                # if not allowed_image_filesize(request.cookies["filesize"]):
+                #     print("Filesize exceeded maximum limit")
+                #     return redirect(request.url)
+
+        image = request.files["image"]
+        print("hoi")
+        if image.filename == "":
+            print("No filename")
+            return redirect(request.url)
+        print("hoii")
+        if allowed_image(image.filename):
+            filename = secure_filename(image.filename)
+            print(filename)
+            image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+
+            print("Image saved")
+            path = "static/posts/" + filename
+
+            db.execute("INSERT INTO uploads (id, discription, path, title, street, postal, city) VALUES (:id, :discription, :path, :title, :street, :postal, :city)", id=session.get("user_id"),
+            discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"), postal=request.form.get("postal"), city=request.form.get("city"))
+
+            return redirect(request.url)
+
+        else:
+            print("That file extension is not allowed")
+            return redirect(request.url)
+
+
+
 
         return redirect("/")
 
