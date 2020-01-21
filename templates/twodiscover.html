@@ -1,35 +1,35 @@
-{% extends "layout.html" %}
-
-{% block title %}
-    Discover
-{% endblock %}
-
-{% block main %}
-<center><h2><b>Discover this spot ... </b></h2></center>
-<center><p>What you need to know about this spot ...</p></center>
-<center><H3>This spot on the map</H3></center>
-<body>
-  <style>#map {
-        height: 100%;
-      }</style>
-
-</body>
-<script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 15
-        });
-      }
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* Set the size of the div element that contains the map */
+      #map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+    </style>
+  </head>
+  <body>
+    <center><h1>Location of this spot</h1></center>
+    <!--The div element for the map -->
+    <div id="map"></div>
+    <script>
+// Initialize and add the map
+function initMap() {
+  // The location of Amsterdam
+  var amsterdam = {lat: 52.379189, lng: 4.899431};
+  // The map, centered at Amstedam
+  var map = new google.maps.Map(
+      document.getElementById('map'), {zoom: 15, center: amsterdam});
+  // The marker, positioned at Uluru
+  var marker = new google.maps.Marker({position: amsterdam, map: map});
+}
     </script>
-
-
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDixNYXWGFFjkTyU-69maMrOOrzGvRiwU&callback=initMap"
-  type="text/javascript">
-</script>
-
-
-
-<p style=”padding: 10px; color: red; background-color: blue; border: black 2px solid”>Text</p>
-{% endblock %}
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDixNYXWGFFjkTyU-69maMrOOrzGvRiwU&callback=initMap">
+    </script>
+    <center><h1>Titel{{title}} </h2></center>
+    <center><h1>Discription{{discription}} </h2></center>
+    <center><h1>Adress{{adress}} </h2></center>
+  </body>
+</html>
