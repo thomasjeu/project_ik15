@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block main %}
-<link href="styles.css" rel="stylesheet">
+<!--<link href="styles.css" rel="stylesheet">-->
 
     <form action = "/profile" method = "post">
 
 
         <style>
 
-        img {
+        profileimg {
             border-radius: 50%;
             }
         </style>
@@ -20,12 +20,12 @@
 
         <body>
 
-        <center><h1>{{username}} </h2></center>
+        <center><h1> {{username}} </h2></center>
 
         <div class="w3-row-padding w3-padding-16 w3-center" id="avatar">
             <p style="text-align:center;"><img src={{ picture[0]["image"] }} alt="Avatar" style="width:200px"></p>
         </div>
-        <center> <h3>{{ discription }}</h3> </center>
+        <center> <h3> {{ discription }} </h3> </center>
         {% if session.user_id %}
             <center><button class="btn btn-primary" type="follow" disabled >Follow</button></center>
         {% else %}
@@ -42,7 +42,7 @@
     <div class="row">
       <div class="column">
         {% for post in posts %}
-        <img src={{ post["path"] }} alt="User post">
+        <center><img src={{ post["path"] }} width="800" height="600" alt="User post"></center>
 
         {% endfor %}
       </div>

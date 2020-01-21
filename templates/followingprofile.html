@@ -20,12 +20,12 @@
 
         <body>
 
-        <center><h1>{{ username }}</h2></center>
+        <center><h1> {{ username }}</h2></center>
 
         <div class="w3-row-padding w3-padding-16 w3-center" id="avatar">
-            <p style="text-align:center;"><img src="https://i.imgur.com/7Nwk67T.jpg" alt="Avatar" style="width:200px"></p>
+            <p style="text-align:center;"><img src={{ picture[0]["image"] }} alt="Avatar" style="width:200px"></p>
         </div>
-        <center> <h3>{{ discription }}</h3> </center>
+        <center> <h3> {{ discription }}</h3> </center>
         {% if session.user_id %}
             <center><button class="btn btn-primary" type="follow" disabled >Follow</button></center>
         {% else %}

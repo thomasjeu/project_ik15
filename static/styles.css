@@ -1,71 +1,24 @@
-nav .navbar-brand
-{
-    /* size for brand */
-    font-size: xx-large;
+.profilebar {
+    width:750px;
+    margin:0 auto;
+    list-style:none;
 }
 
-/* colors for brand */
-nav .navbar-brand .blue
-{
-    color: #537fbe;
-}
-nav .navbar-brand .red
-{
-    color: #ea433b;
-}
-nav .navbar-brand .yellow
-{
-    color: #f5b82e;
-}
-nav .navbar-brand .green
-{
-    color: #2e944b;
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
 }
 
-main .form-control
-{
-    /* center form controls */
-    display: inline-block;
-
-    /* override Bootstrap's 100% width for form controls */
-    width: auto;
+/* Create two equal columns that sits next to each other */
+.column {
+  flex: 50%;
+  padding: 0 4px;
 }
 
-main
-{
-    /* scroll horizontally as needed */
-    overflow-x: auto;
-
-    /* center contents */
-    text-align: center;
-
-    /* text color */
-    color: white;
-}
-
-main img
-{
-    /* constrain images on small screens */
-    max-width: 100%;
-}
-
-body
-{
-    /* dark background */
-    background-color: #333333;
-}
-
-.button5
-{
-  background-color: white;
-  color: black;
-  border: 2px solid #555555;
-}
-
-.button5:hover
-{
-  background-color: #555555;
-  color: white;
+.column img {
+  margin-top: 8px;
+  vertical-align: middle;
 }
 
 
