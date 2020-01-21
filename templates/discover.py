@@ -46,6 +46,8 @@ app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 @app.route("twodiscover")
 @login_required
 def twodiscover():
+    number = request.cookies["postnumber"]
+    print(number)
     user_id = session.get("user_id")
 
     titles = db.execute("SELECT title FROM users WHERE id=:user_id", user_id=user_id)

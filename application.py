@@ -338,7 +338,7 @@ def discover():
     number = random.randint(1,len(post_number))
     post = db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=number)
 
-    return render_template("discover.html", post=post)
+    return render_template("discover.html", post=post, number=number)
 
 
 
