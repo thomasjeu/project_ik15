@@ -205,7 +205,8 @@ def followingprof():
     discription = discriptions[0]["discription"]
     usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
     username = usernames[0]["username"]
-    return render_template("followingprofile.html", discription=discription, username=username)
+    picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
+    return render_template("followingprofile.html", discription=discription, username=username, picture=picture)
 
 @app.route("/followersprofile")
 @login_required
@@ -216,17 +217,8 @@ def followersprof():
     discription = discriptions[0]["discription"]
     usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
     username = usernames[0]["username"]
-    return render_template("followersprofile.html", discription=discription, username=username)
-
-
-# @app.route("/upload")
-# @login_required
-# def upload():
-#     """Followers as shown on profile"""
-#     username = session.get("user_id")
-#     return render_template("upload.html", username=username)
-
-
+    picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
+    return render_template("followersprofile.html", discription=discription, username=username, picture=picture)
 
 
 @app.route("/check", methods=["GET"])
