@@ -5,12 +5,33 @@
 {% endblock %}
 
 {% block main %}
+<form action="/discover" method="post">
 <center><h2><b>Discover</b></h2></center>
+<body>
 <center><p>Get in touch with other people and their places :)</p></center>
 
+<style>
 
-<div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
+        img {
+            border-radius: 20%;
+            }
+</style>
+
+
+    <div class="row">
+      <div class="column">
+        {% for post in posts %}
+            <img src={{ post["path"] }} alt="User post">
+        {% endfor %}
+      </div>
+    </div>
+
+
+
+    <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
         <center><div class="w3-center w3-padding-16 w3-button" ><a u href="/twodiscover"><b>More information</b></a/u></div></center>
-        </div>
+    </div>
 
+</body>
+</form>
 {% endblock %}
