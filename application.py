@@ -99,7 +99,10 @@ def upload():
     return render_template("upload.html")
 
 
-
+@app.route("/twodiscover", methods=["GET", "POST"])
+@login_required
+def twodiscover():
+    return render_template("twodiscover.html")
 
 
 
