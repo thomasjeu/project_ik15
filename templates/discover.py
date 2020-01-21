@@ -72,11 +72,13 @@ def allowed_image_filesize(filesize):
 @app.route("/discover")
 @login_required
 def discover():
+    post_nummer = db.execute("SELECT postnumber FROM uploads WHERE id=:user_id", user_id=user_id)
 
     seed(1)
-    for random in range(10):
-        randomvalue = random()
+    for random in range(len(post_nummer)):
+        randomvalue = int(random())
         print(randomvalue)
+
 =======
 
 @app.route("twodiscover")
