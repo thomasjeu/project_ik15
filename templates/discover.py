@@ -43,10 +43,10 @@ app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 # app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
 
-@app.route("twodiscover")
+@app.route("twodiscover/<number>")
 @login_required
-def twodiscover():
-    number = request.cookies["postnumber"]
+def twodiscover(number):
+
     print(number)
     user_id = session.get("user_id")
 
