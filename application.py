@@ -221,16 +221,6 @@ def followersprof():
     return render_template("followersprofile.html", discription=discription, username=username, picture=picture)
 
 
-# @app.route("/upload")
-# @login_required
-# def upload():
-#     """Followers as shown on profile"""
-#     username = session.get("user_id")
-#     return render_template("upload.html", username=username)
-
-
-
-
 @app.route("/check", methods=["GET"])
 def check():
     """Return true if username available, else false, in JSON format"""
