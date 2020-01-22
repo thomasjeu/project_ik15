@@ -375,13 +375,12 @@ def twodiscover():
     #
     return render_template("twodiscover.html",titles=titles)
 
-<<<<<<< HEAD
+
 @app.route("/about")
 def about():
     return render_template("about.html")
 
-=======
->>>>>>> 62d58ed8a34dd26db7108664c315477b9cfcccf7
+
 
 def errorhandler(e):
     """Handle error"""
