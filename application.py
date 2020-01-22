@@ -421,9 +421,9 @@ def discover():
 
     #
     post_number = db.execute("SELECT postnumber FROM uploads")
-    number = random.randint(1,len(post_number))
-    post = db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=number)
-
+    number = random.randint(0,(len(post_number)-1))
+    post = db.execute("SELECT path FROM uploads")
+    print(post)
     #
     return render_template("discover.html", post=post, number=number)
 
@@ -435,10 +435,10 @@ def twodiscover():
 
     #
     number = request.cookies["postnumber"]
-    titles = db.execute("SELECT * FROM uploads WHERE postnumber=:postnumber", postnumber=number)
-
+    titles = db.execute("SELECT * FROM uploads")
+    print(titles[2])
     #
-    return render_template("twodiscover.html",titles=titles)
+    return render_template("twodiscover.html",titles=titles, number=int(number))
 
 
 @app.route("/about")
