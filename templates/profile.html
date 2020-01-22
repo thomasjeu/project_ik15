@@ -27,7 +27,7 @@
         </div>
         <center> <h3> {{ discription }} </h3> </center>
         {% if bool_user %}
-            <center><button class="btn btn-primary" type="follow">Follow</button></center>
+            <center><button onclick="/follow/{{user_id}}" class="btn btn-primary" type="follow">Follow</button></center>
         {% endif %}
 
         <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
