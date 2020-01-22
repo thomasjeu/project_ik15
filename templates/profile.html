@@ -53,6 +53,23 @@
       </div>
     </div>
 
+    <p>Following: </p>
+    <div class="row">
+      <div class="column">
+        {% for follow in followinglist %}
+        <p>{{follow[0]["username"]}}</p>
+      </div>
+    </div>
+        {% endfor %}
+
+    <p>Followers: </p>
+    <div class="row">
+      <div class="column">
+        {% for follow in followerslist %}
+        <p>{{follow[0]["username"]}}</p>
+      </div>
+    </div>
+        {% endfor %}
 
         </body>
 

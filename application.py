@@ -203,9 +203,24 @@ def profile():
     username = usernames[0]["username"]
     posts = db.execute("SELECT path FROM uploads WHERE id=:user_id", user_id=user_id)
     picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
+    followers = db.execute("SELECT userid FROM follow WHERE followid=:followid", followid=user_id)
+    following = db.execute("SELECT followid FROM follow WHERE userid=:userid", userid=user_id)
+    followerslist = []
+    followinglist = []
+
+    if followers:
+        for follower in followers:
+            f = follower["userid"]
+            name = db.execute("SELECT username FROM users WHERE id=:id", id=f)
+            followerslist.append(name)
+    if following:
+        for followin in following:
+            fol = followin["followid"]
+            names = db.execute("SELECT username FROM users WHERE id=:id", id=fol)
+            followinglist.append(names)
 
     # Render profile page
-    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture)
+    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, followerslist=followerslist, followinglist=followinglist)
 
 @app.route("/profile/<int:user>")
 @login_required
