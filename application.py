@@ -454,11 +454,12 @@ def twodiscover():
     """"""
 
     #
-    number = request.cookies["postnumber"]
+    number = int(request.cookies["postnumber"])
     titles = db.execute("SELECT * FROM uploads")
-    print(titles[2])
+    user_id = titles[number]["id"]
+    name = db.execute("SELECT username FROM users WHERE id=:id", id=user_id)
     #
-    return render_template("twodiscover.html",titles=titles, number=int(number))
+    return render_template("twodiscover.html",titles=titles, number=number, name=name)
 
 
 @app.route("/about")
