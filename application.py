@@ -370,37 +370,10 @@ def twodiscover():
 
     #
     number = request.cookies["postnumber"]
-    print(number)
-    print("joe")
+    titles = db.execute("SELECT * FROM uploads WHERE postnumber=:postnumber", postnumber=number)
 
     #
-    titles = db.execute("SELECT title FROM uploads WHERE postnumber=:postnumber", postnumber=number)
-    title = titles[0]["title"]
-
-    #
-    discriptions = db.execute("SELECT discription FROM uploads WHERE postnumber=:postnumber", postnumber=number)
-    discription = discriptions[0]["discription"]
-
-    #
-    street_one = db.execute("SELECT street FROM uploads WHERE postnumber=:postnumber", postnumber=number)
-    street = street_one[0]["street"]
-
-    #
-    postal_one = db.execute("SELECT postal FROM uploads WHERE postnumber=:postnumber", postnumber=number)
-    postal = postal_one[0]["postal"]
-
-    #
-    city_one = db.execute("SELECT city FROM uploads WHERE postnumber=:postnumber", postnumber=number)
-    city = city_one[0]["city"]
-
-    #
-    number_one = db.execute("SELECT number FROM uploads WHERE postnumber=:postnumber", postnumber=number)
-    num = number_one[0]["number"]
-
-    #
-    return render_template("twodiscover.html", discription=discription, title=title, street=street, postal=postal, city=city, num=num)
-
-
+    return render_template("twodiscover.html",titles=titles)
 
 
 def errorhandler(e):
