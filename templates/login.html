@@ -6,60 +6,66 @@
 
 {% block main %}
 
-<style>
-.transbox {
-  margin: 30px;
-  background-color: #ffffff;
-  border: 1px solid black;
-  opacity: 0.7;
-  filter: alpha(opacity=60);
-}
-</style>
-<body>
-    <div class="transbox" style="max-width:400px;margin:auto"></div>
+    <style>
+    .transbox {
+      margin: 30px;
+      background-color: #ffffff;
+      border: 1px solid black;
+      opacity: 0.7;
+      filter: alpha(opacity=60);
+    }
+    </style>
 
-    <center>
+    <body>
+        <div class="transbox" style="max-width:400px;margin:auto"></div>
 
-    <form action="/login" method="post" class=>
-        <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" id="username" name="username" placeholder="Username" type="text" required>
-        </div>
-        <div class="form-group">
-            <input class="form-control" id="password" name="password" placeholder="Password" type="password" required>
-        </div>
-        <p>
-        <button class="btn btn-primary" onclick="main()" type="submit">Log In</button>
-        </p>
+        <center>
 
-    </form>
+            <!--login form-->
+            <form action="/login" method="post" class=>
+                <div class="form-group">
+                    <input autocomplete="off" autofocus class="form-control" id="username" name="username" placeholder="Username" type="text" required>
+                    <div class="invalid-feedback" id="usercheck">
+                        Please provide your username
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" id="password" name="password" placeholder="Password" type="password" required>
+                    <div class="invalid-feedback" id="passcheck">
+                        Please provide your password
+                    </div>
+                </div>
 
-    <p>No account? Register now!</p>
-    <button onclick="window.location.href = '/register';">Register</button>
-    </center>
-</body>
+                <p>
+                <button class="btn btn-primary" onclick="main()" type="submit">Log In</button>
+                </p>
+            </form>
+
+            <!--redirect to register-->
+            <p>No account? Register now!</p>
+            <button class="btn btn-primary" onclick="window.location.href = '/register';">Register</button>
+
+        </center>
+
+    </body>
+
     <script>
-        // function main() {
-        //     usercheck();
-        //     $.get('/passwordcheck?password' + password.value, function(check) {
 
-        //     });
-        // }
-
-        // // Check if username is in the database
-        // function usercheck() {
-        //     var username =document.getElementById('username');
-        //     $.get('/check?username='+ username.value, function(check) {
-        //         // if username doesnt exist in the database
-        //         if (check || username.value == "") {
-        //             document.getElementById("usercheck").innerHTML = "Please provide your username";
-        //             username.setAttribute("class", "form-control");
-        //         }
-        //         // if username is exists in the database
-        //         else {
-        //             document.getElementById("usercheck").innerHTML = "Username is incorrect";
-        //             username.setAttribute("class", "form-control is-invalid");
-        //         }
-        //     });
-        // }
+        // Check if username is in the database
+        let username = document.getElementById('username');
+        username.onkeyup = function() {
+            $.get('/check?username='+ username.value, function(check) {
+                // if username doesnt exist in the database
+                if (check || username.value == "") {
+                    document.getElementById("usercheck").innerHTML = "Please provide your username";
+                    username.setAttribute("class", "form-control is-invalid");
+                }
+                // if username is exists in the database
+                else {
+                    document.getElementById("usercheck").innerHTML = "Username is incorrect";
+                    username.setAttribute("class", "form-control");
+                }
+            });
+        }
     </script>
 {% endblock %}
