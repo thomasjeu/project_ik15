@@ -63,12 +63,14 @@ def allowed_image_filesize(filesize):
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
 def upload():
-    print("maat")
+    """Upload studyspot"""
+
+    # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-        print("gozer")
+
+        # if a image was uploaded
         if request.files:
-            print("aad")
-            print(request.cookies)
+
             # if "filesize" in request.cookies:
 
                 # if not allowed_image_filesize(request.cookies["filesize"]):
@@ -76,11 +78,13 @@ def upload():
                 #     return redirect(request.url)
 
             image = request.files["image"]
-            print("hoi")
+
+            # if file has no name
             if image.filename == "":
                 print("No filename")
                 return redirect(request.url)
-            print("hoii")
+
+            # if image is allowed
             if allowed_image(image.filename):
                 filename = secure_filename(image.filename)
                 print(filename)
@@ -98,14 +102,23 @@ def upload():
                 print("That file extension is not allowed")
                 return redirect(request.url)
 
-    print("yo")
-    return render_template("upload.html")
+        else:
+            return apology("Upload a picture of the studyspot")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("upload.html")
 
 
 @app.route("/settings", methods=["GET", "POST"])
 @login_required
 def settings():
+    """Change user settings"""
+
+    # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
+
+        # Get values from form
         username = request.form.get("username")
         confirmation = request.form.get("confirmation")
         discription = request.form.get("discription")
@@ -137,9 +150,9 @@ def settings():
             changediscription(discription, user_id)
 
 
+        # if an image was uploaded
         if request.files:
-            print("aad")
-            print(request.cookies)
+
             # if "filesize" in request.cookies:
 
                 # if not allowed_image_filesize(request.cookies["filesize"]):
@@ -147,11 +160,13 @@ def settings():
                 #     return redirect(request.url)
 
             image = request.files["image"]
-            print("hoi")
+
+            # If image has no name
             if image.filename == "":
                 print("No filename")
                 return redirect(request.url)
-            print("hoii")
+
+            # If image is allowed
             if allowed_image(image.filename):
                 filename = secure_filename(image.filename)
                 print(filename)
@@ -168,9 +183,6 @@ def settings():
                 print("That file extension is not allowed")
                 return redirect(request.url)
 
-
-
-
         return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
@@ -181,6 +193,9 @@ def settings():
 @app.route("/")
 @login_required
 def profile():
+    """Show profile page"""
+
+    # Get user information
     user_id = session.get("user_id")
     discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
     discription = discriptions[0]["discription"]
@@ -189,29 +204,39 @@ def profile():
     posts = db.execute("SELECT path FROM uploads WHERE id=:user_id", user_id=user_id)
     picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
 
+    # Render profile page
     return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture)
 
 @app.route("/followingprofile")
 @login_required
 def followingprof():
+    """"""
+
+    #
     user_id = session.get("user_id")
     discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
     discription = discriptions[0]["discription"]
     usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
     username = usernames[0]["username"]
     picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
+
+    #
     return render_template("followingprofile.html", discription=discription, username=username, picture=picture)
 
 @app.route("/followersprofile")
 @login_required
 def followersprof():
     """Followers as shown on profile"""
+
+    #
     user_id = session.get("user_id")
     discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
     discription = discriptions[0]["discription"]
     usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
     username = usernames[0]["username"]
     picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
+
+    #
     return render_template("followersprofile.html", discription=discription, username=username, picture=picture)
 
 
@@ -327,23 +352,28 @@ def register():
 
 @app.route("/discover", methods=["GET", "POST"])
 def discover():
+    """"""
+
+    #
     post_number = db.execute("SELECT postnumber FROM uploads")
     number = random.randint(1,len(post_number))
     post = db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=number)
 
+    #
     return render_template("discover.html", post=post, number=number)
 
 
 @app.route("/twodiscover")
 @login_required
 def twodiscover():
-    number = request.cookies["postnumber"]
+    """"""
 
+    #
+    number = request.cookies["postnumber"]
     titles = db.execute("SELECT * FROM uploads WHERE postnumber=:postnumber", postnumber=number)
 
+    #
     return render_template("twodiscover.html",titles=titles)
-
-
 
 
 def errorhandler(e):
