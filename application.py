@@ -222,7 +222,7 @@ def profile():
     # Render profile page
     return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, followerslist=followerslist, followinglist=followinglist)
 
-@app.route("/profile/<int:user>")
+@app.route("/<int:user>")
 @login_required
 def userprofile(user):
     """Show profile page"""
@@ -250,8 +250,27 @@ def userprofile(user):
         bool_user = False
     else:
         bool_user = True
+
+    followers = db.execute("SELECT userid FROM follow WHERE followid=:followid", followid=follow_id)
+    following = db.execute("SELECT followid FROM follow WHERE userid=:userid", userid=follow_id)
+    followerslist = []
+    followinglist = []
+
+    if followers:
+        for follower in followers:
+            f = follower["userid"]
+            name = db.execute("SELECT username FROM users WHERE id=:id", id=f)
+            followerslist.append(name)
+    if following:
+        for followin in following:
+            fol = followin["followid"]
+            names = db.execute("SELECT username FROM users WHERE id=:id", id=fol)
+            followinglist.append(names)
+
+
     # Render profile page
-    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=follow_id, bool_follow=bool_follow)
+    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=follow_id, bool_follow=bool_follow
+    , followerslist=followerslist, followinglist=followinglist)
 
 
 @app.route("/follow/<int:followid>", methods=["POST"])
