@@ -26,9 +26,7 @@
             <p style="text-align:center;"><img src={{ picture[0]["image"] }} alt="Avatar" style="width:200px"></p>
         </div>
         <center> <h3> {{ discription }} </h3> </center>
-        {% if session.user_id %}
-            <center><button class="btn btn-primary" type="follow" disabled >Follow</button></center>
-        {% else %}
+        {% if bool_user %}
             <center><button class="btn btn-primary" type="follow">Follow</button></center>
         {% endif %}
 
