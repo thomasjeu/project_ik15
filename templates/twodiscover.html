@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <style>
+      /* Set the size of the div element that contains the map */
+      #map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+    </style>
+  </head>
+  <head>
     <title>Geocoding service</title>
+    <center><h1>Location of this spot</h1></center>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 100%;
+        height: 80%;
+        width: 100%;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -20,13 +31,17 @@
   </head>
   <body>
     <div id="map"></div>
+    <center><h1>Titel: {{titles[0]["title"]}} </h2></center>
+    <center><h1>Discription: {{titles[0]["discription"]}} </h2></center>
+    <center><h1>Adress: {{titles[0]["street"]}} {{titles[0]["number"]}} {{titles[0]["postal"]}} {{titles[0]["city"]}}</h2></center>
+    <div id="map"></div>
     <script>
       var geocoder;
       var map;
-      var address = "amsterdam central station";
+      var address = '{{titles[0]["street"]}} {{titles[0]["number"]}} {{titles[0]["postal"]}} {{titles[0]["city"]}}';
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 8,
+          zoom: 15,
           center: {lat: -34.397, lng: 150.644}
         });
         geocoder = new google.maps.Geocoder();
@@ -46,9 +61,16 @@
           }
         });
       }
+
+      /* Google maps API KEY = AIzaSyDbGDrm0-V8P-eF65UUCjSfhx-82DsvjRE is disabled because of the decreasing credit on google payments*/
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbGDrm0-V8P-eF65UUCjSfhx-82DsvjRE&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=REPLACE WITH API KEY&callback=initMap">
     </script>
+
+
+
+
   </body>
+  <div id="map"></div>
 </html>

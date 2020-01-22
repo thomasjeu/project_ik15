@@ -213,21 +213,49 @@ def userprofile(user):
     """Show profile page"""
 
     # Get user information
-    user_id = user
-    discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
+    follow_id = user
+    discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=follow_id)
     discription = discriptions[0]["discription"]
-    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
+    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=follow_id)
     username = usernames[0]["username"]
-    posts = db.execute("SELECT path FROM uploads WHERE id=:user_id", user_id=user_id)
-    picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
+    posts = db.execute("SELECT path FROM uploads WHERE id=:user_id", user_id=follow_id)
+    picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=follow_id)
+    following = db.execute("SELECT followid FROM follow WHERE userid=:user_id AND followid=:followid", user_id=session.get("user_id"), followid=follow_id)
 
-    # True if user looks at his own page
+    print(following)
+     # False if user follows user already
+    if following:
+        bool_follow = False
+    else:
+        bool_follow = True
+
+
+    # False if user looks at his own page
     if user == session.get("user_id"):
         bool_user = False
     else:
         bool_user = True
     # Render profile page
-    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=user_id)
+    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=follow_id, bool_follow=bool_follow)
+
+
+@app.route("/follow/<int:followid>", methods=["POST"])
+@login_required
+def follow(followid):
+    user_id = session.get("user_id")
+    db.execute("INSERT INTO follow (followid, userid) VALUES(:followid, :userid)", followid=followid, userid=user_id)
+
+    return redirect("/")
+
+@app.route("/unfollow/<int:followid>", methods=["POST"])
+@login_required
+def unfollow(followid):
+    user_id = session.get("user_id")
+    db.execute("DELETE FROM follow WHERE followid=:followid AND userid=:userid", followid=followid, userid=user_id)
+
+    return redirect("/")
+
+
 
 @app.route("/followingprofile")
 @login_required
