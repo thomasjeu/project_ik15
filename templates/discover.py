@@ -10,15 +10,10 @@ from werkzeug.utils import secure_filename
 from random import seed
 from random import random
 
-<<<<<<< HEAD
 
 from helpers import apology, login_required, changepassword, changeusername, changediscription
 
 
-=======
-from helpers import apology, login_required, changepassword, changeusername, changediscription
-
->>>>>>> 0436290925eaa440e22dad59c2eb3239b4d2afdf
 # Configure application
 app = Flask(__name__)
 
@@ -47,7 +42,33 @@ app.config["PROFILE_UPLOADS"] = "static/profile"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 # app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
-<<<<<<< HEAD
+
+# @app.route("/twodiscover")
+# @login_required
+# def twodiscover():
+#     number = request.cookies["postnumber"]
+#     print(number)
+#     print("joe")
+#     user_id = session.get("user_id")
+
+#     titles = db.execute("SELECT title FROM users WHERE id=:user_id", user_id=user_id)
+#     title = titles[0]["title"]
+
+#     discriptions = db.execute("SELECT discription FROM uploads WHERE id=:user_id", user_id=user_id)
+#     discription = discriptions[0]["discription"]
+
+#     street_one = db.execute("SELECT street FROM uploads WHERE id=:user_id", user_id=user_id)
+#     street = street_one[0]["street"]
+
+#     postal_one = db.execute("SELECT postal FROM uploads WHERE id=:user_id", user_id=user_id)
+#     postal = postal_one[0]["postal"]
+
+#     city_one = db.execute("SELECT city FROM uploads WHERE id=:user_id", user_id=user_id)
+#     city = city_one[0]["city"]
+
+#     return render_template("twodiscover.html", discription=discription, title=title, street=street, postal=postal, city=city)
+
+
 def allowed_image(filename):
 
     if not "." in filename:
@@ -69,39 +90,14 @@ def allowed_image_filesize(filesize):
 
 
 
-@app.route("/discover")
-@login_required
-def discover():
-    post_nummer = db.execute("SELECT postnumber FROM uploads WHERE id=:user_id", user_id=user_id)
+# @app.route("/discover", methods=["GET"])
+# @login_required
+# def discover():
 
-    seed(1)
-    for random in range(len(post_nummer)):
-        randomvalue = int(random())
-        print(randomvalue)
-
-=======
-
-@app.route("twodiscover")
-@login_required
-def twodiscover():
-    user_id = session.get("user_id")
-
-    titles = db.execute("SELECT title FROM users WHERE id=:user_id", user_id=user_id)
-    title = titles[0]["title"]
-
-    discriptions = db.execute("SELECT discription FROM uploads WHERE id=:user_id", user_id=user_id)
-    discription = discriptions[0]["discription"]
-
-    street_one = db.execute("SELECT street FROM uploads WHERE id=:user_id", user_id=user_id)
-    street = street_one[0]["street"]
-
-    postal_one = db.execute("SELECT postal FROM uploads WHERE id=:user_id", user_id=user_id)
-    postal = postal_one[0]["postal"]
-
-    city_one = db.execute("SELECT city FROM uploads WHERE id=:user_id", user_id=user_id)
-    city = city_one[0]["city"]
-
-    return render_template("twodiscover.html", discription=discription, title=title, street=street, postal=postal, city=city)
-
-
->>>>>>> 0436290925eaa440e22dad59c2eb3239b4d2afdf
+#     post_nummer = db.execute("SELECT postnumber FROM uploads WHERE id=:user_id", user_id=session.get("user_id"))
+#     print(post_nummer)
+#     seed(1)
+#     for random in range(len(post_nummer)):
+#         randomvalue = int(random())
+#         print(randomvalue)
+#     return render_template("discover.html")

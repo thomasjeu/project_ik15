@@ -7,6 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
+import random
 
 from helpers import apology, login_required, changepassword, changeusername, changediscription
 
@@ -88,8 +89,8 @@ def upload():
                 print("Image saved")
                 path = "static/posts/" + filename
 
-                db.execute("INSERT INTO uploads (id, discription, path, title, street, postal, city) VALUES (:id, :discription, :path, :title, :street, :postal, :city)", id=session.get("user_id"),
-                discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"), postal=request.form.get("postal"), city=request.form.get("city"))
+                db.execute("INSERT INTO uploads (id, discription, path, title, street, postal, city, number) VALUES (:id, :discription, :path, :title, :street, :postal, :city, :number)", id=session.get("user_id"),
+                discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"), postal=request.form.get("postal"), city=request.form.get("city"), number=request.form.get("number"))
 
                 return redirect(request.url)
 
@@ -99,13 +100,6 @@ def upload():
 
     print("yo")
     return render_template("upload.html")
-
-
-@app.route("/twodiscover", methods=["GET", "POST"])
-@login_required
-def twodiscover():
-    return render_template("twodiscover.html")
-
 
 
 @app.route("/settings", methods=["GET", "POST"])
@@ -333,8 +327,23 @@ def register():
 
 @app.route("/discover", methods=["GET", "POST"])
 def discover():
+    post_number = db.execute("SELECT postnumber FROM uploads")
+    number = random.randint(1,len(post_number))
+    post = db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=number)
 
-    return render_template("discover.html")
+    return render_template("discover.html", post=post, number=number)
+
+
+@app.route("/twodiscover")
+@login_required
+def twodiscover():
+    number = request.cookies["postnumber"]
+
+    titles = db.execute("SELECT * FROM uploads WHERE postnumber=:postnumber", postnumber=number)
+
+    return render_template("twodiscover.html",titles=titles)
+
+
 
 
 def errorhandler(e):
