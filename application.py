@@ -230,16 +230,14 @@ def userprofile(user):
     return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=user_id)
 
 
-@app.route("/follow/<int:followid>")
+@app.route("/follow/<int:followid>", methods=["POST"])
 @login_required
 def follow(followid):
     user_id = session.get("user_id")
     print("aad")
     db.execute("INSERT INTO follow (followid, userid) VALUES(:followid, :userid)", followid=followid, userid=user_id)
 
-    return redirect("/profile/" + followid)
-
-
+    return redirect("/")
 
 
 @app.route("/followingprofile")

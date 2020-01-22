@@ -7,8 +7,6 @@
 {% block main %}
 <!--<link href="styles.css" rel="stylesheet">-->
 
-    <form action = "/profile" method = "post">
-
 
         <style>
 
@@ -27,7 +25,10 @@
         </div>
         <center> <h3> {{ discription }} </h3> </center>
         {% if bool_user %}
-            <center><button onclick="/follow/{{user_id}}" class="btn btn-primary" type="follow">Follow</button></center>
+            <form action="/follow/{{user_id}}" method="POST">
+                <center><button class="btn btn-primary" type="submit">Follow</button></center>
+            </form>
+
         {% endif %}
 
         <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
@@ -51,7 +52,6 @@
 
 
         </div>
-    </form>
 
 
 {% endblock %}
