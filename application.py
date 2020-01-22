@@ -207,6 +207,28 @@ def profile():
     # Render profile page
     return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture)
 
+@app.route("/profile/<int:user>")
+@login_required
+def userprofile(user):
+    """Show profile page"""
+
+    # Get user information
+    user_id = user
+    discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
+    discription = discriptions[0]["discription"]
+    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
+    username = usernames[0]["username"]
+    posts = db.execute("SELECT path FROM uploads WHERE id=:user_id", user_id=user_id)
+    picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
+
+    # True if user looks at his own page
+    if user == session.get("user_id"):
+        bool_user = False
+    else:
+        bool_user = True
+    # Render profile page
+    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=user_id)
+
 @app.route("/followingprofile")
 @login_required
 def followingprof():
