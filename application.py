@@ -222,13 +222,14 @@ def profile():
     # Render profile page
     return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, followerslist=followerslist, followinglist=followinglist)
 
-@app.route("/<int:user>")
+@app.route("/<user>")
 @login_required
 def userprofile(user):
     """Show profile page"""
 
     # Get user information
-    follow_id = user
+    user = db.execute("SELECT id FROM users WHERE username=:username", username=user)
+    follow_id = user[0]["id"]
     discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=follow_id)
     discription = discriptions[0]["discription"]
     usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=follow_id)
