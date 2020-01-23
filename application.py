@@ -114,9 +114,11 @@ def upload():
 @login_required
 def settings():
     """Change user settings"""
+    print("hoi")
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
+        print("hoi1")
 
         # Get values from form
         username = request.form.get("username")
@@ -187,6 +189,7 @@ def settings():
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
+        print("hoi2")
         return render_template("settings.html")
 
 
@@ -220,16 +223,18 @@ def profile():
             followinglist.append(names)
 
     # Render profile page
+    print("hey")
     return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, followerslist=followerslist, followinglist=followinglist)
 
-@app.route("/<user>")
+@app.route("/<int:user>")
 @login_required
 def userprofile(user):
     """Show profile page"""
+    print("hier")
+    print(user)
 
     # Get user information
-    user = db.execute("SELECT id FROM users WHERE username=:username", username=user)
-    follow_id = user[0]["id"]
+    follow_id = user
     discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=follow_id)
     discription = discriptions[0]["discription"]
     usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=follow_id)
@@ -426,7 +431,7 @@ def register():
         hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
 
         # Insert user into the database
-        db.execute("INSERT INTO users (username, hash) VALUES (:username, :hash)", username=username, hash=hash)
+        db.execute("INSERT INTO users (username, hash, image, discription) VALUES (:username, :hash, :image, :discription)", username=username, hash=hash, image="static/profile/grumpy.png", discription="Add a discription in settings")
 
         # Redirect to /login
         return redirect("/login")
