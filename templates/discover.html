@@ -5,6 +5,15 @@
 {% endblock %}
 
 {% block main %}
+
+
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
 <form action="/discover" method="post">
 <center><h2><b>Discover {{ randomvalue }}</b></h2></center>
 <body>
@@ -20,9 +29,24 @@
 <center><img src={{ post[number]["path"] }} width="800" height="600" alt="User post"></center>
 
 
-
     <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
-        <center><div class="w3-center w3-padding-16 w3-button" ><a u href="/twodiscover"><b>More information</b></a/u></div></center>
+
+        <p><center><div class="w3-center w3-padding-16 w3-button" ><a u href="/twodiscover"><b>More information</b></a/u></div></center></p>
+    </div>
+    <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
+
+        <p><center><a href="/" class="btn btn-info btn-lg">
+          <span class="glyphicon glyphicon-star"></span> Favorite
+        </a></center></p>
+
+        <p><center><a href="/" class="btn btn-info btn-lg">
+          <span class="glyphicon glyphicon-heart"></span> Heart
+        </a></center></p>
+
+        <p><center><a href="/discover" class="btn btn-info btn-lg">
+          <span class="glyphicon glyphicon-refresh"></span> Next post
+        </a></center></p>
+
     </div>
 
 </body>
