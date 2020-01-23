@@ -210,21 +210,25 @@ def profile():
     following = db.execute("SELECT followid FROM follow WHERE userid=:userid", userid=user_id)
     followerslist = []
     followinglist = []
-
+    iddict = {}
     if followers:
         for follower in followers:
             f = follower["userid"]
             name = db.execute("SELECT username FROM users WHERE id=:id", id=f)
             followerslist.append(name)
+            iddict[name[0]["username"]] = f
     if following:
         for followin in following:
             fol = followin["followid"]
+            print(fol)
             names = db.execute("SELECT username FROM users WHERE id=:id", id=fol)
             followinglist.append(names)
+            iddict[names[0]["username"]] = fol
 
     # Render profile page
-    print("hey")
-    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, followerslist=followerslist, followinglist=followinglist)
+    print(iddict)
+    print(followinglist)
+    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, followerslist=followerslist, followinglist=followinglist, iddict=iddict)
 
 @app.route("/<int:user>")
 @login_required
@@ -261,22 +265,24 @@ def userprofile(user):
     following = db.execute("SELECT followid FROM follow WHERE userid=:userid", userid=follow_id)
     followerslist = []
     followinglist = []
+    iddict = {}
 
     if followers:
         for follower in followers:
             f = follower["userid"]
             name = db.execute("SELECT username FROM users WHERE id=:id", id=f)
             followerslist.append(name)
+            iddict[name[0]["username"]] = f
     if following:
         for followin in following:
             fol = followin["followid"]
             names = db.execute("SELECT username FROM users WHERE id=:id", id=fol)
             followinglist.append(names)
-
+            iddict[names[0]["username"]] = fol
 
     # Render profile page
     return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=follow_id, bool_follow=bool_follow
-    , followerslist=followerslist, followinglist=followinglist)
+    , followerslist=followerslist, followinglist=followinglist, iddict=iddict)
 
 
 @app.route("/follow/<int:followid>", methods=["POST"])
