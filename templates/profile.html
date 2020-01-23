@@ -38,22 +38,19 @@
         {% endif %}
 
         <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
-        <div class="w3-button w3-padding-16 w3-left w3-button" > <a href="/followingprofile">Following</a></div>
-        <div class="w3-right w3-padding-16 w3-button"> <a href="/followersprofile">Followers</a></div>
         <center><div class="w3-center w3-padding-16 w3-button" ><a u href="/"><b>Posts</b></a/u></div></center>
+        <option disabled value="" class="w3-bar-item w3-button">___________________________________________________________________</option>
         </div>
 
 
     <div class="row">
       <div class="column">
         {% for post in posts %}
-        <center><img src={{ post["path"] }} width="800" height="600" alt="User post"></center>
+        <center><img src={{ post["path"] }} width="800" height="600" alt="User post" align="left"></center>
 
         {% endfor %}
-      </div>
-    </div>
 
-    <p>Following: </p>
+      <h3 style="text-align: right">Following: </h3>
     <div class="row">
       <div class="column">
         {% for follow in followinglist %}
@@ -62,7 +59,7 @@
     </div>
         {% endfor %}
 
-    <p>Followers: </p>
+    <h3 style="text-align: right">Followers: </h3>
     <div class="row">
       <div class="column">
         {% for follow in followerslist %}
@@ -71,10 +68,16 @@
     </div>
         {% endfor %}
 
+
+
+      </div>
+    </div>
+
+
+
+
+
         </body>
-
-
-
 
 
 {% endblock %}
