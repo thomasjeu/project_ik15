@@ -325,6 +325,40 @@ def followingprof():
     #
     return render_template("followingprofile.html", discription=discription, username=username, picture=picture)
 
+
+@app.route("/following")
+@login_required
+def following():
+    """Show followingpage"""
+
+    # Get user_id
+    user_id = session.get("user_id")
+
+    # Get users which the user follows
+    following = db.execute("SELECT followid FROM follow WHERE userid=:userid", userid=user_id)
+
+    # Get all posts from following users
+    if following:
+        postnumbers = []
+        for user in following:
+            postnumbers.append(db.execute("SELECT postnumber FROM uploads WHERE id=:user_id", user_id=user['followid']))
+
+        # Store all posts of all the people the user is following in posts
+        posts = []
+        for user in postnumbers:
+            # for every post the user has made
+            for post in user:
+                posts.append(db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=post['postnumber']))
+
+        numberset = set()
+        for postnumber in postnumbers:
+            numberset.add(postnumber[0]["postnumber"])
+        number = random.choice(tuple(numberset))
+
+    # render html page
+    return render_template("discover.html", post=posts[0], number=number)
+
+
 @app.route("/followersprofile")
 @login_required
 def followersprof():
@@ -499,3 +533,21 @@ def errorhandler(e):
 # Listen for errors
 for code in default_exceptions:
     app.errorhandler(code)(errorhandler)
+
+# Allowing user to like a post
+@app.route("/like/<int:postid>", methods=["POST"])
+@login_required
+def like(postid):
+    likerid = session.get("likerid")
+    db.execute("INSERT INTO likes (postid, likerid) VALUES(:postid, :likerid)", postid=postid, likerid=likerid)
+
+    return redirect("/")
+
+# Allowing user to unlike a post they liked before
+@app.route("/unlike/<int:postid>", methods=["POST"])
+@login_required
+def unlike(postid):
+    likerid = session.get("likerid")
+    db.execute("DELETE FROM likes WHERE postid=:postid AND likerid=:likerid", postid=postid, likerid=likerid)
+
+    return redirect("/")
