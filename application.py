@@ -272,7 +272,12 @@ def userprofile(user):
     followerslist = []
     followinglist = []
     iddict = {}
-
+    post_dict = {}
+    # TODO: fix posts of other users
+    print(posts)
+    # if posts:
+    #     for post in posts:
+    #         post_dict[post["postnumber"]] = post["path"]
     if followers:
         for follower in followers:
             f = follower["userid"]
@@ -288,7 +293,7 @@ def userprofile(user):
 
     # Render profile page
     return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=follow_id, bool_follow=bool_follow
-    , followerslist=followerslist, followinglist=followinglist, iddict=iddict)
+    , followerslist=followerslist, followinglist=followinglist, iddict=iddict, post_dict=post_dict)
 
 
 @app.route("/follow/<int:followid>", methods=["POST"])
@@ -339,6 +344,36 @@ def following():
 
     # render html page
     return render_template("following.html", post=posts[0], number=number)
+
+
+@app.route("/favorites")
+@login_required
+def favorites():
+    """Show favoritespage"""
+
+    # Get user_id
+    user_id = session.get("user_id")
+
+    # Get favorite posts of the user
+    favorites = db.execute("SELECT postid FROM favorites WHERE favuserid=:favuserid", favuserid=user_id)
+
+    # If user has favorite posts
+    if favorites:
+        #
+        posts = []
+        numberset = set()
+        for post in favorites:
+            posts.append(db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=post['postid']))
+            numberset.add(post["postid"])
+
+        # Choose a random post
+        number = random.choice(tuple(numberset))
+
+        # render html page
+        return render_template("favorites.html", post=posts[0], number=number)
+
+    else:
+        return apology("You dont have any favorite posts yet")
 
 
 @app.route("/check", methods=["GET"])
@@ -451,7 +486,7 @@ def register():
     else:
         return render_template("register.html")
 
-@app.route("/discover", methods=["GET", "POST"])
+@app.route("/discover")
 def discover():
     """"""
 
@@ -506,21 +541,37 @@ def errorhandler(e):
 for code in default_exceptions:
     app.errorhandler(code)(errorhandler)
 
-# Allowing user to like a post
+
 @app.route("/like/<int:postid>", methods=["POST"])
 @login_required
 def like(postid):
+    """Allowing user to like a post"""
     print("aad")
     likerid = session.get("likerid")
     db.execute("INSERT INTO likes (postid, likerid) VALUES(:postid, :likerid)", postid=postid, likerid=likerid)
 
     return redirect("/")
 
-# Allowing user to unlike a post they liked before
+
 @app.route("/unlike/<int:postid>", methods=["POST"])
 @login_required
 def unlike(postid):
+    """Allowing user to unlike a post they liked before"""
     likerid = session.get("likerid")
     db.execute("DELETE FROM likes WHERE postid=:postid AND likerid=:likerid", postid=postid, likerid=likerid)
+
+    return redirect("/")
+
+
+@app.route("/favorite/<int:post_id>", methods=["POST"])
+@login_required
+def favorite(post_id):
+    """Add post to favorites"""
+    print("maat")
+    # Get id of the user
+    user_id = session.get("user_id")
+
+    # Add post to user's favorites
+    db.execute("INSERT INTO favorites (postid, favuserid) VALUES (:postid, :favuserid)", postid=post_id, favuserid=user_id)
 
     return redirect("/")
