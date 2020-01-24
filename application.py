@@ -493,3 +493,21 @@ def errorhandler(e):
 # Listen for errors
 for code in default_exceptions:
     app.errorhandler(code)(errorhandler)
+
+# Allowing user to like a post
+@app.route("/like/<int:postid>", methods=["POST"])
+@login_required
+def like(postid):
+    likerid = session.get("likerid")
+    db.execute("INSERT INTO likes (postid, likerid) VALUES(:postid, :likerid)", postid=postid, likerid=likerid)
+
+    return redirect("/")
+
+# Allowing user to unlike a post they liked before
+@app.route("/unlike/<int:postid>", methods=["POST"])
+@login_required
+def unlike(postid):
+    likerid = session.get("likerid")
+    db.execute("DELETE FROM likes WHERE postid=:postid AND likerid=:likerid", postid=postid, likerid=likerid)
+
+    return redirect("/")
