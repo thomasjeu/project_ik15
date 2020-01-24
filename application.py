@@ -212,7 +212,7 @@ def profile():
     followinglist = []
     iddict = {}
     post_dict = {}
-    print(posts)
+    print("posts:", posts)
     if posts:
         for post in posts:
             post_dict[post["postnumber"]] = post["path"]
@@ -249,7 +249,7 @@ def userprofile(user):
     discription = discriptions[0]["discription"]
     usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=follow_id)
     username = usernames[0]["username"]
-    posts = db.execute("SELECT path FROM uploads WHERE id=:user_id", user_id=follow_id)
+    posts = db.execute("SELECT path, postnumber FROM uploads WHERE id=:user_id", user_id=follow_id)
     picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=follow_id)
     following = db.execute("SELECT followid FROM follow WHERE userid=:user_id AND followid=:followid", user_id=session.get("user_id"), followid=follow_id)
 
@@ -274,10 +274,10 @@ def userprofile(user):
     iddict = {}
     post_dict = {}
     # TODO: fix posts of other users
-    print(posts)
-    # if posts:
-    #     for post in posts:
-    #         post_dict[post["postnumber"]] = post["path"]
+    print("sappige posts:", posts)
+    if posts:
+        for post in posts:
+            post_dict[post["postnumber"]] = post["path"]
     if followers:
         for follower in followers:
             f = follower["userid"]
