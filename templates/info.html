@@ -38,9 +38,9 @@
   <body>
     <div id="map"></div>
     <center><h1><a u href="/{{name[0]["username"]}}">StudySpotter: {{name[0]["username"]}}</a></h1></center>
-    <center><h1>Name of this spot: {{titles[number]["title"]}} </h2></center>
-    <center><h1>Discription: {{titles[number]["discription"]}} </h2></center>
-    <center><h1>Adress: {{titles[number]["street"]}} {{titles[number]["number"]}} {{titles[number]["postal"]}} {{titles[number]["city"]}}</h2></center>
+    <center><h1>Name of this spot: {{titles[0]["title"]}} </h2></center>
+    <center><h1>Discription: {{titles[0]["discription"]}} </h2></center>
+    <center><h1>Adress: {{titles[0]["street"]}} {{titles[0]["number"]}} {{titles[0]["postal"]}} {{titles[0]["city"]}}</h2></center>
     <p><center><a href="/" class="btn btn-info btn-lg">
           <span class="glyphicon glyphicon-star"></span> Favorite
         </a></center></p>
@@ -57,7 +57,7 @@
     <script>
       var geocoder;
       var map;
-      var address = '{{titles[number]["street"]}} {{titles[number]["number"]}} {{titles[number]["postal"]}} {{titles[number]["city"]}}';
+      var address = '{{titles[0]["street"]}} {{titles[0]["number"]}} {{titles[0]["postal"]}} {{titles[0]["city"]}}';
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 15,

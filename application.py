@@ -452,25 +452,29 @@ def discover():
 
     #
     post_number = db.execute("SELECT postnumber FROM uploads")
-    number = random.randint(0,(len(post_number)-1))
-    post = db.execute("SELECT path FROM uploads")
-    print(post)
+    print(post_number)
+    numberset = set()
+    for numbers in post_number:
+        numberset.add(numbers["postnumber"])
+    print(numberset)
+    number = random.choice(tuple(numberset))
+    # number = random.randint(0,(len(post_number)-1))
+    post = db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=number)
+    # print(post)
     #
     return render_template("discover.html", post=post, number=number)
 
 
-@app.route("/twodiscover")
+@app.route("/info/<int:post_id>")
 @login_required
-def twodiscover():
+def info(post_id):
     """"""
-
-    #
-    number = int(request.cookies["postnumber"])
-    titles = db.execute("SELECT * FROM uploads")
-    user_id = titles[number]["id"]
+    number = post_id
+    titles = db.execute("SELECT * FROM uploads WHERE postnumber=:postnumber", postnumber = number)
+    user_id = titles[0]["id"]
     name = db.execute("SELECT username FROM users WHERE id=:id", id=user_id)
     #
-    return render_template("twodiscover.html",titles=titles, number=number, name=name)
+    return render_template("info.html",titles=titles, number=number, name=name)
 
 
 @app.route("/about")
