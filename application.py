@@ -356,7 +356,7 @@ def following():
         number = random.choice(tuple(numberset))
 
     # render html page
-    return render_template("discover.html", post=posts[0], number=number)
+    return render_template("following.html", post=posts[0], number=number)
 
 
 @app.route("/followersprofile")
