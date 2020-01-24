@@ -42,13 +42,13 @@
         </a></center></p>
 
         <!-- User can like post via button, when the post is already liked the user kan unlike a post -->
-        {% if bool_postid and bool_like %}
-            <form action="/like/{{postid}}" method="POST">
+        {% if bool_like %}
+            <form action="/like/{{number}}" method="POST">
                 <center><button class="btn btn-primary" type="submit">Like</button></center>
             </form>
 
-        {% elif not bool_like and bool_postid %}
-            <form action="/unlike/{{postid}}" method="POST">
+        {% elif not bool_like %}
+            <form action="/unlike/{{number}}" method="POST">
                 <center><button class="btn btn-primary" type="submit">Unlike</button></center>
             </form>
         {% endif %}
