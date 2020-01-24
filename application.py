@@ -502,7 +502,7 @@ def discover():
     post = db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=number)
     # print(post)
     #
-    liking= db.execute("SELECT postid FROM likes WHERE likerid=:likerid AND postid=:postid", likerid = session.get("user_id"), postid=number)
+    liking = db.execute("SELECT postid FROM likes WHERE likerid=:likerid AND postid=:postid", likerid = session.get("user_id"), postid=number)
 
     # False if user already liked this post
     if liking:
@@ -520,8 +520,14 @@ def info(post_id):
     titles = db.execute("SELECT * FROM uploads WHERE postnumber=:postnumber", postnumber = number)
     user_id = titles[0]["id"]
     name = db.execute("SELECT username FROM users WHERE id=:id", id=user_id)
+    liking = db.execute("SELECT postid FROM likes WHERE likerid=:likerid AND postid=:postid", likerid = session.get("user_id"), postid=number)
+    # False if user already liked this post
+    if liking:
+        bool_like= False
+    else:
+        bool_like = True
     #
-    return render_template("info.html",titles=titles, number=number, name=name)
+    return render_template("info.html",titles=titles, number=number, name=name, bool_like=bool_like)
 
 
 @app.route("/about")
@@ -547,20 +553,20 @@ for code in default_exceptions:
 def like(postid):
     """Allowing user to like a post"""
     print("aad")
-    likerid = session.get("likerid")
+    likerid = session.get("user_id")
     db.execute("INSERT INTO likes (postid, likerid) VALUES(:postid, :likerid)", postid=postid, likerid=likerid)
 
-    return redirect("/")
+    return redirect("/discover")
 
 
 @app.route("/unlike/<int:postid>", methods=["POST"])
 @login_required
 def unlike(postid):
     """Allowing user to unlike a post they liked before"""
-    likerid = session.get("likerid")
+    likerid = session.get("user_id")
     db.execute("DELETE FROM likes WHERE postid=:postid AND likerid=:likerid", postid=postid, likerid=likerid)
 
-    return redirect("/")
+    return redirect("/discover")
 
 
 @app.route("/favorite/<int:post_id>", methods=["POST"])

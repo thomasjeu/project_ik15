@@ -45,9 +45,21 @@
           <span class="glyphicon glyphicon-star"></span> Favorite
         </a></center></p>
 
-        <p><center><a href="/" class="btn btn-info btn-lg">
-          <span class="glyphicon glyphicon-heart"></span> Heart
-        </a></center></p>
+        <!--<p><center><a href="/" class="btn btn-info btn-lg">-->
+        <!--  <span class="glyphicon glyphicon-heart"></span> Heart-->
+        <!--</a></center></p>-->
+
+        <!-- User can like post via button, when the post is already liked the user kan unlike a post -->
+        {% if bool_like %}
+            <form action="/like/{{number}}" method="POST">
+                <center><button class="btn btn-primary" type="submit">Like</button></center>
+            </form>
+
+        {% elif not bool_like %}
+            <form action="/unlike/{{number}}" method="POST">
+                <center><button class="btn btn-primary" type="submit">Unlike</button></center>
+            </form>
+        {% endif %}
 
         <p><center><a href="/discover" class="btn btn-info btn-lg">
           <span class="glyphicon glyphicon-refresh"></span> Next post
