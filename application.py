@@ -302,24 +302,6 @@ def unfollow(followid):
     return redirect("/")
 
 
-
-@app.route("/followingprofile")
-@login_required
-def followingprof():
-    """"""
-
-    #
-    user_id = session.get("user_id")
-    discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
-    discription = discriptions[0]["discription"]
-    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
-    username = usernames[0]["username"]
-    picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
-
-    #
-    return render_template("followingprofile.html", discription=discription, username=username, picture=picture)
-
-
 @app.route("/following")
 @login_required
 def following():
@@ -351,23 +333,6 @@ def following():
 
     # render html page
     return render_template("discover.html", post=posts[0], number=number)
-
-
-@app.route("/followersprofile")
-@login_required
-def followersprof():
-    """Followers as shown on profile"""
-
-    #
-    user_id = session.get("user_id")
-    discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
-    discription = discriptions[0]["discription"]
-    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
-    username = usernames[0]["username"]
-    picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
-
-    #
-    return render_template("followersprofile.html", discription=discription, username=username, picture=picture)
 
 
 @app.route("/check", methods=["GET"])
@@ -496,7 +461,14 @@ def discover():
     post = db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=number)
     # print(post)
     #
-    return render_template("discover.html", post=post, number=number)
+    liking= db.execute("SELECT postid FROM likes WHERE likerid=:likerid AND postid=:postid", likerid = session.get("user_id"), postid=number)
+
+    # False if user already liked this post
+    if liking:
+        bool_like= False
+    else:
+        bool_like = True
+    return render_template("discover.html", post=post, number=number, bool_like=bool_like)
 
 
 @app.route("/info/<int:post_id>")
@@ -532,6 +504,7 @@ for code in default_exceptions:
 @app.route("/like/<int:postid>", methods=["POST"])
 @login_required
 def like(postid):
+    print("aad")
     likerid = session.get("likerid")
     db.execute("INSERT INTO likes (postid, likerid) VALUES(:postid, :likerid)", postid=postid, likerid=likerid)
 
