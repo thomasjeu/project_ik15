@@ -208,15 +208,21 @@ def profile():
     picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
     followers = db.execute("SELECT userid FROM follow WHERE followid=:followid", followid=user_id)
     following = db.execute("SELECT followid FROM follow WHERE userid=:userid", userid=user_id)
+    # likes = db.execute("SELECT postid FROM likes")
+   # likes_list = []
+    #for like in likes:
+    #    likes_list
     followerslist = []
     followinglist = []
     iddict = {}
     post_dict = {}
-    print("posts:", posts)
+
     if posts:
         for post in posts:
-            post_dict[post["postnumber"]] = post["path"]
-    print(post_dict)
+            likes = db.execute("SELECT postid FROM likes WHERE postid=:postid", postid=post["postnumber"])
+            print(likes)
+            post_dict[post["postnumber"]] = (post["path"], len(likes))
+
     if followers:
         for follower in followers:
             f = follower["userid"]
@@ -226,14 +232,11 @@ def profile():
     if following:
         for followin in following:
             fol = followin["followid"]
-            print(fol)
             names = db.execute("SELECT username FROM users WHERE id=:id", id=fol)
             followinglist.append(names)
             iddict[names[0]["username"]] = fol
 
     # Render profile page
-    print(iddict)
-    print(followinglist)
     return render_template("profile.html", discription=discription, username=username, picture=picture, followerslist=followerslist, followinglist=followinglist, iddict=iddict, post_dict=post_dict)
 
 @app.route("/<int:user>")
