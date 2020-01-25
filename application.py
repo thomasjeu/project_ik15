@@ -9,7 +9,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 import random
 
-from helpers import apology, login_required, changepassword, changeusername, changediscription
+# import functions from helpers.py
+from helpers import apology, login_required, change_password, change_username, change_discription
 
 
 # Configure application
@@ -40,26 +41,35 @@ app.config["PROFILE_UPLOADS"] = "static/profile"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 # app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
-def allowed_image(filename):
 
+def allowed_image(filename):
+    """Checks if image file has allowed extension"""
+
+    # Return false if filename has no dot
     if not "." in filename:
         return False
 
+    # Get file extension
     ext = filename.rsplit(".", 1)[1]
 
+    # Return true if file extension is allowed
     if ext.upper() in app.config["ALLOWED_IMAGE_EXTENSIONS"]:
         return True
     else:
         return False
 
-def allowed_image_filesize(filesize):
 
+def allowed_image_filesize(filesize):
+    """Checks if image is not too large"""
+
+    # Return true if image is not larger then set maximum
     if int(filesize) <= app.config["MAX_IMAGE_FILESIZE"]:
         return True
     else:
         return False
 
 
+# Remove print statements
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
 def upload():
@@ -68,7 +78,7 @@ def upload():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
-        # if a image was uploaded
+        # If a image was uploaded
         if request.files:
 
             # if "filesize" in request.cookies:
@@ -77,31 +87,40 @@ def upload():
                 #     print("Filesize exceeded maximum limit")
                 #     return redirect(request.url)
 
+            # Get image file
             image = request.files["image"]
 
-            # if file has no name
+            # If file has no name
             if image.filename == "":
-                print("No filename")
+                # print("No filename")
                 return redirect(request.url)
 
-            # if image is allowed
+            # If image is allowed
             if allowed_image(image.filename):
-                filename = secure_filename(image.filename)
-                print(filename)
-                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
 
-                print("Image saved")
+                filename = secure_filename(image.filename)
+                # print(filename)
+
+                # Save image
+                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                # print("Image saved")
+
+                # Path to image file
                 path = "static/posts/" + filename
 
+                # Insert path to file in the database
                 db.execute("INSERT INTO uploads (id, discription, path, title, street, postal, city, number) VALUES (:id, :discription, :path, :title, :street, :postal, :city, :number)", id=session.get("user_id"),
                 discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"), postal=request.form.get("postal"), city=request.form.get("city"), number=request.form.get("number"))
 
+                # Redirect to upload.html
                 return redirect(request.url)
 
+            # If image is not allowed redirect to upload.html
             else:
-                print("That file extension is not allowed")
+                # print("That file extension is not allowed")
                 return redirect(request.url)
 
+        # If user didnt upload a picture
         else:
             return apology("Upload a picture of the studyspot")
 
@@ -114,11 +133,9 @@ def upload():
 @login_required
 def settings():
     """Change user settings"""
-    print("hoi")
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-        print("hoi1")
 
         # Get values from form
         username = request.form.get("username")
@@ -136,23 +153,26 @@ def settings():
         if len(discription) > 400:
             return apology("discription is too long")
 
+        # Changes username
         if request.form.get("username"):
             # Username already exists
             if len(db.execute("SELECT * FROM users WHERE username = :username", username=username)) != 0:
                 return apology("username already exists")
-            changeusername(username, user_id)
+            change_username(username, user_id)
 
+        # Changes password
         if request.form.get("password"):
             # Check if password meets restrictions
             if not any(char.isdigit() for char in password):
                 return apology("password must contain number")
-            changepassword(password, confirmation, user_id)
+            change_password(password, confirmation, user_id)
 
+        # Changes discription
         if request.form.get("discription"):
-            changediscription(discription, user_id)
+            change_discription(discription, user_id)
 
 
-        # if an image was uploaded
+        # Changes profile picture
         if request.files:
 
             # if "filesize" in request.cookies:
@@ -161,35 +181,41 @@ def settings():
                 #     print("Filesize exceeded maximum limit")
                 #     return redirect(request.url)
 
+            # Get image file
             image = request.files["image"]
 
             # If image has no name
             if image.filename == "":
-                print("No filename")
+                # print("No filename")
                 return redirect(request.url)
 
             # If image is allowed
             if allowed_image(image.filename):
                 filename = secure_filename(image.filename)
-                print(filename)
+                # print(filename)
+
+                # Save image
                 image.save(os.path.join(app.config["PROFILE_UPLOADS"], filename))
 
-                print("Image saved")
+                # print("Image saved")
+                # Path to image file
                 path = "static/profile/" + filename
 
+                # Update path of profile picture in database
                 db.execute("UPDATE users SET image = :image WHERE id=:user_id", user_id=session.get("user_id"), image=path)
 
+                # Redirect to settings.html
                 return redirect(request.url)
 
             else:
-                print("That file extension is not allowed")
+                # print("That file extension is not allowed")
                 return redirect(request.url)
 
-        return redirect("/")
+        # Redirect to settings.html
+        return redirect(request.url)
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        print("hoi2")
         return render_template("settings.html")
 
 
@@ -209,26 +235,32 @@ def profile():
     followers = db.execute("SELECT userid FROM follow WHERE followid=:followid", followid=user_id)
     following = db.execute("SELECT followid FROM follow WHERE userid=:userid", userid=user_id)
     # likes = db.execute("SELECT postid FROM likes")
-   # likes_list = []
+    # likes_list = []
     #for like in likes:
     #    likes_list
+
+    # Initialize ...
     followerslist = []
     followinglist = []
     iddict = {}
     post_dict = {}
 
+    #
     if posts:
         for post in posts:
             likes = db.execute("SELECT postid FROM likes WHERE postid=:postid", postid=post["postnumber"])
             print(likes)
             post_dict[post["postnumber"]] = (post["path"], len(likes))
 
+    #
     if followers:
         for follower in followers:
             f = follower["userid"]
             name = db.execute("SELECT username FROM users WHERE id=:id", id=f)
             followerslist.append(name)
             iddict[name[0]["username"]] = f
+
+    #
     if following:
         for followin in following:
             fol = followin["followid"]
@@ -243,8 +275,6 @@ def profile():
 @login_required
 def userprofile(user):
     """Show profile page"""
-    print("hier")
-    print(user)
 
     # Get user information
     follow_id = user
@@ -256,13 +286,11 @@ def userprofile(user):
     picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=follow_id)
     following = db.execute("SELECT followid FROM follow WHERE userid=:user_id AND followid=:followid", user_id=session.get("user_id"), followid=follow_id)
 
-    print(following)
-     # False if user follows user already
+    # False if user follows user already
     if following:
         bool_follow = False
     else:
         bool_follow = True
-
 
     # False if user looks at his own page
     if user == session.get("user_id"):
@@ -270,23 +298,30 @@ def userprofile(user):
     else:
         bool_user = True
 
+    #
     followers = db.execute("SELECT userid FROM follow WHERE followid=:followid", followid=follow_id)
     following = db.execute("SELECT followid FROM follow WHERE userid=:userid", userid=follow_id)
+
+    #
     followerslist = []
     followinglist = []
     iddict = {}
     post_dict = {}
-    # TODO: fix posts of other users
-    print("sappige posts:", posts)
+
+    #
     if posts:
         for post in posts:
             post_dict[post["postnumber"]] = post["path"]
+
+    #
     if followers:
         for follower in followers:
             f = follower["userid"]
             name = db.execute("SELECT username FROM users WHERE id=:id", id=f)
             followerslist.append(name)
             iddict[name[0]["username"]] = f
+
+    #
     if following:
         for followin in following:
             fol = followin["followid"]
@@ -302,18 +337,20 @@ def userprofile(user):
 @app.route("/follow/<int:followid>", methods=["POST"])
 @login_required
 def follow(followid):
+    """Lets user follow another user"""
+
     user_id = session.get("user_id")
     db.execute("INSERT INTO follow (followid, userid) VALUES(:followid, :userid)", followid=followid, userid=user_id)
-
-    return redirect("/")
+    return True
 
 @app.route("/unfollow/<int:followid>", methods=["POST"])
 @login_required
 def unfollow(followid):
+    """Let user unffolw another user"""
+
     user_id = session.get("user_id")
     db.execute("DELETE FROM follow WHERE followid=:followid AND userid=:userid", followid=followid, userid=user_id)
-
-    return redirect("/")
+    return True
 
 
 @app.route("/following")

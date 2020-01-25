@@ -41,27 +41,29 @@ def login_required(f):
     return decorated_function
 
 
-def changepassword(password, confirmation, user_id):
+def change_password(password, confirmation, user_id):
     """ Changes password """
 
     # Hashes the password
     hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
 
     # Update password in database
-
     db.execute("UPDATE users SET hash=:hash WHERE id=:user_id", user_id=user_id, hash=hash)
 
-    # Redirt to index
     return True
 
-def changeusername(username, user_id):
+def change_username(username, user_id):
+    """Changes the username"""
 
+    # Update username in database
     db.execute("UPDATE users SET username=:username WHERE id=:user_id", user_id=user_id, username=username)
 
     return True
 
-def changediscription(discription, user_id):
+def change_discription(discription, user_id):
+    """Changes user discription"""
 
+    # Update discription in database
     db.execute("UPDATE users SET discription=:discription WHERE id=:user_id", user_id=user_id, discription=discription)
 
     return True
