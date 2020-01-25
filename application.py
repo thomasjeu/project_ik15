@@ -490,21 +490,23 @@ def register():
         return render_template("register.html")
 
 @app.route("/discover")
+@login_required
 def discover():
     """"""
 
     #
     post_number = db.execute("SELECT postnumber FROM uploads")
-    print(post_number)
     numberset = set()
     for numbers in post_number:
         numberset.add(numbers["postnumber"])
-    print(numberset)
     number = random.choice(tuple(numberset))
-    # number = random.randint(0,(len(post_number)-1))
     post = db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=number)
-    # print(post)
-    #
+    user = db.execute("SELECT id FROM uploads WHERE postnumber=:postnumber", postnumber=number)
+    poster_id = user[0]["id"]
+    username = db.execute("SELECT username FROM users WHERE id=:id", id=poster_id)
+    likes = len(db.execute("SELECT postid FROM likes WHERE postid=:postid", postid=number))
+
+
     liking = db.execute("SELECT postid FROM likes WHERE likerid=:likerid AND postid=:postid", likerid = session.get("user_id"), postid=number)
 
     # False if user already liked this post
@@ -512,7 +514,7 @@ def discover():
         bool_like= False
     else:
         bool_like = True
-    return render_template("discover.html", post=post, number=number, bool_like=bool_like)
+    return render_template("discover.html", post=post, number=number, bool_like=bool_like, username=username, likes=likes)
 
 
 @app.route("/info/<int:post_id>")
