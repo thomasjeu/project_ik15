@@ -68,3 +68,13 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
+
+
+def followers_following(id_dict, f_list, user_list):
+    """"""
+    for user in user_list:
+        user = user["user_id"]
+        username = db.execute("SELECT username FROM users WHERE id=:id", id=user)[0]["username"]
+        f_list.append(username)
+        id_dict[username] = user
+    return id_dict, f_list

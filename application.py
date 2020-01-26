@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 import random
 
 # import functions from helpers.py
-from helpers import apology, login_required, change_password, change_username, change_discription
+from helpers import apology, login_required, change_password, change_username, change_discription, followers_following
 
 
 # Configure application
@@ -49,10 +49,8 @@ def profile():
 
     # Get user information
     user_id = session.get("user_id")
-    discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)
-    discription = discriptions[0]["discription"]
-    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
-    username = usernames[0]["username"]
+    discription = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)[0]["discription"]
+    username = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)[0]["username"]
     posts = db.execute("SELECT path, id FROM uploads WHERE user_id=:user_id", user_id=user_id)
     picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
     followers = db.execute("SELECT user_id FROM follow WHERE follow_id=:follow_id", follow_id=user_id)
@@ -63,10 +61,8 @@ def profile():
     #    likes_list
 
     # Initialize ...
-    followerslist = []
-    followinglist = []
-    iddict = {}
-    post_dict = {}
+    followers_list, following_list = [], []
+    id_dict, post_dict = {}, {}
 
     #
     if posts:
@@ -76,22 +72,14 @@ def profile():
 
     #
     if followers:
-        for follower in followers:
-            f = follower["user_id"]
-            name = db.execute("SELECT username FROM users WHERE id=:id", id=f)
-            followerslist.append(name)
-            iddict[name[0]["username"]] = f
+        id_dict, followers_list = followers_following(id_dict, followers_list, followers)
 
     #
     if following:
-        for followin in following:
-            fol = followin["follow_id"]
-            names = db.execute("SELECT username FROM users WHERE id=:id", id=fol)
-            followinglist.append(names)
-            iddict[names[0]["username"]] = fol
+        id_dict, following_list = followers_following(id_dict, following_list, following)
 
     # Render profile page
-    return render_template("profile.html", discription=discription, username=username, picture=picture, followerslist=followerslist, followinglist=followinglist, iddict=iddict, post_dict=post_dict)
+    return render_template("profile.html", discription=discription, username=username, picture=picture, followerslist=followers_list, followinglist=following_list, iddict=id_dict, post_dict=post_dict)
 
 @app.route("/<int:user>")
 @login_required
@@ -100,10 +88,8 @@ def userprofile(user):
 
     # Get user information
     follow_id = user
-    discriptions = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=follow_id)
-    discription = discriptions[0]["discription"]
-    usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=follow_id)
-    username = usernames[0]["username"]
+    discription = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=follow_id)[0]["discription"]
+    username = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=follow_id)[0]["username"]
     posts = db.execute("SELECT path, id FROM uploads WHERE user_id=:user_id", user_id=follow_id)
     picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=follow_id)
     following = db.execute("SELECT follow_id FROM follow WHERE user_id=:user_id AND follow_id=:follow_id", user_id=session.get("user_id"), follow_id=follow_id)
@@ -125,10 +111,8 @@ def userprofile(user):
     following = db.execute("SELECT follow_id FROM follow WHERE user_id=:user_id", user_id=follow_id)
 
     #
-    followerslist = []
-    followinglist = []
-    iddict = {}
-    post_dict = {}
+    followers_list, following_list = [], []
+    id_dict, post_dict = {}, {}
 
     #
     if posts:
@@ -137,23 +121,15 @@ def userprofile(user):
 
     #
     if followers:
-        for follower in followers:
-            f = follower["user_id"]
-            name = db.execute("SELECT username FROM users WHERE id=:id", id=f)
-            followerslist.append(name)
-            iddict[name[0]["username"]] = f
+        id_dict, followers_list = followers_following(id_dict, followers_list, followers)
 
     #
     if following:
-        for followin in following:
-            fol = followin["follow_id"]
-            names = db.execute("SELECT username FROM users WHERE id=:id", id=fol)
-            followinglist.append(names)
-            iddict[names[0]["username"]] = fol
+        id_dict, following_list = followers_following(id_dict, following_list, following)
 
     # Render profile page
     return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=follow_id, bool_follow=bool_follow
-    , followerslist=followerslist, followinglist=followinglist, iddict=iddict, post_dict=post_dict)
+    , followerslist=followers_list, followinglist=following_list, iddict=id_dict, post_dict=post_dict)
 
 
 @app.route("/about")
@@ -290,9 +266,11 @@ def following():
             numberset.add(postnumber[0]["id"])
         number = random.choice(tuple(numberset))
 
-    # render html page
-    return render_template("following.html", post=posts[0], number=number)
+        # render html page
+        return render_template("following.html", post=posts[0], number=number)
 
+    else:
+        return apology("You are not following anyone")
 
 @app.route("/info/<int:post_id>")
 @login_required
