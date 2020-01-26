@@ -514,7 +514,7 @@ def unfollow(follow_id):
 @login_required
 def unlike(post_id):
     """Allowing user to unlike a post they liked before"""
-    likerid = session.get("user_id")
+    user_id = session.get("user_id")
     db.execute("DELETE FROM likes WHERE post_id=:post_id AND user_id=:user_id", post_id=post_id, user_id=user_id)
 
     return redirect("/discover")
