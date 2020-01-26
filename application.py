@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 import random
 
 # import functions from helpers.py
-from helpers import apology, login_required, change_password, change_username, change_discription, followers_following, fill_post_dict, user_information, is_following, is_user
+from helpers import apology, login_required, change_password, change_username, change_discription, followers_following, fill_post_dict, user_information, is_following, is_user, liked_post
 
 
 # Configure application
@@ -78,10 +78,10 @@ def userprofile(user):
     # Get user information
     discription, username, posts, picture, followers, following = user_information(user)
 
-    # True if user follows user already
+    # False if user follows user already
     bool_follow = is_following(following)
 
-    # True if user looks at his own page
+    # False if user looks at his own page
     bool_user = is_user(user, session.get("user_id"))
 
     # Initialize lists and dictionary
@@ -134,26 +134,20 @@ def check():
 def discover():
     """Let user discover studyspots"""
 
-    #
-    post_number = db.execute("SELECT id FROM uploads")
-    numberset = set()
-    for numbers in post_number:
-        numberset.add(numbers["id"])
-    post_id = random.choice(tuple(numberset))
+    # Get post info
+    posts = db.execute("SELECT id FROM uploads")
+    id_set = set()
+    [id_set.add(post["id"]) for post in posts]
+    post_id = random.choice(tuple(id_set))
     post = db.execute("SELECT path FROM uploads WHERE id=:id", id=post_id)
-    user = db.execute("SELECT user_id FROM uploads WHERE id=:id", id=post_id)
-    poster_id = user[0]["user_id"]
-    username = db.execute("SELECT username FROM users WHERE id=:id", id=poster_id)
+    user = db.execute("SELECT user_id FROM uploads WHERE id=:id", id=post_id)[0]["user_id"]
+    username = db.execute("SELECT username FROM users WHERE id=:id", id=user)
     likes = len(db.execute("SELECT post_id FROM likes WHERE post_id=:post_id", post_id=post_id))
 
+    # True if user didnt like the post
+    bool_like = liked_post(session.get("user_id"), post_id)
 
-    liking = db.execute("SELECT post_id FROM likes WHERE user_id=:user_id AND post_id=:post_id", user_id=session.get("user_id"), post_id=post_id)
-
-    # False if user already liked this post
-    if liking:
-        bool_like= False
-    else:
-        bool_like = True
+    # Render discover.html
     return render_template("discover.html", post=post, number=post_id, bool_like=bool_like, username=username, likes=likes)
 
 
@@ -471,6 +465,7 @@ def unlike(post_id):
     return redirect("/discover")
 
 
+# TODO: Filter wrong user input
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
 def upload():

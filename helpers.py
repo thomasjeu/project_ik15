@@ -90,17 +90,26 @@ def fill_post_dict(posts):
 
 
 def is_following(following):
-    """True if user follows user already"""
+    """False if user follows user already"""
     if following:
-        return True
-    return False
+        return False
+    return True
 
 
 def is_user(user, user_id):
-    """True if user looks at his own page"""
+    """False if user looks at his own page"""
     if user == user_id:
-        return True
-    return False
+        return False
+    return True
+
+
+def liked_post(user_id, post_id):
+    """"""
+    liking = db.execute("SELECT post_id FROM likes WHERE user_id=:user_id AND post_id=:post_id", user_id=session.get("user_id"), post_id=post_id)
+    # False if user already liked this post
+    if liking:
+        return False
+    return True
 
 
 def user_information(user_id):
