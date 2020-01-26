@@ -71,10 +71,48 @@ def login_required(f):
 
 
 def followers_following(id_dict, f_list, user_list):
-    """"""
+    """Fills id_dict and a list with usernames"""
     for user in user_list:
         user = user["user_id"]
         username = db.execute("SELECT username FROM users WHERE id=:id", id=user)[0]["username"]
         f_list.append(username)
         id_dict[username] = user
     return id_dict, f_list
+
+
+def fill_post_dict(posts):
+    """Fill post_dict with amount of likes the post has"""
+    post_dict = {}
+    for post in posts:
+            likes = db.execute("SELECT id FROM likes WHERE id=:id", id=post["id"])
+            post_dict[post["id"]] = (post["path"], len(likes))
+    return post_dict
+
+
+def is_following(following):
+    """True if user follows user already"""
+    if following:
+        return True
+    return False
+
+
+def is_user(user, user_id):
+    """True if user looks at his own page"""
+    if user == user_id:
+        return True
+    return False
+
+
+def user_information(user_id):
+    """Returns user information for profile page"""
+
+    # Get user info
+    discription = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)[0]["discription"]
+    username = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)[0]["username"]
+    posts = db.execute("SELECT path, id FROM uploads WHERE user_id=:user_id", user_id=user_id)
+    picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
+    followers = db.execute("SELECT user_id FROM follow WHERE follow_id=:follow_id", follow_id=user_id)
+    following = db.execute("SELECT follow_id FROM follow WHERE user_id=:user_id", user_id=user_id)
+
+    # Return user info
+    return discription, username, posts, picture, followers, following

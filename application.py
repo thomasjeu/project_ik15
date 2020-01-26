@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 import random
 
 # import functions from helpers.py
-from helpers import apology, login_required, change_password, change_username, change_discription, followers_following
+from helpers import apology, login_required, change_password, change_username, change_discription, followers_following, fill_post_dict, user_information, is_following, is_user
 
 
 # Configure application
@@ -49,32 +49,21 @@ def profile():
 
     # Get user information
     user_id = session.get("user_id")
-    discription = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)[0]["discription"]
-    username = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)[0]["username"]
-    posts = db.execute("SELECT path, id FROM uploads WHERE user_id=:user_id", user_id=user_id)
-    picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
-    followers = db.execute("SELECT user_id FROM follow WHERE follow_id=:follow_id", follow_id=user_id)
-    following = db.execute("SELECT follow_id FROM follow WHERE user_id=:user_id", user_id=user_id)
-    # likes = db.execute("SELECT postid FROM likes")
-    # likes_list = []
-    #for like in likes:
-    #    likes_list
+    discription, username, posts, picture, followers, following = user_information(user_id)
 
-    # Initialize ...
+    # Initialize lists and dictionary
     followers_list, following_list = [], []
-    id_dict, post_dict = {}, {}
+    id_dict = {}
 
-    #
+    # If user has posts
     if posts:
-        for post in posts:
-            likes = db.execute("SELECT id FROM likes WHERE id=:id", id=post["id"])
-            post_dict[post["id"]] = (post["path"], len(likes))
+        post_dict = fill_post_dict(posts)
 
-    #
+    # If user has followers
     if followers:
         id_dict, followers_list = followers_following(id_dict, followers_list, followers)
 
-    #
+    # If user follows users
     if following:
         id_dict, following_list = followers_following(id_dict, following_list, following)
 
@@ -87,48 +76,32 @@ def userprofile(user):
     """Show profile page"""
 
     # Get user information
-    follow_id = user
-    discription = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=follow_id)[0]["discription"]
-    username = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=follow_id)[0]["username"]
-    posts = db.execute("SELECT path, id FROM uploads WHERE user_id=:user_id", user_id=follow_id)
-    picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=follow_id)
-    following = db.execute("SELECT follow_id FROM follow WHERE user_id=:user_id AND follow_id=:follow_id", user_id=session.get("user_id"), follow_id=follow_id)
+    discription, username, posts, picture, followers, following = user_information(user)
 
-    # False if user follows user already
-    if following:
-        bool_follow = False
-    else:
-        bool_follow = True
+    # True if user follows user already
+    bool_follow = is_following(following)
 
-    # False if user looks at his own page
-    if user == session.get("user_id"):
-        bool_user = False
-    else:
-        bool_user = True
+    # True if user looks at his own page
+    bool_user = is_user(user, session.get("user_id"))
 
-    #
-    followers = db.execute("SELECT user_id FROM follow WHERE follow_id=:follow_id", follow_id=follow_id)
-    following = db.execute("SELECT follow_id FROM follow WHERE user_id=:user_id", user_id=follow_id)
-
-    #
+    # Initialize lists and dictionary
     followers_list, following_list = [], []
-    id_dict, post_dict = {}, {}
+    id_dict = {}
 
-    #
+    # If user has posts
     if posts:
-        for post in posts:
-            post_dict[post["id"]] = post["path"]
+        post_dict = fill_post_dict(posts)
 
-    #
+    # If user has followers
     if followers:
         id_dict, followers_list = followers_following(id_dict, followers_list, followers)
 
-    #
+    # If user follows users
     if following:
         id_dict, following_list = followers_following(id_dict, following_list, following)
 
     # Render profile page
-    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=follow_id, bool_follow=bool_follow
+    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=user, bool_follow=bool_follow
     , followerslist=followers_list, followinglist=following_list, iddict=id_dict, post_dict=post_dict)
 
 
