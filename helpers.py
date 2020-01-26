@@ -27,18 +27,13 @@ def apology(message, code=400):
     return render_template("apology.html", top=code, bottom=escape(message)), code
 
 
-def login_required(f):
-    """
-    Decorate routes to require login.
+def change_discription(discription, user_id):
+    """Changes user discription"""
 
-    http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
-    """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/login")
-        return f(*args, **kwargs)
-    return decorated_function
+    # Update discription in database
+    db.execute("UPDATE users SET discription=:discription WHERE id=:user_id", user_id=user_id, discription=discription)
+
+    return True
 
 
 def change_password(password, confirmation, user_id):
@@ -60,10 +55,16 @@ def change_username(username, user_id):
 
     return True
 
-def change_discription(discription, user_id):
-    """Changes user discription"""
 
-    # Update discription in database
-    db.execute("UPDATE users SET discription=:discription WHERE id=:user_id", user_id=user_id, discription=discription)
+def login_required(f):
+    """
+    Decorate routes to require login.
 
-    return True
+    http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
