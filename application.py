@@ -53,10 +53,10 @@ def profile():
     discription = discriptions[0]["discription"]
     usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=user_id)
     username = usernames[0]["username"]
-    posts = db.execute("SELECT path, postnumber FROM uploads WHERE id=:user_id", user_id=user_id)
+    posts = db.execute("SELECT path, id FROM uploads WHERE user_id=:user_id", user_id=user_id)
     picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=user_id)
-    followers = db.execute("SELECT userid FROM follow WHERE followid=:followid", followid=user_id)
-    following = db.execute("SELECT followid FROM follow WHERE userid=:userid", userid=user_id)
+    followers = db.execute("SELECT user_id FROM follow WHERE follow_id=:follow_id", follow_id=user_id)
+    following = db.execute("SELECT follow_id FROM follow WHERE user_id=:user_id", user_id=user_id)
     # likes = db.execute("SELECT postid FROM likes")
     # likes_list = []
     #for like in likes:
@@ -71,13 +71,13 @@ def profile():
     #
     if posts:
         for post in posts:
-            likes = db.execute("SELECT postid FROM likes WHERE postid=:postid", postid=post["postnumber"])
-            post_dict[post["postnumber"]] = (post["path"], len(likes))
+            likes = db.execute("SELECT id FROM likes WHERE id=:id", id=post["id"])
+            post_dict[post["id"]] = (post["path"], len(likes))
 
     #
     if followers:
         for follower in followers:
-            f = follower["userid"]
+            f = follower["user_id"]
             name = db.execute("SELECT username FROM users WHERE id=:id", id=f)
             followerslist.append(name)
             iddict[name[0]["username"]] = f
@@ -85,7 +85,7 @@ def profile():
     #
     if following:
         for followin in following:
-            fol = followin["followid"]
+            fol = followin["follow_id"]
             names = db.execute("SELECT username FROM users WHERE id=:id", id=fol)
             followinglist.append(names)
             iddict[names[0]["username"]] = fol
@@ -104,9 +104,9 @@ def userprofile(user):
     discription = discriptions[0]["discription"]
     usernames = db.execute("SELECT username FROM users WHERE id=:user_id", user_id=follow_id)
     username = usernames[0]["username"]
-    posts = db.execute("SELECT path, postnumber FROM uploads WHERE id=:user_id", user_id=follow_id)
+    posts = db.execute("SELECT path, id FROM uploads WHERE user_id=:user_id", user_id=follow_id)
     picture = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=follow_id)
-    following = db.execute("SELECT followid FROM follow WHERE userid=:user_id AND followid=:followid", user_id=session.get("user_id"), followid=follow_id)
+    following = db.execute("SELECT follow_id FROM follow WHERE user_id=:user_id AND follow_id=:follow_id", user_id=session.get("user_id"), follow_id=follow_id)
 
     # False if user follows user already
     if following:
@@ -121,8 +121,8 @@ def userprofile(user):
         bool_user = True
 
     #
-    followers = db.execute("SELECT userid FROM follow WHERE followid=:followid", followid=follow_id)
-    following = db.execute("SELECT followid FROM follow WHERE userid=:userid", userid=follow_id)
+    followers = db.execute("SELECT user_id FROM follow WHERE follow_id=:follow_id", follow_id=follow_id)
+    following = db.execute("SELECT follow_id FROM follow WHERE user_id=:user_id", user_id=follow_id)
 
     #
     followerslist = []
@@ -133,12 +133,12 @@ def userprofile(user):
     #
     if posts:
         for post in posts:
-            post_dict[post["postnumber"]] = post["path"]
+            post_dict[post["id"]] = post["path"]
 
     #
     if followers:
         for follower in followers:
-            f = follower["userid"]
+            f = follower["user_id"]
             name = db.execute("SELECT username FROM users WHERE id=:id", id=f)
             followerslist.append(name)
             iddict[name[0]["username"]] = f
@@ -146,7 +146,7 @@ def userprofile(user):
     #
     if following:
         for followin in following:
-            fol = followin["followid"]
+            fol = followin["follow_id"]
             names = db.execute("SELECT username FROM users WHERE id=:id", id=fol)
             followinglist.append(names)
             iddict[names[0]["username"]] = fol
@@ -186,26 +186,26 @@ def discover():
     """Let user discover studyspots"""
 
     #
-    post_number = db.execute("SELECT postnumber FROM uploads")
+    post_number = db.execute("SELECT id FROM uploads")
     numberset = set()
     for numbers in post_number:
-        numberset.add(numbers["postnumber"])
-    number = random.choice(tuple(numberset))
-    post = db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=number)
-    user = db.execute("SELECT id FROM uploads WHERE postnumber=:postnumber", postnumber=number)
-    poster_id = user[0]["id"]
+        numberset.add(numbers["id"])
+    post_id = random.choice(tuple(numberset))
+    post = db.execute("SELECT path FROM uploads WHERE id=:id", id=post_id)
+    user = db.execute("SELECT user_id FROM uploads WHERE id=:id", id=post_id)
+    poster_id = user[0]["user_id"]
     username = db.execute("SELECT username FROM users WHERE id=:id", id=poster_id)
-    likes = len(db.execute("SELECT postid FROM likes WHERE postid=:postid", postid=number))
+    likes = len(db.execute("SELECT post_id FROM likes WHERE post_id=:post_id", post_id=post_id))
 
 
-    liking = db.execute("SELECT postid FROM likes WHERE likerid=:likerid AND postid=:postid", likerid = session.get("user_id"), postid=number)
+    liking = db.execute("SELECT post_id FROM likes WHERE user_id=:user_id AND post_id=:post_id", user_id=session.get("user_id"), post_id=post_id)
 
     # False if user already liked this post
     if liking:
         bool_like= False
     else:
         bool_like = True
-    return render_template("discover.html", post=post, number=number, bool_like=bool_like, username=username, likes=likes)
+    return render_template("discover.html", post=post, number=post_id, bool_like=bool_like, username=username, likes=likes)
 
 
 @app.route("/favorite/<int:post_id>", methods=["POST"])
@@ -216,7 +216,7 @@ def favorite(post_id):
     user_id = session.get("user_id")
 
     # Add post to user's favorites
-    db.execute("INSERT INTO favorites (postid, favuserid) VALUES (:postid, :favuserid)", postid=post_id, favuserid=user_id)
+    db.execute("INSERT INTO favorites (post_id, user_id) VALUES (:post_id, :user_id)", post_id=post_id, user_id=user_id)
 
     return redirect("/")
 
@@ -230,7 +230,7 @@ def favorites():
     user_id = session.get("user_id")
 
     # Get favorite posts of the user
-    favorites = db.execute("SELECT postid FROM favorites WHERE favuserid=:favuserid", favuserid=user_id)
+    favorites = db.execute("SELECT post_id FROM favorites WHERE user_id=:user_id", user_id=user_id)
 
     # If user has favorite posts
     if favorites:
@@ -238,8 +238,8 @@ def favorites():
         posts = []
         numberset = set()
         for post in favorites:
-            posts.append(db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=post['postid']))
-            numberset.add(post["postid"])
+            posts.append(db.execute("SELECT path FROM uploads WHERE id=:id", id=post['post_id']))
+            numberset.add(post["post_id"])
 
         # Choose a random post
         number = random.choice(tuple(numberset))
@@ -253,11 +253,11 @@ def favorites():
 
 @app.route("/follow/<int:followid>", methods=["POST"])
 @login_required
-def follow(followid):
+def follow(follow_id):
     """Lets user follow another user"""
 
     user_id = session.get("user_id")
-    db.execute("INSERT INTO follow (followid, userid) VALUES(:followid, :userid)", followid=followid, userid=user_id)
+    db.execute("INSERT INTO follow (follow_id, user_id) VALUES(:follow_id, :user_id)", follow_id=follow_id, user_id=user_id)
     return True
 
 
@@ -270,24 +270,24 @@ def following():
     user_id = session.get("user_id")
 
     # Get users which the user follows
-    following = db.execute("SELECT followid FROM follow WHERE userid=:userid", userid=user_id)
+    following = db.execute("SELECT follow_id FROM follow WHERE user_id=:user_id", user_id=user_id)
 
     # Get all posts from following users
     if following:
         postnumbers = []
         for user in following:
-            postnumbers.append(db.execute("SELECT postnumber FROM uploads WHERE id=:user_id", user_id=user['followid']))
+            postnumbers.append(db.execute("SELECT id FROM uploads WHERE user_id=:user_id", user_id=user['follow_id']))
 
         # Store all posts of all the people the user is following in posts
         posts = []
         for user in postnumbers:
             # for every post the user has made
             for post in user:
-                posts.append(db.execute("SELECT path FROM uploads WHERE postnumber=:postnumber", postnumber=post['postnumber']))
+                posts.append(db.execute("SELECT path FROM uploads WHERE id=:id", id=post['id']))
 
         numberset = set()
         for postnumber in postnumbers:
-            numberset.add(postnumber[0]["postnumber"])
+            numberset.add(postnumber[0]["id"])
         number = random.choice(tuple(numberset))
 
     # render html page
@@ -299,26 +299,25 @@ def following():
 def info(post_id):
     """Show user extra information about studyspot"""
 
-    number = post_id
-    titles = db.execute("SELECT * FROM uploads WHERE postnumber=:postnumber", postnumber = number)
-    user_id = titles[0]["id"]
+    titles = db.execute("SELECT * FROM uploads WHERE id=:id", id=post_id)
+    user_id = titles[0]["user_id"]
     name = db.execute("SELECT username FROM users WHERE id=:id", id=user_id)
-    liking = db.execute("SELECT postid FROM likes WHERE likerid=:likerid AND postid=:postid", likerid = session.get("user_id"), postid=number)
+    liking = db.execute("SELECT post_id FROM likes WHERE user_id=:user_id AND post_id=:post_id", user_id=session.get("user_id"), post_id=post_id)
     # False if user already liked this post
     if liking:
         bool_like= False
     else:
         bool_like = True
     #
-    return render_template("info.html",titles=titles, number=number, name=name, bool_like=bool_like)
+    return render_template("info.html",titles=titles, number=post_id, name=name, bool_like=bool_like)
 
 
 @app.route("/like/<int:postid>", methods=["POST"])
 @login_required
-def like(postid):
+def like(post_id):
     """Allowing user to like a post"""
-    likerid = session.get("user_id")
-    db.execute("INSERT INTO likes (postid, likerid) VALUES(:postid, :likerid)", postid=postid, likerid=likerid)
+    user_id = session.get("user_id")
+    db.execute("INSERT INTO likes (post_id, user_id) VALUES(:post_id, :user_id)", post_id=post_id, user_id=user_id)
 
     return redirect("/discover")
 
@@ -485,7 +484,7 @@ def settings():
                 path = "static/profile/" + filename
 
                 # Update path of profile picture in database
-                db.execute("UPDATE users SET image = :image WHERE id=:user_id", user_id=session.get("user_id"), image=path)
+                db.execute("UPDATE users SET image=:image WHERE id=:user_id", user_id=session.get("user_id"), image=path)
 
                 # Redirect to settings.html
                 return redirect(request.url)
@@ -503,20 +502,20 @@ def settings():
 
 @app.route("/unfollow/<int:followid>", methods=["POST"])
 @login_required
-def unfollow(followid):
+def unfollow(follow_id):
     """Let user unffolw another user"""
 
     user_id = session.get("user_id")
-    db.execute("DELETE FROM follow WHERE followid=:followid AND userid=:userid", followid=followid, userid=user_id)
+    db.execute("DELETE FROM follow WHERE follow_id=:follow_id AND user_id=:user_id", follow_id=follow_id, user_id=user_id)
     return True
 
 
 @app.route("/unlike/<int:postid>", methods=["POST"])
 @login_required
-def unlike(postid):
+def unlike(post_id):
     """Allowing user to unlike a post they liked before"""
     likerid = session.get("user_id")
-    db.execute("DELETE FROM likes WHERE postid=:postid AND likerid=:likerid", postid=postid, likerid=likerid)
+    db.execute("DELETE FROM likes WHERE post_id=:post_id AND user_id=:user_id", post_id=post_id, user_id=user_id)
 
     return redirect("/discover")
 
@@ -556,8 +555,9 @@ def upload():
                 path = "static/posts/" + filename
 
                 # Insert path to file in the database
-                db.execute("INSERT INTO uploads (id, discription, path, title, street, postal, city, number) VALUES (:id, :discription, :path, :title, :street, :postal, :city, :number)", id=session.get("user_id"),
-                discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"), postal=request.form.get("postal"), city=request.form.get("city"), number=request.form.get("number"))
+                db.execute("INSERT INTO uploads (discription, path, title, street, postal, city, user_id, number) VALUES (:discription, :path, :title, :street, :postal, :city, :userid, :number)",
+                discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"),
+                postal=request.form.get("postal"), city=request.form.get("city"), user_id=session.get("user_id"), number=request.form.get("number"))
 
                 # Redirect to upload.html
                 return redirect(request.url)
