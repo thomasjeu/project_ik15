@@ -74,44 +74,28 @@
 
         {% endfor %}
 
-      <h3 style="text-align: right">Following:
+      <center><h3 style="text-align: right"></center>Following:
 
         <div class="row">
           <div class="column">
         {% for follow in followinglist %}
-        <a u href="/{{iddict[follow[0]["username"]]}}">{{follow[0]["username"]}}</a>
+        <center><a u href="/{{iddict[follow[0]["username"]]}}">{{follow[0]["username"]}}</a></center>
           </div>
         </div>
         {% endfor %}
     </h3>
 
-    <h3 style="text-align: right">Followers:
+    <center><h3 style="text-align: right"></center>Followers:
     <div class="row">
       <div class="column">
         {% for follow in followerslist %}
-        <a u href="/{{iddict[follow[0]["username"]]}}">{{follow[0]["username"]}}</a>
+        <center><a u href="/{{iddict[follow[0]["username"]]}}">{{follow[0]["username"]}}</a></center>
       </div>
     </div>
         {% endfor %}
     </h3>
 
 
-
-
-
-
-
-
         </body>
 
-
 {% endblock %}
-
-<script>
-
-
-    // document.cookie = "postnumber={{ number }}; path=/twodiscover";
-
-
-
-</script>

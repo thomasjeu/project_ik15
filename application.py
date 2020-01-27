@@ -152,8 +152,8 @@ def discover():
     [id_set.add(post["id"]) for post in posts]
     post_id = random.choice(tuple(id_set))
     post = db.execute("SELECT path FROM uploads WHERE id=:id", id=post_id)
-    user = db.execute("SELECT user_id FROM uploads WHERE id=:id", id=post_id)[0]["user_id"]
-    username = db.execute("SELECT username FROM users WHERE id=:id", id=user)
+    user_id = db.execute("SELECT user_id FROM uploads WHERE id=:id", id=post_id)[0]["user_id"]
+    username = db.execute("SELECT username FROM users WHERE id=:id", id=user_id)
     likes = len(db.execute("SELECT post_id FROM likes WHERE post_id=:post_id", post_id=post_id))
 
     # True if user didnt like the post
@@ -266,7 +266,7 @@ def info(post_id):
     else:
         bool_like = True
     #
-    return render_template("info.html",titles=titles, number=post_id, name=name, bool_like=bool_like)
+    return render_template("info.html",titles=titles, number=post_id, name=name, bool_like=bool_like, user_id=user_id)
 
 
 @app.route("/like/<int:post_id>", methods=["POST"])
