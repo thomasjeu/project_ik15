@@ -47,11 +47,11 @@
 
 
         {% for key, value in post_dict.items() %}
-        <div class="polaroid" style="float:left">
+        <div class="polaroid">
           <a href="/info/{{key}}">
           <img src={{value[0]}} alt="User post" style="width:100%">
           </a>
-          <div class="container">
+          <div class="container_profile">
           <p>Title: {{value[2]}}</p>
           <p>Likes: {{value[1]}}</p>
           </div>
@@ -59,7 +59,7 @@
 
         {% endfor %}
 
-        <div class=ex2>
+        <!--<div class=ex2>-->
 
         <b><a>Followers:</a></b>
         {% for follow in followerslist %}
@@ -71,7 +71,7 @@
         <h5><a u href="/{{iddict[follow[0]["username"]]}}">{{follow[0]["username"]}}</h5>
         {% endfor %}
 
-        </div>
+        <!--</div>-->
 
         </body>
 
