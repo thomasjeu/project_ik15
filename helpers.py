@@ -75,7 +75,9 @@ def fill_post_dict(posts):
     post_dict = {}
     for post in posts:
             likes = len(db.execute("SELECT post_id FROM likes WHERE post_id=:post_id", post_id=post["id"]))
-            post_dict[post["id"]] = (post["path"], likes)
+            titles = db.execute("SELECT title FROM uploads WHERE id=:id", id=post["id"])
+            title = titles[0]["title"]
+            post_dict[post["id"]] = (post["path"], likes, title)
     return post_dict
 
 
