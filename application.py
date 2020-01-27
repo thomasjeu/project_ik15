@@ -525,7 +525,7 @@ def upload():
                 path = "static/posts/" + filename
 
                 # Insert path to file in the database
-                db.execute("INSERT INTO uploads (discription, path, title, street, postal, city, user_id, number) VALUES (:discription, :path, :title, :street, :postal, :city, :userid, :number)",
+                db.execute("INSERT INTO uploads (discription, path, title, street, postal, city, user_id, number) VALUES (:discription, :path, :title, :street, :postal, :city, :user_id, :number)",
                 discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"),
                 postal=request.form.get("postal"), city=request.form.get("city"), user_id=session.get("user_id"), number=request.form.get("number"))
 
