@@ -145,6 +145,7 @@ def check():
 def delete_post(post_id):
     """"""
     db.execute("DELETE FROM uploads WHERE id=:id", id=post_id)
+    db.execute("DELETE FROM favorites WHERE post_id=:post_id", post_id=post_id)
     return redirect("/")
 
 
