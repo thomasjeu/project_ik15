@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 import random
 
 # import functions from helpers.py
-from helpers import apology, login_required, change_password, change_username, change_discription, followers_following, fill_post_dict, user_information, is_following, is_user, liked_post
+from helpers import apology, login_required, change_password, change_username, change_discription, fill_post_dict, user_information, is_following, is_user, liked_post
 
 
 # Configure application
@@ -53,7 +53,7 @@ def profile():
 
     # Initialize lists and dictionary
     followers_list, following_list = [], []
-    id_dict = {}
+    id_dict, post_dict = {}, {}
 
     # If user has posts
     if posts:
@@ -61,28 +61,34 @@ def profile():
 
     # If user has followers
     if followers:
-        id_dict, followers_list = followers_following(id_dict, followers_list, followers)
+        for follower in followers:
+            name = db.execute("SELECT username FROM users WHERE id=:id", id=follower["user_id"])
+            followers_list.append(name)
+            id_dict[name[0]["username"]] = follower["user_id"]
 
     # If user follows users
     if following:
-        id_dict, following_list = followers_following(id_dict, following_list, following)
+        for user in following:
+            name = db.execute("SELECT username FROM users WHERE id=:id", id=user["follow_id"])
+            following_list.append(name)
+            id_dict[name[0]["username"]] = user["follow_id"]
 
     # Render profile page
     return render_template("profile.html", discription=discription, username=username, picture=picture, followerslist=followers_list, followinglist=following_list, iddict=id_dict, post_dict=post_dict)
 
-@app.route("/<int:user>")
+@app.route("/<int:user_id>")
 @login_required
-def userprofile(user):
+def userprofile(user_id):
     """Show profile page"""
 
     # Get user information
-    discription, username, posts, picture, followers, following = user_information(user)
+    discription, username, posts, picture, followers, following = user_information(user_id)
 
     # False if user follows user already
-    bool_follow = is_following(following)
+    bool_follow = is_following(followers, session.get("user_id"))
 
     # False if user looks at his own page
-    bool_user = is_user(user, session.get("user_id"))
+    bool_user = is_user(user_id, session.get("user_id"))
 
     # Initialize lists and dictionary
     followers_list, following_list = [], []
@@ -94,14 +100,20 @@ def userprofile(user):
 
     # If user has followers
     if followers:
-        id_dict, followers_list = followers_following(id_dict, followers_list, followers)
+        for follower in followers:
+            name = db.execute("SELECT username FROM users WHERE id=:id", id=follower["user_id"])
+            followers_list.append(name)
+            id_dict[name[0]["username"]] = follower["user_id"]
 
     # If user follows users
     if following:
-        id_dict, following_list = followers_following(id_dict, following_list, following)
+        for user in following:
+            name = db.execute("SELECT username FROM users WHERE id=:id", id=user["follow_id"])
+            following_list.append(name)
+            id_dict[name[0]["username"]] = user["follow_id"]
 
     # Render profile page
-    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=user, bool_follow=bool_follow
+    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=user_id, bool_follow=bool_follow
     , followerslist=followers_list, followinglist=following_list, iddict=id_dict, post_dict=post_dict)
 
 
@@ -194,14 +206,14 @@ def favorites():
         return apology("You dont have any favorite posts yet")
 
 
-@app.route("/follow/<int:followid>", methods=["POST"])
+@app.route("/follow/<int:follow_id>", methods=["POST"])
 @login_required
 def follow(follow_id):
     """Lets user follow another user"""
 
     user_id = session.get("user_id")
     db.execute("INSERT INTO follow (follow_id, user_id) VALUES(:follow_id, :user_id)", follow_id=follow_id, user_id=user_id)
-    return True
+    return redirect("/")
 
 
 @app.route("/following")
@@ -257,7 +269,7 @@ def info(post_id):
     return render_template("info.html",titles=titles, number=post_id, name=name, bool_like=bool_like)
 
 
-@app.route("/like/<int:postid>", methods=["POST"])
+@app.route("/like/<int:post_id>", methods=["POST"])
 @login_required
 def like(post_id):
     """Allowing user to like a post"""
@@ -445,17 +457,17 @@ def settings():
         return render_template("settings.html")
 
 
-@app.route("/unfollow/<int:followid>", methods=["POST"])
+@app.route("/unfollow/<int:follow_id>", methods=["POST"])
 @login_required
 def unfollow(follow_id):
-    """Let user unffolw another user"""
+    """Let user unfollow another user"""
 
     user_id = session.get("user_id")
     db.execute("DELETE FROM follow WHERE follow_id=:follow_id AND user_id=:user_id", follow_id=follow_id, user_id=user_id)
-    return True
+    return redirect("/")
 
 
-@app.route("/unlike/<int:postid>", methods=["POST"])
+@app.route("/unlike/<int:post_id>", methods=["POST"])
 @login_required
 def unlike(post_id):
     """Allowing user to unlike a post they liked before"""

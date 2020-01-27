@@ -70,16 +70,6 @@ def login_required(f):
     return decorated_function
 
 
-def followers_following(id_dict, f_list, user_list):
-    """Fills id_dict and a list with usernames"""
-    for user in user_list:
-        user = user["user_id"]
-        username = db.execute("SELECT username FROM users WHERE id=:id", id=user)[0]["username"]
-        f_list.append(username)
-        id_dict[username] = user
-    return id_dict, f_list
-
-
 def fill_post_dict(posts):
     """Fill post_dict with amount of likes the post has"""
     post_dict = {}
@@ -89,10 +79,11 @@ def fill_post_dict(posts):
     return post_dict
 
 
-def is_following(following):
+def is_following(followers, user_id):
     """False if user follows user already"""
-    if following:
-        return False
+    for user in followers:
+        if user["user_id"] == user_id:
+            return False
     return True
 
 
