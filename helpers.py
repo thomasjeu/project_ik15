@@ -74,8 +74,8 @@ def fill_post_dict(posts):
     """Fill post_dict with amount of likes the post has"""
     post_dict = {}
     for post in posts:
-            likes = db.execute("SELECT id FROM likes WHERE id=:id", id=post["id"])
-            post_dict[post["id"]] = (post["path"], len(likes))
+            likes = len(db.execute("SELECT post_id FROM likes WHERE post_id=:post_id", post_id=post["id"]))
+            post_dict[post["id"]] = (post["path"], likes)
     return post_dict
 
 
