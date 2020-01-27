@@ -141,6 +141,13 @@ def check():
         return jsonify(True)
 
 
+@app.route("/delete/<int:post_id>", methods=["POST"])
+def delete_post(post_id):
+    """"""
+    db.execute("DELETE FROM uploads WHERE id=:id", id=post_id)
+    return redirect("/")
+
+
 @app.route("/discover")
 @login_required
 def discover():
@@ -173,7 +180,7 @@ def favorite(post_id):
     # Add post to user's favorites
     db.execute("INSERT INTO favorites (post_id, user_id) VALUES (:post_id, :user_id)", post_id=post_id, user_id=user_id)
 
-    return redirect("/")
+    return redirect("/favorites")
 
 
 @app.route("/favorites")
@@ -255,18 +262,23 @@ def following():
 @login_required
 def info(post_id):
     """Show user extra information about studyspot"""
+    user_id = session.get("user_id")
 
     titles = db.execute("SELECT * FROM uploads WHERE id=:id", id=post_id)
-    user_id = titles[0]["user_id"]
-    name = db.execute("SELECT username FROM users WHERE id=:id", id=user_id)
-    liking = db.execute("SELECT post_id FROM likes WHERE user_id=:user_id AND post_id=:post_id", user_id=session.get("user_id"), post_id=post_id)
+    user = titles[0]["user_id"]
+    name = db.execute("SELECT username FROM users WHERE id=:id", id=user)
+    liking = db.execute("SELECT post_id FROM likes WHERE user_id=:user_id AND post_id=:post_id", user_id=user_id, post_id=post_id)
     # False if user already liked this post
     if liking:
         bool_like= False
     else:
         bool_like = True
+
+    # False if user looks at his own post
+    bool_user = is_user(user, user_id)
+
     #
-    return render_template("info.html",titles=titles, number=post_id, name=name, bool_like=bool_like, user_id=user_id)
+    return render_template("info.html",titles=titles, number=post_id, name=name, bool_like=bool_like, user=user, bool_user=bool_user)
 
 
 @app.route("/like/<int:post_id>", methods=["POST"])
@@ -513,7 +525,7 @@ def upload():
                 path = "static/posts/" + filename
 
                 # Insert path to file in the database
-                db.execute("INSERT INTO uploads (discription, path, title, street, postal, city, user_id, number) VALUES (:discription, :path, :title, :street, :postal, :city, :userid, :number)",
+                db.execute("INSERT INTO uploads (discription, path, title, street, postal, city, user_id, number) VALUES (:discription, :path, :title, :street, :postal, :city, :user_id, :number)",
                 discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"),
                 postal=request.form.get("postal"), city=request.form.get("city"), user_id=session.get("user_id"), number=request.form.get("number"))
 
