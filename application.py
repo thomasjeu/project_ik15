@@ -141,8 +141,8 @@ def check():
         return jsonify(True)
 
 
-@app.route("/delete/<int:post_id>", methods=["POST"]
-def delete(post_id):
+@app.route("/delete/<int:post_id>", methods=["POST"])
+def delete_post(post_id):
     """"""
     db.execute("DELETE FROM uploads WHERE id=:id", id=post_id)
     return redirect("/")
