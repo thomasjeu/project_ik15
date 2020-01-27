@@ -13,6 +13,8 @@
         profileimg {
             border-radius: 50%;
             }
+
+
         </style>
 
 
@@ -34,8 +36,14 @@
                 <center><button class="btn btn-primary" type="submit">Unfollow</button></center>
             </form>
 
-
         {% endif %}
+
+
+
+
+
+
+
 
         <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
         <center><div class="w3-center w3-padding-16 w3-button" ><a u href="/"><b>Posts</b></a/u></div></center>
@@ -43,8 +51,7 @@
         </div>
 
 
-      <div class="row">
-        <div class="column">
+
 
         {% for key, value in post_dict.items() %}
         <div class="polaroid" style="float:left">
@@ -57,44 +64,33 @@
           </div>
         </div>
 
+        {% endfor %}
 
 
 
 
-    <!--    <div class="container">-->
-    <!--    <a href="/info/{{key}}">-->
-    <!--    <center><img src={{value[0]}} width="800" height="600" alt="User post" align="left"></center>-->
-    <!--    </a>-->
-    <!--    <div class="text-block">-->
-    <!--      <h4>Spotter: {{username}}</h4>-->
-    <!--      <p>Likes: {{value[1]}}</p>-->
-    <!--    </div>-->
-    <!--    </div>-->
+        <b><a>Followers:</a></b>
+        {% for follow in followerslist %}
+        <h5><a u href="/{{iddict[follow[0]["username"]]}}">{{follow[0]["username"]}}</h5>
+        {% endfor %}
+
+        <b><a>Following:</a></b>
+        {% for follow in followinglist %}
+        <h5><a u href="/{{iddict[follow[0]["username"]]}}">{{follow[0]["username"]}}</h5>
+        {% endfor %}
+
+
+
+
+    <!--<div class="row">-->
+    <!--  <div class="column">-->
+    <!--    {% for follow in followerslist %}-->
+    <!--    <center><a u href="/{{iddict[follow[0]["username"]]}}">{{follow[0]["username"]}}</a></center>-->
     <!--  </div>-->
     <!--</div>-->
+    <!--    {% endfor %}-->
+    <!--</h3>-->
 
-        {% endfor %}
-
-      <center><h3 style="float:right"></center>Following:
-
-        <div class="row">
-          <div class="column">
-        {% for follow in followinglist %}
-        <center><a u href="/{{iddict[follow[0]["username"]]}}">{{follow[0]["username"]}}</a></center>
-          </div>
-        </div>
-        {% endfor %}
-    </h3>
-
-    <center><h3 style="float:right"></center>Followers:
-    <div class="row">
-      <div class="column">
-        {% for follow in followerslist %}
-        <center><a u href="/{{iddict[follow[0]["username"]]}}">{{follow[0]["username"]}}</a></center>
-      </div>
-    </div>
-        {% endfor %}
-    </h3>
 
 
         </body>
