@@ -92,7 +92,7 @@ def userprofile(user_id):
 
     # Initialize lists and dictionary
     followers_list, following_list = [], []
-    id_dict = {}
+    id_dict, post_dict = {}, {}
 
     # If user has posts
     if posts:
