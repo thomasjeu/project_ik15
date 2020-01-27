@@ -47,17 +47,30 @@
         <div class="column">
 
         {% for key, value in post_dict.items() %}
-        <div class="container">
-        <a href="/info/{{key}}">
-        <center><img src={{value[0]}} width="800" height="600" alt="User post" align="left"></center>
-        </a>
-        <div class="text-block">
-          <h4>Spotter: {{username}}</h4>
+        <div class="polaroid">
+          <a href="/info/{{key}}">
+          <img src={{value[0]}} alt="User post" style="width:100%">
+          </a>
+          <div class="container">
           <p>Likes: {{value[1]}}</p>
+          </div>
         </div>
-        </div>
-      </div>
-    </div>
+
+
+
+
+
+    <!--    <div class="container">-->
+    <!--    <a href="/info/{{key}}">-->
+    <!--    <center><img src={{value[0]}} width="800" height="600" alt="User post" align="left"></center>-->
+    <!--    </a>-->
+    <!--    <div class="text-block">-->
+    <!--      <h4>Spotter: {{username}}</h4>-->
+    <!--      <p>Likes: {{value[1]}}</p>-->
+    <!--    </div>-->
+    <!--    </div>-->
+    <!--  </div>-->
+    <!--</div>-->
 
         {% endfor %}
 
