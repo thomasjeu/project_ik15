@@ -47,7 +47,7 @@
         <div class="column">
 
         {% for key, value in post_dict.items() %}
-        <div class="polaroid">
+        <div class="polaroid" style="float:left">
           <a href="/info/{{key}}">
           <img src={{value[0]}} alt="User post" style="width:100%">
           </a>
@@ -74,7 +74,7 @@
 
         {% endfor %}
 
-      <center><h3 style="text-align: right"></center>Following:
+      <center><h3 style="float:right"></center>Following:
 
         <div class="row">
           <div class="column">
@@ -85,7 +85,7 @@
         {% endfor %}
     </h3>
 
-    <center><h3 style="text-align: right"></center>Followers:
+    <center><h3 style="float:right"></center>Followers:
     <div class="row">
       <div class="column">
         {% for follow in followerslist %}
