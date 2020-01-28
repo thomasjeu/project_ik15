@@ -199,16 +199,11 @@ def favorites():
     if favorites:
         #
         posts = []
-        numberset = set()
         for post in favorites:
-            posts.append(db.execute("SELECT path FROM uploads WHERE id=:id", id=post['post_id']))
-            numberset.add(post["post_id"])
-
-        # Choose a random post
-        number = random.choice(tuple(numberset))
+            posts.append(db.execute("SELECT id, path, title  FROM uploads WHERE id=:id", id=post['post_id']))
 
         # render html page
-        return render_template("favorites.html", post=posts[0], number=number)
+        return render_template("favorites.html", posts=posts)
 
     else:
         return apology("You dont have any favorite posts yet")
@@ -441,7 +436,7 @@ def settings():
 
             # If image has no name
             if image.filename == "":
-                return redirect(request.url)
+                return redirect("/")
 
             # If image is allowed
             if allowed_image(image.filename):
@@ -456,14 +451,12 @@ def settings():
                 # Update path of profile picture in database
                 db.execute("UPDATE users SET image=:image WHERE id=:user_id", user_id=session.get("user_id"), image=path)
 
-                # Redirect to settings.html
-                return redirect(request.url)
+                # Redirect to profile.html
+                return redirect("/")
 
-            else:
-                return redirect(request.url)
 
-        # Redirect to settings.html
-        return redirect(request.url)
+        # Redirect to profile.html
+        return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -512,7 +505,7 @@ def upload():
 
             # If file has no name
             if image.filename == "":
-                return redirect(request.url)
+                return redirect("/")
 
             # If image is allowed
             if allowed_image(image.filename):
@@ -531,11 +524,11 @@ def upload():
                 postal=request.form.get("postal"), city=request.form.get("city"), user_id=session.get("user_id"), number=request.form.get("number"))
 
                 # Redirect to upload.html
-                return redirect(request.url)
+                return redirect("/")
 
             # If image is not allowed redirect to upload.html
             else:
-                return redirect(request.url)
+                return redirect("/")
 
         # If user didnt upload a picture
         else:
