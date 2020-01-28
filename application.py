@@ -236,24 +236,19 @@ def following():
 
     # Get all posts from following users
     if following:
-        postnumbers = []
+        post_ids = []
         for user in following:
-            postnumbers.append(db.execute("SELECT id FROM uploads WHERE user_id=:user_id", user_id=user['follow_id']))
+            post_ids.append(db.execute("SELECT id FROM uploads WHERE user_id=:user_id", user_id=user['follow_id']))
 
         # Store all posts of all the people the user is following in posts
         posts = []
-        for user in postnumbers:
+        for post_id in post_ids:
             # for every post the user has made
-            for post in user:
-                posts.append(db.execute("SELECT path FROM uploads WHERE id=:id", id=post['id']))
-
-        numberset = set()
-        for postnumber in postnumbers:
-            numberset.add(postnumber[0]["id"])
-        number = random.choice(tuple(numberset))
+            for post in post_id:
+                posts.append(db.execute("SELECT id, path, title FROM uploads WHERE id=:id", id=post['id']))
 
         # render html page
-        return render_template("following.html", post=posts[0], number=number)
+        return render_template("following.html", posts=posts)
 
     else:
         return apology("You are not following anyone")

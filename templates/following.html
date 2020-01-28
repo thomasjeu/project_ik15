@@ -6,61 +6,24 @@
 
 {% block main %}
 
-<!-- Pictograms and style buttons -->
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  </head>
-<form action="/discover" method="post">
-<center><h2><b>Following Posts {{ randomvalue }}</b></h2></center>
-<body>
-<center><p>Get in touch with other people and their places :)</p></center>
+    <center><h2><b>Following</b></h2></center>
 
-<!-- Round edges of image -->
-<style>
+    <body>
 
-        img {
-            border-radius: 20%;
-            }
-</style>
+        <center><p>Get in touch with other people and their places :)</p></center>
 
-<!-- Show a random post at this size -->
-<center><img src={{ post[0]["path"] }} width="800" height="600" alt="User post"></center>
+        <!-- Show posts like pinterest -->
+        <div class="card-columns">
+            {% for post in posts %}
+            <div class="card" onclick="location.href='/info/{{ post[0].id }}';">
+                <img class="card-img-top" src={{ post[0].path }} alt="User post">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post[0].title }}</h5>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
 
-
-    <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
-        <!-- When button is clicked, shows more information of post -->
-        <p><center><div class="w3-center w3-padding-16 w3-button" ><a u href="/info/{{number}}"><b>More information</b></a/u></div></center></p>
-    </div>
-    <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
-
-        <!-- When button is clicked, liker saves the post into favorites -->
-        <p><center><a href="/" class="btn btn-info btn-lg">
-          <span class="glyphicon glyphicon-star"></span> Favorite
-        </a></center></p>
-
-        <!-- User can like post via button, when the post is already liked the user kan unlike a post -->
-        {% if bool_postid and bool_like %}
-            <form action="/like/{{postid}}" method="POST">
-                <center><button class="btn btn-primary" type="submit">Like</button></center>
-            </form>
-
-        {% elif not bool_like and bool_postid %}
-            <form action="/unlike/{{postid}}" method="POST">
-                <center><button class="btn btn-primary" type="submit">Unlike</button></center>
-            </form>
-        {% endif %}
-
-        <!-- Refresh page, showing a new post -->
-        <p><center><a href="/following" class="btn btn-info btn-lg">
-          <span class="glyphicon glyphicon-refresh"></span> Next post
-        </a></center></p>
-
-    </div>
-
-</body>
-</form>
+    </body>
 
 {% endblock %}
