@@ -5,9 +5,8 @@
 {% endblock %}
 
 {% block main %}
-<!--<link href="styles.css" rel="stylesheet">-->
 
-
+        <!-- Round profile image -->
         <style>
 
         profileimg {
@@ -16,9 +15,9 @@
 
         </style>
 
-
+        
         <body>
-
+        
         <center><h1> {{username}} </h2></center>
 
         <div class="w3-row-padding w3-padding-16 w3-center" id="avatar">
@@ -38,12 +37,10 @@
         {% endif %}
 
 
-
         <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto" id="demo">
         <center><div class="w3-center w3-padding-16 w3-button" ><a u href="/"><b>Posts</b></a/u></div></center>
         <option disabled value="" class="w3-bar-item w3-button">___________________________________________________________________</option>
         </div>
-
 
 
         {% for key, value in post_dict.items() %}
@@ -59,8 +56,6 @@
 
         {% endfor %}
 
-        <!--<div class=ex2>-->
-
         <b><a>Followers:</a></b>
         {% for follow in followerslist %}
         <h5><a u href="/{{iddict[follow[0]["username"]]}}">{{follow[0]["username"]}}</h5>
@@ -71,7 +66,6 @@
         <h5><a u href="/{{iddict[follow[0]["username"]]}}">{{follow[0]["username"]}}</h5>
         {% endfor %}
 
-        <!--</div>-->
 
         </body>
 

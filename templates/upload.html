@@ -8,6 +8,7 @@
 {% block main %}
     <form action="/upload" method="post" enctype="multipart/form-data" >
 
+        <!-- User selects image from computer files -->
         <p>Upload picture:</p>
             <div class="form-group">
               <label>Select image</label>
@@ -17,16 +18,19 @@
               </div>
             </div>
 
+        <!-- User fills in the name of the spot -->
         <p>This spot is named:</p>
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" id="place name" name="place name" placeholder="Name of this spot ..." type="text">
         </div>
 
+        <!-- User fills in a discription of the StudySpot -->
         <p><label for="counter-input" class="label">Photo discription(max 150):  <span id="counter-display" class="tag is-success">0</span></label></p>
         <div class="form-group">
             <textarea rows="4" cols="40" id="discription" name="discription" placeholder="Tell us what's the best about this place or what you loved most about the chairs ... Whatever it is you want to tell us :) " type="text" maxlength='150'></textarea>
         </div>
 
+        <!-- User fills in adress of the StudySpot -->
         <p>Adress</p>
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" id="street" name="street" placeholder="Street name" type="text">
@@ -37,7 +41,7 @@
         </div>
 
 
-
+        <!-- When user clicks this button, the post is saved into posts -->
         <center><button class="btn btn-primary" type="submit">Upload and post!</button></center>
 
 
@@ -66,16 +70,4 @@
 
     })();
 
-
-
-
 </script>
-<script>
-
-    // function filesize(elem){
-    //     document.cookie = `filesize=${elem.files[0].size}`
-    //   }
-
-
-</script>
-
