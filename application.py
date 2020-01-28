@@ -3,6 +3,7 @@ import os
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
 from flask_session import Session
+from os import listdir
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -144,6 +145,9 @@ def check():
 @app.route("/delete/<int:post_id>", methods=["POST"])
 def delete_post(post_id):
     """"""
+    path = db.execute("SELECT path FROM uploads WHERE id=:id", id=post_id)
+    os.remove(path[0]["path"])
+
     db.execute("DELETE FROM uploads WHERE id=:id", id=post_id)
     db.execute("DELETE FROM favorites WHERE post_id=:post_id", post_id=post_id)
     return redirect("/")
@@ -438,6 +442,12 @@ def settings():
             if image.filename == "":
                 return redirect("/")
 
+            # Get all imagenames existing already
+            image_names = [name for name in listdir("static/profile/")]
+
+            if image.filename in image_names:
+                return apology("Please change the name of the image")
+
             # If image is allowed
             if allowed_image(image.filename):
                 filename = secure_filename(image.filename)
@@ -447,6 +457,10 @@ def settings():
 
                 # Path to image file
                 path = "static/profile/" + filename
+
+                # Delete previous image
+                previous_path = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=session.get("user_id"))
+                os.remove(previous_path[0]["image"])
 
                 # Update path of profile picture in database
                 db.execute("UPDATE users SET image=:image WHERE id=:user_id", user_id=session.get("user_id"), image=path)
@@ -505,7 +519,13 @@ def upload():
 
             # If file has no name
             if image.filename == "":
-                return redirect("/")
+                return apology("imagefile has no name")
+
+            # Get all imagenames existing already
+            image_names = [name for name in listdir("static/posts/")]
+
+            if image.filename in image_names:
+                return apology("Please change the name of the image")
 
             # If image is allowed
             if allowed_image(image.filename):
@@ -523,12 +543,12 @@ def upload():
                 discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"),
                 postal=request.form.get("postal"), city=request.form.get("city"), user_id=session.get("user_id"), number=request.form.get("number"))
 
-                # Redirect to upload.html
+                # Redirect to profile.html
                 return redirect("/")
 
             # If image is not allowed redirect to upload.html
             else:
-                return redirect("/")
+                return redirect("/upload")
 
         # If user didnt upload a picture
         else:
