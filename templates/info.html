@@ -41,28 +41,29 @@
     <center><h1>Name of this spot: {{titles[0]["title"]}} </h2></center>
     <center><h1>Discription: {{titles[0]["discription"]}} </h2></center>
     <center><h1>Adress: {{titles[0]["street"]}} {{titles[0]["number"]}} {{titles[0]["postal"]}} {{titles[0]["city"]}}</h2></center>
-    <p><center><a href="/" class="btn btn-info btn-lg">
-          <span class="glyphicon glyphicon-star"></span> Favorite
-        </a></center></p>
 
-        <!--<p><center><a href="/" class="btn btn-info btn-lg">-->
-        <!--  <span class="glyphicon glyphicon-heart"></span> Heart-->
-        <!--</a></center></p>-->
+
+        <!-- When button is clicked, liker saves the post into favorites -->
+        <form action="/favorite/{{number}}" method="POST">
+            <p><center><button class="btn btn-info btn-lg" type="submit"><span class="glyphicon glyphicon-star"></span> Favorite </button></center></p>
+        </form>
 
         <!-- User can like post via button, when the post is already liked the user kan unlike a post -->
         {% if bool_like %}
             <form action="/like/{{number}}" method="POST">
-                <center><button class="btn btn-primary" type="submit">Like</button></center>
+                <center><button class="btn btn-info btn-lg" type="submit"><span class="glyphicon glyphicon-heart"></span> Like</button></center>
             </form>
 
         {% elif not bool_like %}
             <form action="/unlike/{{number}}" method="POST">
-                <center><button class="btn btn-primary" type="submit">Unlike</button></center>
+                <center><button class="btn btn-info btn-lg" type="submit"> Unlike</button></center>
             </form>
         {% endif %}
+
+        <!-- User can delete post, if the post is upploaded by the user that is logged in -->
         {% if not bool_user %}
             <form action="/delete/{{number}}" method="POST">
-                <center><button class="btn btn-primary" type="submit">Delete post</button></center>
+                <p><center><button class="btn btn-info btn-lg" type="submit"><span class="glyphicon glyphicon-trash"></span> Delete post</button></center></p>
             </form>
         {% endif %}
 
