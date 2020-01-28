@@ -1,7 +1,7 @@
 import os
 
 from cs50 import SQL
-from flask import Flask, flash, jsonify, redirect, render_template, request, session
+from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
@@ -284,7 +284,7 @@ def like(post_id):
     user_id = session.get("user_id")
     db.execute("INSERT INTO likes (post_id, user_id) VALUES(:post_id, :user_id)", post_id=post_id, user_id=user_id)
 
-    return redirect("/discover")
+    return redirect(url_for("info", post_id=post_id))
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -480,7 +480,7 @@ def unlike(post_id):
     user_id = session.get("user_id")
     db.execute("DELETE FROM likes WHERE post_id=:post_id AND user_id=:user_id", post_id=post_id, user_id=user_id)
 
-    return redirect("/discover")
+    return redirect(url_for("info", post_id=post_id))
 
 
 # TODO: Filter wrong user input
