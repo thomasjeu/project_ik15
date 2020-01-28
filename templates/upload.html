@@ -6,37 +6,37 @@
 {% endblock %}
 
 {% block main %}
-    <form action="/upload" method="post" enctype="multipart/form-data" >
+    <form class="needs-validation" action="/upload" method="post" enctype="multipart/form-data" >
 
         <!-- User selects image from computer files -->
         <p>Upload picture:</p>
-            <div class="form-group">
-              <label>Select image</label>
-              <div class="custom-file">
-                <input type="file" class="custom-file-input" name="image" id="image" oninput="filesize(this);">
-                <label class="custom-file-label" for="image">Select image...</label>
-              </div>
-            </div>
+        <div class="form-group">
+          <label>Select image</label>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" name="image" id="image" oninput="filesize(this);" required>
+            <label class="custom-file-label" for="image">Select image...</label>
+          </div>
+        </div>
 
         <!-- User fills in the name of the spot -->
         <p>This spot is named:</p>
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" id="place name" name="place name" placeholder="Name of this spot ..." type="text">
+            <input autocomplete="off" autofocus class="form-control" id="place name" name="place name" placeholder="Name of this spot ..." type="text" required>
         </div>
 
         <!-- User fills in a discription of the StudySpot -->
         <p><label for="counter-input" class="label">Photo discription(max 150):  <span id="counter-display" class="tag is-success">0</span></label></p>
         <div class="form-group">
-            <textarea rows="4" cols="40" id="discription" name="discription" placeholder="Tell us what's the best about this place or what you loved most about the chairs ... Whatever it is you want to tell us :) " type="text" maxlength='150'></textarea>
+            <textarea rows="4" cols="40" id="discription" name="discription" placeholder="Tell us what's the best about this place or what you loved most about the chairs ... Whatever it is you want to tell us :) " type="text" maxlength='150' required></textarea>
         </div>
 
         <!-- User fills in adress of the StudySpot -->
         <p>Adress</p>
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" id="street" name="street" placeholder="Street name" type="text">
-            <input autocomplete="off" autofocus class="form-control" id="number" name="number" placeholder="Number" type="text">
-            <input autocomplete="off" autofocus class="form-control" id="postal" name="postal" placeholder="Postal code" type="text">
-            <input autocomplete="off" autofocus class="form-control" id="city" name="city" placeholder="City" type="text">
+            <input autocomplete="off" autofocus class="form-control" id="street" name="street" placeholder="Street name" type="text" required>
+            <input autocomplete="off" autofocus class="form-control" id="number" name="number" placeholder="Number" type="text" required>
+            <input autocomplete="off" autofocus class="form-control" id="postal" name="postal" placeholder="Postal code" type="text" required>
+            <input autocomplete="off" autofocus class="form-control" id="city" name="city" placeholder="City" type="text" required>
 
         </div>
 
@@ -68,6 +68,30 @@
 
       counter.init();
 
+    })();
+
+    // https://getbootstrap.com/docs/4.1/components/forms/#validation script for bootstrap validation with some additions
+    // User feedback on user input
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+
+            // If not all fields are filled on or username is already taken
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+
+            // All fields have valid input
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
     })();
 
 </script>
