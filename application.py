@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 import random
 
 # import functions from helpers.py
-from helpers import apology, login_required, change_password, change_username, change_discription, fill_post_dict, user_information, is_following, is_user, liked_post
+from helpers import apology, login_required, change_password, change_username, change_discription, fill_post_dict, user_information, is_following, is_user, liked_post, favo_post
 
 
 # Configure application
@@ -168,11 +168,14 @@ def discover():
     username = db.execute("SELECT username FROM users WHERE id=:id", id=user_id)
     likes = len(db.execute("SELECT post_id FROM likes WHERE post_id=:post_id", post_id=post_id))
 
+    # True if user didnt favorite the post
+    bool_favo = favo_post(session.get("user_id"), post_id)
+
     # True if user didnt like the post
     bool_like = liked_post(session.get("user_id"), post_id)
 
     # Render discover.html
-    return render_template("discover.html", post=post, number=post_id, bool_like=bool_like, username=username, likes=likes)
+    return render_template("discover.html", post=post, number=post_id, bool_like=bool_like, username=username, likes=likes, bool_favo=bool_favo)
 
 
 @app.route("/favorite/<int:post_id>", methods=["POST"])
@@ -267,18 +270,18 @@ def info(post_id):
     titles = db.execute("SELECT * FROM uploads WHERE id=:id", id=post_id)
     user = titles[0]["user_id"]
     name = db.execute("SELECT username FROM users WHERE id=:id", id=user)
-    liking = db.execute("SELECT post_id FROM likes WHERE user_id=:user_id AND post_id=:post_id", user_id=user_id, post_id=post_id)
-    # False if user already liked this post
-    if liking:
-        bool_like= False
-    else:
-        bool_like = True
+
+    # True if user didnt favorite the post
+    bool_favo = favo_post(session.get("user_id"), post_id)
+
+    # True if user didnt like the post
+    bool_like = liked_post(session.get("user_id"), post_id)
 
     # False if user looks at his own post
     bool_user = is_user(user, user_id)
 
     #
-    return render_template("info.html",titles=titles, number=post_id, name=name, bool_like=bool_like, user=user, bool_user=bool_user)
+    return render_template("info.html",titles=titles, number=post_id, name=name, bool_like=bool_like, user=user, bool_user=bool_user, bool_favo=bool_favo)
 
 
 @app.route("/like/<int:post_id>", methods=["POST"])
@@ -475,6 +478,17 @@ def settings():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("settings.html")
+
+
+@app.route("/unfavorite/<int:post_id>", methods=["POST"])
+@login_required
+def unfavorite(post_id):
+    """Allowing user to unfavorite a post they favorited before"""
+    user_id = session.get("user_id")
+    db.execute("DELETE FROM favorites WHERE post_id=:post_id AND user_id=:user_id", post_id=post_id, user_id=user_id)
+
+    return redirect(url_for("info", post_id=post_id))
+
 
 
 @app.route("/unfollow/<int:follow_id>", methods=["POST"])

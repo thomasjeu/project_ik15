@@ -42,11 +42,17 @@
     <center><h1>Discription: {{titles[0]["discription"]}} </h2></center>
     <center><h1>Adress: {{titles[0]["street"]}} {{titles[0]["number"]}} {{titles[0]["postal"]}} {{titles[0]["city"]}}</h2></center>
 
+        <!-- User can favorite post via button, when the post is already favorited the user kan unfavorite a post -->
+        {% if bool_favo %}
+            <form action="/favorite/{{number}}" method="POST">
+                <p><center><button class="btn btn-info btn-lg" type="submit"><span class="glyphicon glyphicon-star"></span> Favorite </button></center></p>
+            </form>
 
-        <!-- When button is clicked, liker saves the post into favorites -->
-        <form action="/favorite/{{number}}" method="POST">
-            <p><center><button class="btn btn-info btn-lg" type="submit"><span class="glyphicon glyphicon-star"></span> Favorite </button></center></p>
-        </form>
+        {% elif not bool_favo %}
+            <form action="/unfavorite/{{number}}" method="POST">
+                <p><center><button class="btn btn-info btn-lg" type="submit"><span class="glyphicon glyphicon-star"></span> Unfavorite </button></center></p>
+            </form>
+        {% endif %}
 
         <!-- User can like post via button, when the post is already liked the user kan unlike a post -->
         {% if bool_like %}

@@ -105,6 +105,15 @@ def liked_post(user_id, post_id):
     return True
 
 
+def favo_post(user_id, post_id):
+    """"""
+    favos = db.execute("SELECT post_id FROM favorites WHERE user_id=:user_id AND post_id=:post_id", user_id=session.get("user_id"), post_id=post_id)
+    # False if user already liked this post
+    if favos:
+        return False
+    return True
+
+
 def user_information(user_id):
     """Returns user information for profile page"""
 
