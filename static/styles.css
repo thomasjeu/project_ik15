@@ -12,6 +12,14 @@
   top: 50%;
 }
 
+.truecenter_2 {
+  float: none;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 50%;
+}
+
 .row {
   display: flex;
   flex-wrap: wrap;
