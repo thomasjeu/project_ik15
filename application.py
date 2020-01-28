@@ -515,13 +515,36 @@ def upload():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
+        # Get form values
+        discription = request.form.get("discription")
+        title = request.form.get("place name")
+        street = request.form.get("street")
+        postal = request.form.get("postal")
+        city=request.form.get("city")
+        number=request.form.get("number")
+
+        # Return apologies if one of the form fields wasnt filled in
+        if not discription:
+            return apology("Must provide a discription")
+
+        if not title:
+            return apology("Must provide the name of the place")
+
+        if not street:
+            return apology("Must provide a streetname")
+
+        if not postal:
+            return apology("Must provide a postalcode")
+
+        if not city:
+            return apology("Must provide a city or town name")
+
+        if not number:
+            return apology("Must provide a street number")
+
+
         # If a image was uploaded
         if request.files:
-
-            # if "filesize" in request.cookies:
-
-                # if not allowed_image_filesize(request.cookies["filesize"]):
-                #     return redirect(request.url)
 
             # Get image file
             image = request.files["image"]
@@ -549,15 +572,14 @@ def upload():
 
                 # Insert path to file in the database
                 db.execute("INSERT INTO uploads (discription, path, title, street, postal, city, user_id, number) VALUES (:discription, :path, :title, :street, :postal, :city, :user_id, :number)",
-                discription=request.form.get("discription"), path=path, title=request.form.get("place name"), street=request.form.get("street"),
-                postal=request.form.get("postal"), city=request.form.get("city"), user_id=session.get("user_id"), number=request.form.get("number"))
+                discription=discription, path=path, title=title, street=street, postal=postal, city=city, user_id=session.get("user_id"), number=number)
 
                 # Redirect to profile.html
                 return redirect("/")
 
             # If image is not allowed redirect to upload.html
             else:
-                return redirect("/upload")
+                return apology("File extensions is not allowed upload a JPEG, JPG, PNG or GIF file ")
 
         # If user didnt upload a picture
         else:
