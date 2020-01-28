@@ -199,16 +199,11 @@ def favorites():
     if favorites:
         #
         posts = []
-        numberset = set()
         for post in favorites:
-            posts.append(db.execute("SELECT path FROM uploads WHERE id=:id", id=post['post_id']))
-            numberset.add(post["post_id"])
-
-        # Choose a random post
-        number = random.choice(tuple(numberset))
+            posts.append(db.execute("SELECT id, path, title  FROM uploads WHERE id=:id", id=post['post_id']))
 
         # render html page
-        return render_template("favorites.html", post=posts[0], number=number)
+        return render_template("favorites.html", posts=posts)
 
     else:
         return apology("You dont have any favorite posts yet")
