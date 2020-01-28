@@ -16,7 +16,7 @@
 
 <center><h2><b>Discover {{ randomvalue }}</b></h2></center>
 <body>
-<center><p>Get in touch with other people and their places :)</p></center>
+<center><p>Get in touch with other people and their StudySpots :)</p></center>
 
 <!-- Round edges of image -->
 <style>
@@ -42,18 +42,18 @@
 
         <!-- When button is clicked, liker saves the post into favorites -->
         <form action="/favorite/{{number}}" method="POST">
-            <center><button class="btn btn-primary" type="submit">Favorite</button></center>
+            <p><center><button class="btn btn-info btn-lg" type="submit"><span class="glyphicon glyphicon-star"></span> Favorite </button></center></p>
         </form>
 
         <!-- User can like post via button, when the post is already liked the user kan unlike a post -->
         {% if bool_like %}
             <form action="/like/{{number}}" method="POST">
-                <center><button class="btn btn-primary" type="submit">Like</button></center>
+                <center><button class="btn btn-info btn-lg" type="submit"><span class="glyphicon glyphicon-heart"></span> Like</button></center>
             </form>
 
         {% elif not bool_like %}
             <form action="/unlike/{{number}}" method="POST">
-                <center><button class="btn btn-primary" type="submit">Unlike</button></center>
+                <center><button class="btn btn-info btn-lg" type="submit">Unlike</button></center>
             </form>
         {% endif %}
 
