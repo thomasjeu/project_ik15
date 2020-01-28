@@ -1,129 +1,91 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout2.html" %}
 
-<head>
-    <title>StudySpot: Log In</title>
+{% block title %}
+    Login
+{% endblock %}
 
-    <!-- Stylesheets for glyphicons -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+{% block main %}
 
-    <!-- favicon -->
-    <link rel="icon" href="/static/favicon.ico">
+    <!--login form-->
+    <form class="needs-validation" action="/login" method="post" novalidate>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" id="username" name="username" placeholder="Username" type="text" required>
+            <div class="invalid-feedback" id="usercheck">
+                Please provide your username
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" id="password" name="password" placeholder="Password" type="password" required>
+            <div class="invalid-feedback" id="passcheck">
+                Please provide your password
+            </div>
+        </div>
 
-    <!-- stylesheets -->
-    <link rel="stylesheet" href="/static/styles.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <p>
+        <button class="btn btn-primary" type="submit">Log In</button>
+        </p>
+    </form>
 
-<style>
-#frame {
-  border: 5px solid black;
-  padding: 15px;
-  background: #ffffff;
-  background-clip: border-box;
-}
-.transbox {
-      margin: 30px;
-      background-color: #ffffff;
-      border: 1px solid black;
-      opacity: 0.7;
-      filter: alpha(opacity=60);
-    }
-body {
-  background-color: #37649b;
-}
+    <!--redirect to register-->
+    <p>No account? Register now!</p>
+    <button class="btn btn-primary" onclick="window.location.href = '/register';">Register</button>
 
-</style>
-</head>
-<body>
-     <!-- Top menu -->
-    <div class="w3-top">
-      <div class="w3-white w3-xlarge" style="max-width:auto;margin:auto">
-        <center><div class="w3-center w3-padding-16 w3-button"><a href="/">StudySpot</a></div></center>
-      </div>
-    </div>
-
-
-    <!-- !PAGE CONTENT! -->
-    <div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px" onclick="w3_close()">
-
-      <main class="container p-5">
-
-
-
-
-
-        <div id="frame">
-          <p>        <center>
-
-            <!--login form-->
-            <form action="/login" method="post" class=>
-                <div class="form-group">
-                    <input autocomplete="off" autofocus class="form-control" id="username" name="username" placeholder="Username" type="text" required>
-                    <div class="invalid-feedback" id="usercheck">
-                        Please provide your username
-                    </div>
-                </div>
-                <div class="form-group">
-                    <input class="form-control" id="password" name="password" placeholder="Password" type="password" required>
-                    <div class="invalid-feedback" id="passcheck">
-                        Please provide your password
-                    </div>
-                </div>
-
-                <p>
-                <button class="btn btn-primary" onclick="main()" type="submit">Log In</button>
-                </p>
-            </form>
-
-            <!--redirect to register-->
-            <p>No account? Register now!</p>
-            <button class="btn btn-primary" onclick="window.location.href = '/register';">Register</button>
-
-        </center></p>
-</div>
-<p>
+    <!-- Introduction text-->
     <font color="white">
-    <center>
-        <h1>
-            What is StudySpot?
-            <h4>
-                StudySpot is the one and only workplace-finding site, especially for students. Nowadays, finding a peaceful, relaxing area without too much
-                noise isn't easy. Therefore you and other students can make the decision yourself. Upload your own found studyplace and share it with others!
-                Not really feeling it today? Just discover studyplaces other students uploaded!
-                <p>
-                More information? click <a href="/about"><U>here</U>.</a>
-                </p>
-            </h4>
-        </h1>
+        <center>
+            <h1>
+                What is StudySpot?
+                <h4>
+                    StudySpot is the one and only workplace-finding site, especially for students. Nowadays, finding a peaceful, relaxing area without too much
+                    noise isn't easy. Therefore you and other students can make the decision yourself. Upload your own found studyplace and share it with others!
+                    Not really feeling it today? Just discover studyplaces other students uploaded!
 
-    </center>
+                    <p>More information? click <a href="/about"><U>here</U>.</a></p>
+                </h4>
+            </h1>
+        </center>
     </font>
-</p>
-    </div>
-        </main>
 
-
-</body>
-
+    <!-- Script, gives feedback on user input -->
     <script>
         // Check if username is in the database
-        let username = document.getElementById('username');
+        let username = document.getElementById("username");
         username.onkeyup = function() {
             $.get('/check?username='+ username.value, function(check) {
-                // if username doesnt exist in the database
-                if (check || username.value == "") {
-                    document.getElementById("usercheck").innerHTML = "Please provide your username";
+                if (!check) {
+                    document.getElementById("usercheck").innerHTML = "Username is incorrect";
                     username.setAttribute("class", "form-control is-invalid");
                 }
-                // if username is exists in the database
                 else {
-                    document.getElementById("usercheck").innerHTML = "Username is incorrect";
+                    document.getElementById("usercheck").innerHTML = "Please provide your password";
                     username.setAttribute("class", "form-control");
                 }
             });
         }
+
+        //
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+
+                        // If not all fields are filled on or username is already taken
+                        if (form.checkValidity() === false || username.getAttribute("class") == "form-control is-invalid") {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+
+                        // All fields have valid input
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+         })();
+
     </script>
+
+{% endblock %}
