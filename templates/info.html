@@ -2,10 +2,25 @@
 <html>
   <head>
 
+    <!-- Stylesheets for glyphicons -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- favicon -->
+    <link rel="icon" href="/static/favicon.ico">
+
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <!-- javascript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
 
     <style>
       /* Set the size of the div element that contains the map */
@@ -16,8 +31,7 @@
     </style>
   </head>
   <head>
-    <title>Geocoding service</title>
-    <center><h1>Location of this spot</h1></center>
+    <title>StudySpot: Info</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
@@ -36,6 +50,45 @@
     </style>
   </head>
   <body>
+
+    <!-- Sidebar (hidden by default) -->
+    <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:2;width:40%;min-width:300px" id="mySidebar">
+      <option disabled value="" class="w3-bar-item w3-button">StudySpot</option>
+        <a href="/upload" onclick="w3_close()" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</a>
+        <a href="/discover" onclick="w3_close()" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-globe"></span> Discover</a>
+        <a href="/" onclick="w3_close()" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-user"></span> Profile</a>
+        <a href="/following" onclick="w3_close()" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-th-large"></span> Following</a>
+        <a href="/favorites" onclick="w3_close()" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-star"></span> Favorites</a>
+      <option disabled value="" class="w3-bar-item w3-button">___________________________</option>
+        <a href="/settings" onclick="w3_close()" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-wrench"></span> Settings</a>
+        <a href="/about" onclick="w3_close()" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-education"></span> About StudySpot</a>
+        <a href="javascript:void(0)" onclick="w3_close()"
+        class="w3-bar-item w3-button" text-size=><b><span class="glyphicon glyphicon-arrow-left"></span> Go back</b></a>
+
+
+
+
+        <a href="/logout" onclick="w3_close()" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-log-out"></span> Log out</a>
+
+    </nav>
+
+    <!-- Top menu -->
+
+    <div class="w3-top">
+      <div class="w3-white w3-xlarge" style="max-width:auto;margin:auto">
+        <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰ Menu</div>
+        <center><div class="w3-center w3-padding-16 w3-button"><a href="/">StudySpot</a></div></center>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
     <div id="map"></div>
     <center><h1><a u href="/{{user}}">StudySpotter: {{name[0]["username"]}}</a></h1></center>
     <center><h1>Name of this spot: {{titles[0]["title"]}} </h2></center>
@@ -109,6 +162,19 @@
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbGDrm0-V8P-eF65UUCjSfhx-82DsvjRE&callback=initMap">
+    </script>
+
+        <script>
+      // Script to open and close sidebar
+      function w3_open()
+      {
+        document.getElementById("mySidebar").style.display = "block";
+      }
+
+      function w3_close()
+      {
+        document.getElementById("mySidebar").style.display = "none";
+      }
     </script>
 
 
