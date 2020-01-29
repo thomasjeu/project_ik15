@@ -28,6 +28,7 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
@@ -77,6 +78,7 @@ def profile():
     # Render profile page
     return render_template("profile.html", discription=discription, username=username, picture=picture, followerslist=followers_list, followinglist=following_list, iddict=id_dict, post_dict=post_dict)
 
+
 @app.route("/<int:user_id>")
 @login_required
 def userprofile(user_id):
@@ -114,8 +116,8 @@ def userprofile(user_id):
             id_dict[name[0]["username"]] = user["follow_id"]
 
     # Render profile page
-    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=user_id, bool_follow=bool_follow
-    , followerslist=followers_list, followinglist=following_list, iddict=id_dict, post_dict=post_dict)
+    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=user_id, bool_follow=bool_follow,
+                           followerslist=followers_list, followinglist=following_list, iddict=id_dict, post_dict=post_dict)
 
 
 @app.route("/about")
@@ -267,6 +269,7 @@ def following():
     else:
         return apology("You are not following anyone")
 
+
 @app.route("/info/<int:post_id>")
 @login_required
 def info(post_id):
@@ -287,7 +290,7 @@ def info(post_id):
     bool_user = is_user(user, user_id)
 
     #
-    return render_template("info.html",titles=titles, number=post_id, name=name, bool_like=bool_like, user=user, bool_user=bool_user, bool_favo=bool_favo)
+    return render_template("info.html", titles=titles, number=post_id, name=name, bool_like=bool_like, user=user, bool_user=bool_user, bool_favo=bool_favo)
 
 
 @app.route("/like/<int:post_id>", methods=["POST"])
@@ -383,7 +386,8 @@ def register():
         hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
 
         # Insert user into the database
-        db.execute("INSERT INTO users (username, hash, image, discription) VALUES (:username, :hash, :image, :discription)", username=username, hash=hash, image="static/profile/grumpy.png", discription="Add a discription in settings and change your profile picture")
+        db.execute("INSERT INTO users (username, hash, image, discription) VALUES (:username, :hash, :image, :discription)", username=username,
+                   hash=hash, image="static/profile/grumpy.png", discription="Add a discription in settings and change your profile picture")
 
         # Redirect to /login
         return redirect("/login")
@@ -407,7 +411,6 @@ def settings():
         discription = request.form.get("discription")
         password = request.form.get("password")
         user_id = session.get("user_id")
-
 
         # Check if passwords are similair
         if (password != confirmation):
@@ -435,14 +438,8 @@ def settings():
         if request.form.get("discription"):
             change_discription(discription, user_id)
 
-
         # Changes profile picture
         if request.files:
-
-            # if "filesize" in request.cookies:
-
-                # if not allowed_image_filesize(request.cookies["filesize"]):
-                #     return redirect(request.url)
 
             # Get image file
             image = request.files["image"]
@@ -477,7 +474,6 @@ def settings():
                 # Redirect to profile.html
                 return redirect("/")
 
-
         # Redirect to profile.html
         return redirect("/")
 
@@ -501,7 +497,6 @@ def unfavorite(post_id):
         db.execute("UPDATE uploads SET status=1 WHERE id=:post_id", post_id=post_id)
 
     return redirect(url_for("info", post_id=post_id))
-
 
 
 @app.route("/unfollow/<int:follow_id>", methods=["POST"])
@@ -538,8 +533,8 @@ def upload():
         title = request.form.get("place name")
         street = request.form.get("street")
         postal = request.form.get("postal")
-        city=request.form.get("city")
-        number=request.form.get("number")
+        city = request.form.get("city")
+        number = request.form.get("number")
 
         # Return apologies if one of the form fields wasnt filled in
         if not discription:
@@ -559,7 +554,6 @@ def upload():
 
         if not number:
             return apology("Must provide a street number")
-
 
         # If a image was uploaded
         if request.files:
@@ -590,7 +584,7 @@ def upload():
 
                 # Insert path to file in the database
                 db.execute("INSERT INTO uploads (discription, path, title, street, postal, city, user_id, number) VALUES (:discription, :path, :title, :street, :postal, :city, :user_id, :number)",
-                discription=discription, path=path, title=title, street=street, postal=postal, city=city, user_id=session.get("user_id"), number=number)
+                           discription=discription, path=path, title=title, street=street, postal=postal, city=city, user_id=session.get("user_id"), number=number)
 
                 # Redirect to profile.html
                 return redirect("/")
