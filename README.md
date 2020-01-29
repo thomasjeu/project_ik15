@@ -6,8 +6,9 @@
 Het doel van onze webapplicatie is het mogelijk maken om studieplekken te delen en te ontdekken.
 De vraag naar studieplekken onder studenten is groot, maar het vinden van een goede studieplek is lastig.
 ​
-## Screenshot van de webapplicatie
-SCREENSHOT APPLICATIE in aparte docs map
+## Screenshots van de webapplicatie
+De screenshots van de webapplicatie staan in een aparte docs map.
+
 ## Features
 1. Een gebruiker kan zich registreren of inloggen met zijn gebruikersnaam en wachtwoord.
     * Wachtwoorden zonder cijfer worden geweigerd
@@ -63,6 +64,10 @@ SCREENSHOT APPLICATIE in aparte docs map
 
 11. Gebruikers kunnen naar een favorieten pagina, waar al hun favoriete posts zijn opgeslagen.
     * Deze worden als een fotocollage weergegeven en zijn klikbaar, ze verwijzen naar de meer informatie pagina van de post
+    * Een post heeft een maximum van 50 favorieten, daarna is de post alleen nog zichtbaar op de favorietenpagina ( niet in discover, profile en following)
+         *Dit zodat een plek niet té vol zit en het niet meer lekker rustig is
+    * Een gebruiker kan maximaal 20 posts favorieten, daarna moet de gebruiker iets onfavorieten om weer iets nieuws te kunnen favorieten
+         *Gebruikers worden zo actief gestimuleerd posts te onfavorieten, waardoor de blokkade op posts die 50 favorieten hebben weer weg gaat. Hiermee is de post weer beschikbaar voor andere gebruikers (want favorieten is nu <50)
 
 12. Er bestaat ook een volgend pagina waar de posts van gebruikers die jij volgt staan
     * De posts worden weergegeven als een fotocollage en zijn klikbaar, ze verwijzen naar de meer informatie pagina van de post

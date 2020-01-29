@@ -14,6 +14,7 @@ db = SQL("sqlite:///admin.db")
 
 def apology(message, code=400):
     """Render message as an apology to user"""
+
     def escape(s):
         """
         Escape special characters.
@@ -25,6 +26,7 @@ def apology(message, code=400):
                          ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
             s = s.replace(old, new)
         return s
+
     return render_template("apology.html", top=code, bottom=escape(message)), code
 
 
@@ -144,6 +146,7 @@ def user_information(user_id):
 
     # Return user info
     return discription, username, posts, picture, followers, following
+
 
 def user_information_users(user_id):
     """Returns user information for profile page"""
