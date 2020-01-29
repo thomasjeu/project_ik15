@@ -6,6 +6,7 @@
 
 {% block main %}
 
+    <!--User needs to fill in a non existing username-->
     <form class="needs-validation" action="/register" method="post" novalidate>
         <div class="form-group">
             <input type="text" class="form-control" id="vc1" name="username" placeholder="Username" required>
@@ -13,6 +14,7 @@
                 Please provide a username
             </div>
         </div>
+        <!-- User has to fill in password and confirmation. If they don't match site displays an error.-->
         <div class="form-group" id="vc02">
             <input type="password" class="form-control" id="vc2" name="password" placeholder="Password" required>
             <div class="invalid-feedback" id="passcheck">
@@ -25,6 +27,7 @@
                 Password must be the same as above
             </div>
         </div>
+        <!--Register button saves new user-->
         <button class="btn btn-primary" onclick="lastcheck()" type="submit">Register</button>
     </form>
 
