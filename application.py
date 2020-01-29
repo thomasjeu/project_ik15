@@ -192,7 +192,7 @@ def favorite(post_id):
     amount = len(db.execute("SELECT post_id FROM favorites WHERE post_id=:post_id", post_id=post_id))
 
     # Change status to hidden if post has 100 or more favorites
-    if int(amount) > 99:
+    if int(amount) > 49:
         db.execute("UPDATE uploads SET status=0 WHERE id=:post_id", post_id=post_id)
 
     return redirect("/favorites")
@@ -493,7 +493,7 @@ def unfavorite(post_id):
     amount = len(db.execute("SELECT post_id FROM favorites WHERE post_id=:post_id", post_id=post_id))
 
     # Change status to hidden if post has 100 or more favorites
-    if int(amount) < 100:
+    if int(amount) < 50:
         db.execute("UPDATE uploads SET status=1 WHERE id=:post_id", post_id=post_id)
 
     return redirect(url_for("info", post_id=post_id))
