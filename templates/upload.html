@@ -47,28 +47,28 @@
 
     </form>
 
+    <script>
+
+        source: https://codepen.io/pi/pen/dXbwwa
+        (() => {
+          const counter = (() => {
+            const input = document.getElementById('discription'),
+              display = document.getElementById('counter-display'),
+              changeEvent = (evt) => display.innerHTML = evt.target.value.length,
+              getInput = () => input.value,
+              countEvent = () => input.addEventListener('keyup', changeEvent),
+              init = () => countEvent();
+
+            return {
+              init: init
+            }
+
+          })();
+
+          counter.init();
+
+        })();
+
+    </script>
+
 {% endblock %}
-
-<script>
-
-    source: https://codepen.io/pi/pen/dXbwwa
-    (() => {
-      const counter = (() => {
-        const input = document.getElementById('discription'),
-          display = document.getElementById('counter-display'),
-          changeEvent = (evt) => display.innerHTML = evt.target.value.length,
-          getInput = () => input.value,
-          countEvent = () => input.addEventListener('keyup', changeEvent),
-          init = () => countEvent();
-
-        return {
-          init: init
-        }
-
-      })();
-
-      counter.init();
-
-    })();
-
-</script>
