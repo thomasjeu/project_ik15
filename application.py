@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 import random
 
 # import functions from helpers.py
-from helpers import apology, login_required, change_password, change_username, change_discription, fill_post_dict, user_information, is_following, is_user, liked_post, favo_post
+from helpers import apology, login_required, change_password, change_username, change_discription, fill_post_dict, user_information, is_following, is_user, liked_post, favo_post, user_information_users
 
 
 # Configure application
@@ -83,7 +83,7 @@ def userprofile(user_id):
     """Show profile page"""
 
     # Get user information
-    discription, username, posts, picture, followers, following = user_information(user_id)
+    discription, username, posts, picture, followers, following = user_information_users(user_id)
 
     # False if user follows user already
     bool_follow = is_following(followers, session.get("user_id"))
@@ -159,7 +159,7 @@ def discover():
     """Let user discover studyspots"""
 
     # Get post info
-    posts = db.execute("SELECT id FROM uploads")
+    posts = db.execute("SELECT id FROM uploads WHERE status=1")
     id_set = set()
     [id_set.add(post["id"]) for post in posts]
     post_id = random.choice(tuple(id_set))
@@ -187,6 +187,13 @@ def favorite(post_id):
 
     # Add post to user's favorites
     db.execute("INSERT INTO favorites (post_id, user_id) VALUES (:post_id, :user_id)", post_id=post_id, user_id=user_id)
+
+    # Get the amount of favorites
+    amount = len(db.execute("SELECT post_id FROM favorites WHERE post_id=:post_id", post_id=post_id))
+
+    # Change status to hidden if post has 100 or more favorites
+    if int(amount) > 99:
+        db.execute("UPDATE uploads SET status=0 WHERE id=:post_id", post_id=post_id)
 
     return redirect("/favorites")
 
@@ -241,14 +248,14 @@ def following():
     if following:
         post_ids = []
         for user in following:
-            post_ids.append(db.execute("SELECT id FROM uploads WHERE user_id=:user_id", user_id=user['follow_id']))
+            post_ids.append(db.execute("SELECT id FROM uploads WHERE user_id=:user_id AND status=1", user_id=user['follow_id']))
 
         # Store all posts of all the people the user is following in posts
         posts = []
         for post_id in post_ids:
             # for every post the user has made
             for post in post_id:
-                posts.append(db.execute("SELECT id, path, title FROM uploads WHERE id=:id", id=post['id']))
+                posts.append(db.execute("SELECT id, path, title FROM uploads WHERE id=:id AND status=1", id=post['id']))
 
         # render html page
         return render_template("following.html", posts=posts)
@@ -481,6 +488,13 @@ def unfavorite(post_id):
     """Allowing user to unfavorite a post they favorited before"""
     user_id = session.get("user_id")
     db.execute("DELETE FROM favorites WHERE post_id=:post_id AND user_id=:user_id", post_id=post_id, user_id=user_id)
+
+    # Get the amount of favorites
+    amount = len(db.execute("SELECT post_id FROM favorites WHERE post_id=:post_id", post_id=post_id))
+
+    # Change status to hidden if post has 100 or more favorites
+    if int(amount) < 100:
+        db.execute("UPDATE uploads SET status=1 WHERE id=:post_id", post_id=post_id)
 
     return redirect(url_for("info", post_id=post_id))
 
