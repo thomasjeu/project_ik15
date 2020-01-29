@@ -203,7 +203,7 @@ def favorite(post_id):
     # Get the amount of favorites
     amount = len(db.execute("SELECT post_id FROM favorites WHERE post_id=:post_id", post_id=post_id))
 
-    # Change status to hidden if post has 100 or more favorites
+    # Change status to hidden if post has 50 or more favorites
     if int(amount) > 49:
         db.execute("UPDATE uploads SET status=0 WHERE id=:post_id", post_id=post_id)
 
@@ -508,16 +508,16 @@ def settings():
 def unfavorite(post_id):
     """ Allowing user to unfavorite a post they favorited before """
 
-    # Delete favorite from database that user unfavorite
-    user_id = session.get("user_id")
-    db.execute("DELETE FROM favorites WHERE post_id=:post_id AND user_id=:user_id", post_id=post_id, user_id=user_id)
-
     # Get the amount of favorites
     amount = len(db.execute("SELECT post_id FROM favorites WHERE post_id=:post_id", post_id=post_id))
 
-    # Change status to hidden if post has 50 or more favorites
-    if int(amount) < 50:
+    # Make the post visible again if it was hidden
+    if int(amount) > 49:
         db.execute("UPDATE uploads SET status=1 WHERE id=:post_id", post_id=post_id)
+
+    # Delete favorite from database that user unfavorite
+    user_id = session.get("user_id")
+    db.execute("DELETE FROM favorites WHERE post_id=:post_id AND user_id=:user_id", post_id=post_id, user_id=user_id)
 
     # Redirect to info page of the post
     return redirect(url_for("info", post_id=post_id))
