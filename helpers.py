@@ -13,13 +13,14 @@ db = SQL("sqlite:///admin.db")
 
 
 def apology(message, code=400):
-    """Render message as an apology to user."""
+    """Render message as an apology to user"""
     def escape(s):
         """
         Escape special characters.
 
         https://github.com/jacebrowning/memegen#special-characters
         """
+
         for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
                          ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
             s = s.replace(old, new)
@@ -37,7 +38,7 @@ def change_discription(discription, user_id):
 
 
 def change_password(password, confirmation, user_id):
-    """ Changes password """
+    """Changes password"""
 
     # Hashes the password
     hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
@@ -46,6 +47,7 @@ def change_password(password, confirmation, user_id):
     db.execute("UPDATE users SET hash=:hash WHERE id=:user_id", user_id=user_id, hash=hash)
 
     return True
+
 
 def change_username(username, user_id):
     """Changes the username"""
@@ -62,6 +64,7 @@ def login_required(f):
 
     http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
     """
+
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if session.get("user_id") is None:
@@ -72,45 +75,59 @@ def login_required(f):
 
 def fill_post_dict(posts):
     """Fill post_dict with amount of likes the post has"""
+
     post_dict = {}
+
+    # Fills the post_dict with amount of likes, title and path
     for post in posts:
-            likes = len(db.execute("SELECT post_id FROM likes WHERE post_id=:post_id", post_id=post["id"]))
-            titles = db.execute("SELECT title FROM uploads WHERE id=:id", id=post["id"])
-            title = titles[0]["title"]
-            post_dict[post["id"]] = (post["path"], likes, title)
+        likes = len(db.execute("SELECT post_id FROM likes WHERE post_id=:post_id", post_id=post["id"]))
+        titles = db.execute("SELECT title FROM uploads WHERE id=:id", id=post["id"])
+        title = titles[0]["title"]
+        post_dict[post["id"]] = (post["path"], likes, title)
+
     return post_dict
 
 
 def is_following(followers, user_id):
     """False if user follows user already"""
+
     for user in followers:
         if user["user_id"] == user_id:
             return False
+
     return True
 
 
 def is_user(user, user_id):
     """False if user looks at his own page"""
+
     if user == user_id:
         return False
+
     return True
 
 
 def liked_post(user_id, post_id):
-    """"""
-    liking = db.execute("SELECT post_id FROM likes WHERE user_id=:user_id AND post_id=:post_id", user_id=session.get("user_id"), post_id=post_id)
-    # False if user already liked this post
+    """False if user already liked this post"""
+
+    liking = db.execute("SELECT post_id FROM likes WHERE user_id=:user_id AND post_id=:post_id",
+                        user_id=session.get("user_id"), post_id=post_id)
+
     if liking:
         return False
+
     return True
 
 
 def favo_post(user_id, post_id):
-    """"""
-    favos = db.execute("SELECT post_id FROM favorites WHERE user_id=:user_id AND post_id=:post_id", user_id=session.get("user_id"), post_id=post_id)
-    # False if user already liked this post
+    """False if user already favorited this post"""
+
+    favos = db.execute("SELECT post_id FROM favorites WHERE user_id=:user_id AND post_id=:post_id",
+                       user_id=session.get("user_id"), post_id=post_id)
+
     if favos:
         return False
+
     return True
 
 
