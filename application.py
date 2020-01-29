@@ -47,7 +47,7 @@ app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 @app.route("/")
 @login_required
 def profile():
-    """Show profile page"""
+    """ Show profile page """
 
     # Get user information
     user_id = session.get("user_id")
@@ -82,7 +82,7 @@ def profile():
 @app.route("/<int:user_id>")
 @login_required
 def userprofile(user_id):
-    """Show profile page"""
+    """ Show profile page """
 
     # Get user information
     discription, username, posts, picture, followers, following = user_information_users(user_id)
@@ -122,13 +122,13 @@ def userprofile(user_id):
 
 @app.route("/about")
 def about():
-    """Shows about page"""
+    """ Shows about page """
     return render_template("about.html")
 
 
 @app.route("/check", methods=["GET"])
 def check():
-    """Return true if username available, else false, in JSON format"""
+    """ Return true if username available, else false, in JSON format """
 
     # Get username that the user would like to have
     username = request.args.get("username")
@@ -146,19 +146,24 @@ def check():
 
 @app.route("/delete/<int:post_id>", methods=["POST"])
 def delete_post(post_id):
-    """"""
+    """ Deletes post from database """
+
+    # Removes image from static/posts
     path = db.execute("SELECT path FROM uploads WHERE id=:id", id=post_id)
     os.remove(path[0]["path"])
 
+    # Delete post from database and favorites related to the posts
     db.execute("DELETE FROM uploads WHERE id=:id", id=post_id)
     db.execute("DELETE FROM favorites WHERE post_id=:post_id", post_id=post_id)
+
+    # Redirect to profile page
     return redirect("/")
 
 
 @app.route("/discover")
 @login_required
 def discover():
-    """Let user discover studyspots"""
+    """ Let user discover studyspots """
 
     # Get post info
     posts = db.execute("SELECT id FROM uploads WHERE status=1")
@@ -183,7 +188,8 @@ def discover():
 @app.route("/favorite/<int:post_id>", methods=["POST"])
 @login_required
 def favorite(post_id):
-    """Add post to favorites"""
+    """ Add post to favorites """
+
     # Get id of the user
     user_id = session.get("user_id")
 
@@ -201,23 +207,25 @@ def favorite(post_id):
     if int(amount) > 49:
         db.execute("UPDATE uploads SET status=0 WHERE id=:post_id", post_id=post_id)
 
+    # Redirect to favorites
     return redirect("/favorites")
 
 
 @app.route("/favorites")
 @login_required
 def favorites():
-    """Show favoritespage"""
+    """ Show favoritespage """
 
     # Get user_id
     user_id = session.get("user_id")
 
-    # Get favorite posts of the user
+    # Get post_ids in users favorite
     favorites = db.execute("SELECT post_id FROM favorites WHERE user_id=:user_id", user_id=user_id)
 
     # If user has favorite posts
     if favorites:
-        #
+
+        # Get posts to be displayed
         posts = []
         for post in favorites:
             posts.append(db.execute("SELECT id, path, title  FROM uploads WHERE id=:id", id=post['post_id']))
@@ -225,6 +233,7 @@ def favorites():
         # render html page
         return render_template("favorites.html", posts=posts)
 
+    # Return apology if user has no favorite posts
     else:
         return apology("You dont have any favorite posts yet")
 
@@ -232,7 +241,7 @@ def favorites():
 @app.route("/follow/<int:follow_id>", methods=["POST"])
 @login_required
 def follow(follow_id):
-    """Lets user follow another user"""
+    """ Lets user follow another user """
 
     user_id = session.get("user_id")
     db.execute("INSERT INTO follow (follow_id, user_id) VALUES(:follow_id, :user_id)", follow_id=follow_id, user_id=user_id)
@@ -242,7 +251,7 @@ def follow(follow_id):
 @app.route("/following")
 @login_required
 def following():
-    """Show followingpage"""
+    """ Show followingpage """
 
     # Get user_id
     user_id = session.get("user_id")
@@ -266,16 +275,20 @@ def following():
         # render html page
         return render_template("following.html", posts=posts)
 
+    # Return apology if the user is not following anyone with posts
     else:
-        return apology("You are not following anyone")
+        return apology("You are not following anyone who have posts")
 
 
 @app.route("/info/<int:post_id>")
 @login_required
 def info(post_id):
-    """Show user extra information about studyspot"""
+    """ Show user extra information about studyspot """
+
+    # Get user_id
     user_id = session.get("user_id")
 
+    # Get all information from the post
     titles = db.execute("SELECT * FROM uploads WHERE id=:id", id=post_id)
     user = titles[0]["user_id"]
     name = db.execute("SELECT username FROM users WHERE id=:id", id=user)
@@ -289,23 +302,26 @@ def info(post_id):
     # False if user looks at his own post
     bool_user = is_user(user, user_id)
 
-    #
+    # Render info page
     return render_template("info.html", titles=titles, number=post_id, name=name, bool_like=bool_like, user=user, bool_user=bool_user, bool_favo=bool_favo)
 
 
 @app.route("/like/<int:post_id>", methods=["POST"])
 @login_required
 def like(post_id):
-    """Allowing user to like a post"""
+    """ Allowing user to like a post """
+
+    # Add like to database
     user_id = session.get("user_id")
     db.execute("INSERT INTO likes (post_id, user_id) VALUES(:post_id, :user_id)", post_id=post_id, user_id=user_id)
 
+    # Redirect to info page from the post
     return redirect(url_for("info", post_id=post_id))
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    """Log user in"""
+    """ Log user in """
 
     # Forget any user_id
     session.clear()
@@ -342,7 +358,7 @@ def login():
 
 @app.route("/logout")
 def logout():
-    """Log user out"""
+    """ Log user out """
 
     # Forget any user_id
     session.clear()
@@ -353,7 +369,7 @@ def logout():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    """Register user"""
+    """ Register user """
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
@@ -400,7 +416,7 @@ def register():
 @app.route("/settings", methods=["GET", "POST"])
 @login_required
 def settings():
-    """Change user settings"""
+    """ Change user settings """
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
@@ -425,6 +441,7 @@ def settings():
             # Username already exists
             if len(db.execute("SELECT * FROM users WHERE username = :username", username=username)) != 0:
                 return apology("username already exists")
+
             change_username(username, user_id)
 
         # Changes password
@@ -432,6 +449,7 @@ def settings():
             # Check if password meets restrictions
             if not any(char.isdigit() for char in password):
                 return apology("password must contain number")
+
             change_password(password, confirmation, user_id)
 
         # Changes discription
@@ -464,9 +482,10 @@ def settings():
                 # Path to image file
                 path = "static/profile/" + filename
 
-                # Delete previous image
+                # Delete previous image if it is not grumpy
                 previous_path = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=session.get("user_id"))
-                os.remove(previous_path[0]["image"])
+                if previous_path != "static/profile/grumpy.png":
+                    os.remove(previous_path[0]["image"])
 
                 # Update path of profile picture in database
                 db.execute("UPDATE users SET image=:image WHERE id=:user_id", user_id=session.get("user_id"), image=path)
@@ -485,37 +504,46 @@ def settings():
 @app.route("/unfavorite/<int:post_id>", methods=["POST"])
 @login_required
 def unfavorite(post_id):
-    """Allowing user to unfavorite a post they favorited before"""
+    """ Allowing user to unfavorite a post they favorited before """
+
+    # Delete favorite from database that user unfavorite
     user_id = session.get("user_id")
     db.execute("DELETE FROM favorites WHERE post_id=:post_id AND user_id=:user_id", post_id=post_id, user_id=user_id)
 
     # Get the amount of favorites
     amount = len(db.execute("SELECT post_id FROM favorites WHERE post_id=:post_id", post_id=post_id))
 
-    # Change status to hidden if post has 100 or more favorites
+    # Change status to hidden if post has 50 or more favorites
     if int(amount) < 50:
         db.execute("UPDATE uploads SET status=1 WHERE id=:post_id", post_id=post_id)
 
+    # Redirect to info page of the post
     return redirect(url_for("info", post_id=post_id))
 
 
 @app.route("/unfollow/<int:follow_id>", methods=["POST"])
 @login_required
 def unfollow(follow_id):
-    """Let user unfollow another user"""
+    """ Let user unfollow another user """
 
+    # Delete follow from database
     user_id = session.get("user_id")
     db.execute("DELETE FROM follow WHERE follow_id=:follow_id AND user_id=:user_id", follow_id=follow_id, user_id=user_id)
+
+    # Redirect to profile page
     return redirect("/")
 
 
 @app.route("/unlike/<int:post_id>", methods=["POST"])
 @login_required
 def unlike(post_id):
-    """Allowing user to unlike a post they liked before"""
+    """ Allowing user to unlike a post they liked before """
+
+    # Unlike the post
     user_id = session.get("user_id")
     db.execute("DELETE FROM likes WHERE post_id=:post_id AND user_id=:user_id", post_id=post_id, user_id=user_id)
 
+    # Redirect to info page of the post
     return redirect(url_for("info", post_id=post_id))
 
 
@@ -523,7 +551,7 @@ def unlike(post_id):
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
 def upload():
-    """Upload studyspot"""
+    """ Upload studyspot """
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
@@ -603,21 +631,20 @@ def upload():
 
 
 # Non route functions
-
 def errorhandler(e):
-    """Handle error"""
+    """ Handle error """
     if not isinstance(e, HTTPException):
         e = InternalServerError()
     return apology(e.name, e.code)
 
 
 for code in default_exceptions:
-    """Listen for errors"""
+    """ Listen for errors """
     app.errorhandler(code)(errorhandler)
 
 
 def allowed_image(filename):
-    """Checks if image file has allowed extension"""
+    """ Checks if image file has allowed extension """
 
     # Return false if filename has no dot
     if not "." in filename:
@@ -634,7 +661,7 @@ def allowed_image(filename):
 
 
 def allowed_image_filesize(filesize):
-    """Checks if image is not too large"""
+    """ Checks if image is not too large """
 
     # Return true if image is not larger then set maximum
     if int(filesize) <= app.config["MAX_IMAGE_FILESIZE"]:
