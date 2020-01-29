@@ -22,7 +22,7 @@
         </div>
 
         <p>
-        <button class="btn btn-primary" type="submit">Log In</button>
+        <button class="btn btn-primary" onclick="main();" type="submit">Log In</button>
         </p>
     </form>
 
@@ -53,23 +53,25 @@
     <!-- Script, gives feedback on user input -->
     <script>
         // Check if username is in the database
-        // let username = document.getElementById("user");
-        // username.onkeyup = function() {
-        //     $.get('/check?username='+ username.value, function(check) {
-        //         if (check) {
-        //             document.getElementById("usercheck").innerHTML = "Username is incorrect";
-        //             username.setAttribute("class", "form-control is-invalid");
-        //         }
-        //         else if (username.value == "") {
-        //             document.getElementById("usercheck").innerHTML = "Please provide your password";
-        //             username.setAttribute("class", "form-control is invalid");
-        //         }
-        //         else {
-        //             document.getElementById("usercheck").innerHTML = "Please provide your password";
-        //             username.setAttribute("class", "form-control");
-        //         }
-        //     });
-        // }
+        function main() {
+            var username = document.getElementById("user");
+            // var password = document.getElementById("pass");
+            $.get('/check?username='+ username.value, function(check) {
+                // alert(check)
+                if (check) {
+                    document.getElementById("usercheck").innerHTML = "Username is incorrect";
+                    username.setAttribute("class", "form-control is-invalid");
+                }
+                else if (username.value == "") {
+                    document.getElementById("usercheck").innerHTML = "Please provide your username";
+                    username.setAttribute("class", "form-control is invalid");
+                }
+                else {
+                    document.getElementById("usercheck").innerHTML = "Please provide your username";
+                    username.setAttribute("class", "form-control");
+                }
+            });
+        }
 
         //
         (function() {
