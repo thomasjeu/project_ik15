@@ -14,9 +14,11 @@ SCREENSHOT APPLICATIE in aparte docs map
     * Inloggen zonder geldig gebruikersnaam/wachtwoord wordt geweigerd
     * Door middel van JavaScript wordt er bij inloggen live weergegeven of de gebruikersnaam wel bestaat, zo niet dan werkt de inlogknop niet
     * Op de zelfde manier wordt er met JavaScript bij register gecontroleerd of de username niet al bestaat, of het wachtwoord voldoet aan de eisen en of het wachtwoord en de bevestiging overeenkomen
+    * Er staat een stukje tekst over wat de website doet, met een link naar de about pagina voor meer informatie
 
 2. Een gebruiker kan de profielen van andere gebruikers en zichzelf zien.
     * Een profielpagina bestaat uit een gebruikersnaam, profielfoto, gebruikersbeschrijving, geposte StudySpots van de gebruiker en een lijst van volgers/volgend
+    * De namen in de volgers/volgend lijst zijn klikbaar en verwijzen naar de profielpagina van die gebruiker
     * De gebruiker maakt deze gegevens zelf, door het in settings aan te passen
     * De gebruiker maakt de posts zelf door deze te uploaden en posten
     * De profielfoto wordt opgehaald via een path in de database die verwijst naar een foto opgeslagen in de static folder
@@ -25,7 +27,12 @@ SCREENSHOT APPLICATIE in aparte docs map
 3. Een gebruiker kan meer informatie over een post opvragen door op de post op het profiel te klikken.
     * De gebruiker geeft een post een titel, beschrijving en adres mee
     * Deze informatie wordt uit de database gehaald en weergeven bij opvraag van meer informatie
+<<<<<<< HEAD
     * Het adres wat de gebruiker heeft meegegeven, wordt automatisch weergeven in een kaart van Google Maps dit is mogelijk met gebruik van een Google API
+=======
+    * De gebruikersnaam van de uploader wordt ook klikbaar weergegeven en verwijst naar de profielpagina van de gebruiker
+    * Het adres wat de gebruiker heeft meegegeven, wordt automatisch weergeven in een kaart van Google Maps met gebruik van een Google API
+>>>>>>> 198412bb192a43da52e57c3af1ed56316ad6653d
 
 4. Een gebruiker heeft de mogelijkheid een andere gebruiker te volgen of te ontvolgen.
     * Dit gebeurt door een toevoeging in de volgers database
@@ -54,12 +61,30 @@ SCREENSHOT APPLICATIE in aparte docs map
     * Wanneer er geliked of gefavoriet wordt worden deze opgeslagen in de daarvoor bestemde databases
     * Waneer de gebruiker kiest voor volgende post wordt er weer een random post ingeladen
 
+<<<<<<< HEAD
 10. De kaart die weergeven wordt bij 'meer informatie' is gemaakt met een google maps API.
     * De rode pin in de kaart is de locatie die een gebruiker heeft opgegeven tijdens het uploaden van de post
+=======
+10. De kaart die weergeven wordt bij 'meer informatie' is gemaakt met een Google Maps API.
+    * De rode pin in de kaart is de locatie die een gebruiker heeft opgegeven tijdens het uploaden van de post.
+    * Het is mogelijk om rond te navigeren op de kaart en Google Streetview te gebruiken
+>>>>>>> 198412bb192a43da52e57c3af1ed56316ad6653d
 
 11. Gebruikers kunnen naar een favorieten pagina, waar al hun favoriete posts zijn opgeslagen.
+    * Deze worden als een fotocollage weergegeven en zijn klikbaar, ze verwijzen naar de meer informatie pagina van de post
 
-12. Op de favorieten pagina is ook de mogelijkheid om meer informatie over de favoriete posts op te vragen, door op de post te klikken.
+12. Er bestaat ook een volgend pagina waar de posts van gebruikers die jij volgt staan
+    * De posts worden weergegeven als een fotocollage en zijn klikbaar, ze verwijzen naar de meer informatie pagina van de post
+
+13. De about pagina geeft de gebruiker extra informatie over het gebruik en nut van de website
+    * Er staat beschreven wat het doel van de website is
+    * Er wordt een korte gebruiksaanwijzing gegeven voor de website
+
+14. Het hamburgermenu die het mogelijk maakt snel tussen pagina's te navigeren en de titel van de website die altijd bovenin de pagina staat
+    * Het menu schuift open als links bovenin de pagina op menu wordt geklikt
+    * Het menu kan weer gesloten worden als er naast het menu op de pagina wordt geklikt of als er op de sluit menu optie in het menu wordt geklikt
+    * Als er op 'StudySpot' bovenin de pagina wordt geklikt wordt de gebruiker doorverwezen naar de homepage, dit is de eigen profiel pagina of de login pagina als de gebruiker nog niet is ingelogd
+
 
 
 ​
@@ -101,7 +126,9 @@ Followers and Following --> Jochem, Iris, Hugo
 
 
 ## Databronnen:
-    * API : [https://developers.google.com/maps/documentation/javascript/tutorial?hl=nl](https://developers.google.com/maps/documentation/javascript/tutorial?hl=nl)
+    * Google Maps API : [https://developers.google.com/maps/documentation/javascript/tutorial?hl=nl](https://developers.google.com/maps/documentation/javascript/tutorial?hl=nl)
+    * Google Geocoding API : [https://developers.google.com/maps/documentation/javascript/geocoding](https://developers.google.com/maps/documentation/javascript/geocoding)
+
 ## Externe componenten:
     * Bootstrap
     * Slack
