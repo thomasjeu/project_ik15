@@ -4,15 +4,8 @@
     list-style:none;
 }
 
+/* Keeps it centered in te page */
 .truecenter {
-  float: none;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  top: 50%;
-}
-
-.truecenter_2 {
   float: none;
   position: absolute;
   left: 50%;
@@ -37,6 +30,7 @@
   vertical-align: middle;
 }
 
+/* Determine text style */
 body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 .w3-bar-block .w3-bar-item {padding:20px}
 
@@ -81,12 +75,6 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
   text-align: center;
   padding: 10px 20px;
 }
-
-/*.ex2 {*/
-
-/*  float: left;*/
-/*  margin-right: 5px;*/
-/*}*/
 
 /* Override bootstraps label font color */
 .label {
