@@ -485,7 +485,7 @@ def settings():
 
                 # Delete previous image if it is not grumpy
                 previous_path = db.execute("SELECT image FROM users WHERE id=:user_id", user_id=session.get("user_id"))
-                if previous_path != "static/profile/grumpy.png":
+                if previous_path[0]["image"] != "static/profile/grumpy.png":
                     os.remove(previous_path[0]["image"])
 
                 # Update path of profile picture in database
