@@ -33,10 +33,10 @@
                 </div>
             </div>
 
-        <p>Change discription:</p>
+        <p>Change description:</p>
         <label for="counter-input" class="label">Character count: <span id="counter-display" class="tag is-success">0</span></label>
         <div class="form-group">
-            <input class="form-control" id="discription" name="discription" placeholder="Discription" type="text" maxlength='150'>
+            <input class="form-control" id="description" name="description" placeholder="description" type="text" maxlength='150'>
         </div>
 
         <center><button class="btn btn-primary" type="submit">Apply changes</button></center>
@@ -46,10 +46,10 @@
     <script>
 
         // source: https://codepen.io/pi/pen/dXbwwa
-        // Discription character counter
+        // description character counter
         (() => {
             const counter = (() => {
-                const input = document.getElementById('discription'),
+                const input = document.getElementById('description'),
                 display = document.getElementById('counter-display'),
                 changeEvent = (evt) => display.innerHTML = evt.target.value.length,
                 getInput = () => input.value,

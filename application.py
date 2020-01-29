@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 import random
 
 # import functions from helpers.py
-from helpers import apology, login_required, change_password, change_username, change_discription, fill_post_dict, user_information, is_following, is_user, liked_post, favo_post, user_information_users
+from helpers import apology, login_required, change_password, change_username, change_description, fill_post_dict, user_information, is_following, is_user, liked_post, favo_post, user_information_users
 
 
 # Configure application
@@ -51,7 +51,7 @@ def profile():
 
     # Get user information
     user_id = session.get("user_id")
-    discription, username, posts, picture, followers, following = user_information(user_id)
+    description, username, posts, picture, followers, following = user_information(user_id)
 
     # Initialize lists and dictionary
     followers_list, following_list = [], []
@@ -76,7 +76,7 @@ def profile():
             id_dict[name[0]["username"]] = user["follow_id"]
 
     # Render profile page
-    return render_template("profile.html", discription=discription, username=username, picture=picture, followerslist=followers_list, followinglist=following_list, iddict=id_dict, post_dict=post_dict)
+    return render_template("profile.html", description=description, username=username, picture=picture, followerslist=followers_list, followinglist=following_list, iddict=id_dict, post_dict=post_dict)
 
 
 @app.route("/<int:user_id>")
@@ -85,7 +85,7 @@ def userprofile(user_id):
     """ Show profile page """
 
     # Get user information
-    discription, username, posts, picture, followers, following = user_information_users(user_id)
+    description, username, posts, picture, followers, following = user_information_users(user_id)
 
     # False if user follows user already
     bool_follow = is_following(followers, session.get("user_id"))
@@ -116,7 +116,7 @@ def userprofile(user_id):
             id_dict[name[0]["username"]] = user["follow_id"]
 
     # Render profile page
-    return render_template("profile.html", discription=discription, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=user_id, bool_follow=bool_follow,
+    return render_template("profile.html", description=description, username=username, posts=posts, picture=picture, bool_user=bool_user, user_id=user_id, bool_follow=bool_follow,
                            followerslist=followers_list, followinglist=following_list, iddict=id_dict, post_dict=post_dict)
 
 
@@ -403,8 +403,8 @@ def register():
         hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
 
         # Insert user into the database
-        db.execute("INSERT INTO users (username, hash, image, discription) VALUES (:username, :hash, :image, :discription)", username=username,
-                   hash=hash, image="static/profile/grumpy.png", discription="Add a discription in settings and change your profile picture")
+        db.execute("INSERT INTO users (username, hash, image, description) VALUES (:username, :hash, :image, :description)", username=username,
+                   hash=hash, image="static/profile/grumpy.png", description="Add a description in settings and change your profile picture")
 
         # Redirect to /login
         return redirect("/login")
@@ -425,7 +425,7 @@ def settings():
         # Get values from form
         username = request.form.get("username")
         confirmation = request.form.get("confirmation")
-        discription = request.form.get("discription")
+        description = request.form.get("description")
         password = request.form.get("password")
         user_id = session.get("user_id")
 
@@ -433,9 +433,9 @@ def settings():
         if (password != confirmation):
             return apology("passwords must be the same")
 
-        # Check if discription is not too long
-        if len(discription) > 400:
-            return apology("discription is too long")
+        # Check if description is not too long
+        if len(description) > 400:
+            return apology("description is too long")
 
         # Changes username
         if request.form.get("username"):
@@ -453,9 +453,9 @@ def settings():
 
             change_password(password, confirmation, user_id)
 
-        # Changes discription
-        if request.form.get("discription"):
-            change_discription(discription, user_id)
+        # Changes description
+        if request.form.get("description"):
+            change_description(description, user_id)
 
         # Changes profile picture
         if request.files:
@@ -557,7 +557,7 @@ def upload():
     if request.method == "POST":
 
         # Get form values
-        discription = request.form.get("discription")
+        description = request.form.get("description")
         title = request.form.get("place name")
         street = request.form.get("street")
         postal = request.form.get("postal")
@@ -565,8 +565,8 @@ def upload():
         number = request.form.get("number")
 
         # Return apologies if one of the form fields wasnt filled in
-        if not discription:
-            return apology("Must provide a discription")
+        if not description:
+            return apology("Must provide a description")
 
         if not title:
             return apology("Must provide the name of the place")
@@ -611,8 +611,8 @@ def upload():
                 path = "static/posts/" + filename
 
                 # Insert path to file in the database
-                db.execute("INSERT INTO uploads (discription, path, title, street, postal, city, user_id, number) VALUES (:discription, :path, :title, :street, :postal, :city, :user_id, :number)",
-                           discription=discription, path=path, title=title, street=street, postal=postal, city=city, user_id=session.get("user_id"), number=number)
+                db.execute("INSERT INTO uploads (description, path, title, street, postal, city, user_id, number) VALUES (:description, :path, :title, :street, :postal, :city, :user_id, :number)",
+                           description=description, path=path, title=title, street=street, postal=postal, city=city, user_id=session.get("user_id"), number=number)
 
                 # Redirect to profile.html
                 return redirect("/")
