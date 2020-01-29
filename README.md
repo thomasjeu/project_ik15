@@ -27,8 +27,12 @@ SCREENSHOT APPLICATIE in aparte docs map
 3. Een gebruiker kan meer informatie over een post opvragen door op de post op het profiel te klikken.
     * De gebruiker geeft een post een titel, beschrijving en adres mee
     * Deze informatie wordt uit de database gehaald en weergeven bij opvraag van meer informatie
+<<<<<<< HEAD
+    * Het adres wat de gebruiker heeft meegegeven, wordt automatisch weergeven in een kaart van Google Maps dit is mogelijk met gebruik van een Google API
+=======
     * De gebruikersnaam van de uploader wordt ook klikbaar weergegeven en verwijst naar de profielpagina van de gebruiker
     * Het adres wat de gebruiker heeft meegegeven, wordt automatisch weergeven in een kaart van Google Maps met gebruik van een Google API
+>>>>>>> 198412bb192a43da52e57c3af1ed56316ad6653d
 
 4. Een gebruiker heeft de mogelijkheid een andere gebruiker te volgen of te ontvolgen.
     * Dit gebeurt door een toevoeging in de volgers database
@@ -57,9 +61,14 @@ SCREENSHOT APPLICATIE in aparte docs map
     * Wanneer er geliked of gefavoriet wordt worden deze opgeslagen in de daarvoor bestemde databases
     * Waneer de gebruiker kiest voor volgende post wordt er weer een random post ingeladen
 
+<<<<<<< HEAD
+10. De kaart die weergeven wordt bij 'meer informatie' is gemaakt met een google maps API.
+    * De rode pin in de kaart is de locatie die een gebruiker heeft opgegeven tijdens het uploaden van de post
+=======
 10. De kaart die weergeven wordt bij 'meer informatie' is gemaakt met een Google Maps API.
     * De rode pin in de kaart is de locatie die een gebruiker heeft opgegeven tijdens het uploaden van de post.
     * Het is mogelijk om rond te navigeren op de kaart en Google Streetview te gebruiken
+>>>>>>> 198412bb192a43da52e57c3af1ed56316ad6653d
 
 11. Gebruikers kunnen naar een favorieten pagina, waar al hun favoriete posts zijn opgeslagen.
     * Deze worden als een fotocollage weergegeven en zijn klikbaar, ze verwijzen naar de meer informatie pagina van de post
