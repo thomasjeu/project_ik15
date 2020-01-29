@@ -13,7 +13,7 @@ db = SQL("sqlite:///admin.db")
 
 
 def apology(message, code=400):
-    """Render message as an apology to user"""
+    """ Render message as an apology to user """
 
     def escape(s):
         """
@@ -31,7 +31,7 @@ def apology(message, code=400):
 
 
 def change_discription(discription, user_id):
-    """Changes user discription"""
+    """ Changes user discription """
 
     # Update discription in database
     db.execute("UPDATE users SET discription=:discription WHERE id=:user_id", user_id=user_id, discription=discription)
@@ -40,7 +40,7 @@ def change_discription(discription, user_id):
 
 
 def change_password(password, confirmation, user_id):
-    """Changes password"""
+    """ Changes password """
 
     # Hashes the password
     hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
@@ -52,7 +52,7 @@ def change_password(password, confirmation, user_id):
 
 
 def change_username(username, user_id):
-    """Changes the username"""
+    """ Changes the username """
 
     # Update username in database
     db.execute("UPDATE users SET username=:username WHERE id=:user_id", user_id=user_id, username=username)
@@ -76,7 +76,7 @@ def login_required(f):
 
 
 def fill_post_dict(posts):
-    """Fill post_dict with amount of likes the post has"""
+    """ Fill post_dict with amount of likes the post has """
 
     post_dict = {}
 
@@ -91,7 +91,7 @@ def fill_post_dict(posts):
 
 
 def is_following(followers, user_id):
-    """False if user follows user already"""
+    """ False if user follows user already """
 
     for user in followers:
         if user["user_id"] == user_id:
@@ -101,7 +101,7 @@ def is_following(followers, user_id):
 
 
 def is_user(user, user_id):
-    """False if user looks at his own page"""
+    """ False if user looks at his own page """
 
     if user == user_id:
         return False
@@ -110,7 +110,7 @@ def is_user(user, user_id):
 
 
 def liked_post(user_id, post_id):
-    """False if user already liked this post"""
+    """ False if user already liked this post """
 
     liking = db.execute("SELECT post_id FROM likes WHERE user_id=:user_id AND post_id=:post_id",
                         user_id=session.get("user_id"), post_id=post_id)
@@ -122,7 +122,7 @@ def liked_post(user_id, post_id):
 
 
 def favo_post(user_id, post_id):
-    """False if user already favorited this post"""
+    """ False if user already favorited this post """
 
     favos = db.execute("SELECT post_id FROM favorites WHERE user_id=:user_id AND post_id=:post_id",
                        user_id=session.get("user_id"), post_id=post_id)
@@ -134,7 +134,7 @@ def favo_post(user_id, post_id):
 
 
 def user_information(user_id):
-    """Returns user information for profile page"""
+    """ Returns user information for profile page """
 
     # Get user info
     discription = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)[0]["discription"]
@@ -149,7 +149,7 @@ def user_information(user_id):
 
 
 def user_information_users(user_id):
-    """Returns user information for profile page"""
+    """ Returns user information for profile page """
 
     # Get user info
     discription = db.execute("SELECT discription FROM users WHERE id=:user_id", user_id=user_id)[0]["discription"]
