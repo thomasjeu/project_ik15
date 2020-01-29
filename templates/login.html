@@ -55,7 +55,6 @@
         // Check if username is in the database
         function main() {
             var username = document.getElementById("user");
-            // var password = document.getElementById("pass");
             $.get('/check?username='+ username.value, function(check) {
                 // alert(check)
                 if (check) {
