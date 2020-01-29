@@ -185,6 +185,10 @@ def favorite(post_id):
     # Get id of the user
     user_id = session.get("user_id")
 
+    # If user already has max amount of favorites
+    if len(db.execute("SELECT * FROM favorites WHERE user_id=:user_id", user_id=user_id)) >= 20:
+        return apology("You already have the maximum amount of favorites")
+
     # Add post to user's favorites
     db.execute("INSERT INTO favorites (post_id, user_id) VALUES (:post_id, :user_id)", post_id=post_id, user_id=user_id)
 
