@@ -245,6 +245,8 @@ def follow(follow_id):
 
     user_id = session.get("user_id")
     db.execute("INSERT INTO follow (follow_id, user_id) VALUES(:follow_id, :user_id)", follow_id=follow_id, user_id=user_id)
+
+    # Return to homepage
     return redirect("/")
 
 
@@ -547,7 +549,6 @@ def unlike(post_id):
     return redirect(url_for("info", post_id=post_id))
 
 
-# TODO: Filter wrong user input
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
 def upload():
