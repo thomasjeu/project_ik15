@@ -25,8 +25,8 @@
     <style>
       /* Set the size of the div element that contains the map */
       #map {
-        height: 400px;  /* The height is 400 pixels */
-        width: 100%;  /* The width is the width of the web page */
+        height: 400px;
+        width: 100%;
        }
     </style>
   </head>
@@ -81,19 +81,14 @@
       </div>
     </div>
 
-
-
-
-
-
-
-
-
     <div id="map"></div>
     <center><h1><a u href="/{{user}}">StudySpotter: {{name[0]["username"]}}</a></h1></center>
-    <center><h1>Name of this spot: {{titles[0]["title"]}} </h2></center>
-    <center><h1>Discription: {{titles[0]["discription"]}} </h2></center>
-    <center><h1>Adress: {{titles[0]["street"]}} {{titles[0]["number"]}} {{titles[0]["postal"]}} {{titles[0]["city"]}}</h2></center>
+    <p><center><h1>This spot is named {{titles[0]["title"]}} </h2></center></p>
+    <br>
+    <p><center><h1>Spotter discribed this spot as ...</h1></center></p>
+    <p><center><h1>{{titles[0]["discription"]}} </h1></center></p>
+    <br>
+    <center><h1>Come visit me at{{titles[0]["street"]}} {{titles[0]["number"]}} {{titles[0]["postal"]}} {{titles[0]["city"]}}</h2></center>
 
         <!-- User can favorite post via button, when the post is already favorited the user kan unfavorite a post -->
         {% if bool_favo %}
@@ -130,11 +125,12 @@
           <span class="glyphicon glyphicon-refresh"></span> Next post
         </a></center></p>
 
-
+    <!-- Google Maps displays a red pin on the adress that user filled in while posting the StudySpot -->
     <script>
       var geocoder;
       var map;
       var address = '{{titles[0]["street"]}} {{titles[0]["number"]}} {{titles[0]["postal"]}} {{titles[0]["city"]}}';
+      /* Specifies the display of the map, zooms in at accessible street level. The geocoder turns an adress into longitudes and latitudes*/
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 15,
@@ -143,7 +139,7 @@
         geocoder = new google.maps.Geocoder();
         codeAddress(geocoder, map);
       }
-
+      /* The map puts a red pin(marker) on the geocoded adress */
       function codeAddress(geocoder, map) {
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
@@ -152,13 +148,14 @@
               map: map,
               position: results[0].geometry.location
             });
+          /* Alert user when the adress can't be shown right */
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
         });
       }
-
-      /* Google maps API KEY = AIzaSyDbGDrm0-V8P-eF65UUCjSfhx-82DsvjRE is disabled because of the decreasing credit on google payments*/
+    /* Holds API key*/
+    /* Google maps API KEY = AIzaSyDbGDrm0-V8P-eF65UUCjSfhx-82DsvjRE is decreasing credit on google payments, do NOT overuse*/
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbGDrm0-V8P-eF65UUCjSfhx-82DsvjRE&callback=initMap">
@@ -176,10 +173,6 @@
       document.getElementById("mySidebar").style.display = "none";
     }
     </script>
-
-
-
-
 
   </body>
   <div id="map"></div>
