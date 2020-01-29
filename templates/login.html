@@ -9,13 +9,13 @@
     <!--login form-->
     <form class="needs-validation" action="/login" method="post" novalidate>
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" id="username" name="username" placeholder="Username" type="text" required>
+            <input autocomplete="off" autofocus class="form-control" id="user" name="username" placeholder="Username" type="text" required>
             <div class="invalid-feedback" id="usercheck">
                 Please provide your username
             </div>
         </div>
         <div class="form-group">
-            <input class="form-control" id="password" name="password" placeholder="Password" type="password" required>
+            <input class="form-control" id="pass" name="password" placeholder="Password" type="password" required>
             <div class="invalid-feedback" id="passcheck">
                 Please provide your password
             </div>
@@ -50,19 +50,23 @@
     <!-- Script, gives feedback on user input -->
     <script>
         // Check if username is in the database
-        let username = document.getElementById("username");
-        username.onkeyup = function() {
-            $.get('/check?username='+ username.value, function(check) {
-                if (!check) {
-                    document.getElementById("usercheck").innerHTML = "Username is incorrect";
-                    username.setAttribute("class", "form-control is-invalid");
-                }
-                else {
-                    document.getElementById("usercheck").innerHTML = "Please provide your password";
-                    username.setAttribute("class", "form-control");
-                }
-            });
-        }
+        // let username = document.getElementById("user");
+        // username.onkeyup = function() {
+        //     $.get('/check?username='+ username.value, function(check) {
+        //         if (check) {
+        //             document.getElementById("usercheck").innerHTML = "Username is incorrect";
+        //             username.setAttribute("class", "form-control is-invalid");
+        //         }
+        //         else if (username.value == "") {
+        //             document.getElementById("usercheck").innerHTML = "Please provide your password";
+        //             username.setAttribute("class", "form-control is invalid");
+        //         }
+        //         else {
+        //             document.getElementById("usercheck").innerHTML = "Please provide your password";
+        //             username.setAttribute("class", "form-control");
+        //         }
+        //     });
+        // }
 
         //
         (function() {
