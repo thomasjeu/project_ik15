@@ -55,17 +55,17 @@
     <!-- Script, gives feedback on user input -->
     <script>
         // Check if username is in the database
+        let username = document.getElementById("user");
         function main() {
-            var username = document.getElementById("user");
             $.get('/check?username='+ username.value, function(check) {
                 // alert(check)
-                if (check) {
-                    document.getElementById("usercheck").innerHTML = "Username is incorrect";
-                    username.setAttribute("class", "form-control is-invalid");
-                }
-                else if (username.value == "") {
+                if (username.value == "") {
                     document.getElementById("usercheck").innerHTML = "Please provide your username";
                     username.setAttribute("class", "form-control is invalid");
+                }
+                else if (check) {
+                    document.getElementById("usercheck").innerHTML = "Username is incorrect";
+                    username.setAttribute("class", "form-control is-invalid");
                 }
                 else {
                     document.getElementById("usercheck").innerHTML = "Please provide your username";
