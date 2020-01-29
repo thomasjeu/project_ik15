@@ -9,7 +9,7 @@
     <!--login form-->
     <form class="needs-validation" action="/login" method="post" novalidate>
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" id="user" name="username" placeholder="Username" type="text" required>
+            <input autocomplete="off" autofocus class="form-control" id="user" name="username" placeholder="Username" type="text" onkeyup="main();" required>
             <div class="invalid-feedback" id="usercheck">
                 Please provide your username
             </div>
@@ -22,7 +22,7 @@
         </div>
 
         <p>
-        <button class="btn btn-primary" onclick="main();" type="submit">Log In</button>
+        <button class="btn btn-primary" type="submit">Log In</button>
         </p>
     </form>
 
