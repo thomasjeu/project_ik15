@@ -372,7 +372,7 @@ def register():
         hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
 
         # Insert user into the database
-        db.execute("INSERT INTO users (username, hash, image, discription) VALUES (:username, :hash, :image, :discription)", username=username, hash=hash, image="static/profile/grumpy.png", discription="Add a discription in settings")
+        db.execute("INSERT INTO users (username, hash, image, discription) VALUES (:username, :hash, :image, :discription)", username=username, hash=hash, image="static/profile/grumpy.png", discription="Add a discription in settings and change your profile picture")
 
         # Redirect to /login
         return redirect("/login")

@@ -10,46 +10,56 @@ De vraag naar studieplekken onder studenten is groot, maar het vinden van een go
 SCREENSHOT APPLICATIE in aparte docs map
 ## Features
 1. Een gebruiker kan zich registreren of inloggen met zijn gebruikersnaam en wachtwoord.
-    * Al bestaande gebruikersnamen worden geweigerd
     * Wachtwoorden zonder cijfer worden geweigerd
     * Inloggen zonder geldig gebruikersnaam/wachtwoord wordt geweigerd
+    * Door middel van JavaScript wordt er bij inloggen live weergegeven of de gebruikersnaam wel bestaat, zo niet dan werkt de inlogknop niet
+    * Op de zelfde manier wordt er met JavaScript bij register gecontroleerd of de username niet al bestaat, of het wachtwoord voldoet aan de eisen en of het wachtwoord en de bevestiging overeenkomen
 
 2. Een gebruiker kan de profielen van andere gebruikers en zichzelf zien.
     * Een profielpagina bestaat uit een gebruikersnaam, profielfoto, gebruikersbeschrijving, geposte StudySpots van de gebruiker en een lijst van volgers/volgend
-    * De gebruiker maakt deze gegevens zelf, door in settings alles te kunnen aanpassen
+    * De gebruiker maakt deze gegevens zelf, door het in settings aan te passen
     * De gebruiker maakt de posts zelf door deze te uploaden en posten
+    * De profielfoto wordt opgehaald via een path in de database die verwijst naar een foto opgeslagen in de static folder
+    * De titel en de hoeveelheid likes die een post heeft worden opgehaald uit de database
 
 3. Een gebruiker kan meer informatie over een post opvragen door op de post op het profiel te klikken.
     * De gebruiker geeft een post een titel, beschrijving en adres mee
     * Deze informatie wordt uit de database gehaald en weergeven bij opvraag van meer informatie
-    * Het adres wat de gebruiker heeft meegegeven, wordt automatisch weergeven in een kaart van Google Maps
+    * Het adres wat de gebruiker heeft meegegeven, wordt automatisch weergeven in een kaart van Google Maps met gebruik van een Google API
 
 4. Een gebruiker heeft de mogelijkheid een andere gebruiker te volgen of te ontvolgen.
-    * Dit gebeurt door @#$%@$%^@???
-    * De volgers/volgend lijst op de profielpagina wordt na deze actie direct aangepast.
+    * Dit gebeurt door een toevoeging in de volgers database
+    * De volgers/volgend lijst op de profielpagina wordt na deze actie direct aangepast
 
 5. Een gebruiker kan zijn gebruikersnaam, wachtwoord, profielfoto en beschrijving aanpassen in de settings pagina.
     * De gegevens worden aangepast in de database
     * De aangepaste gegevens zijn direct zichtbaar op de profielpagina
+    * Wanneer de profielfoto wordt gewijzigt wordt de path in de database aangepast en wordt de oude foto verwijderd uit de static folder
 
 6. Een gebruiker kan foto's van een studieplek uploaden.
     * Hier geeft de gebruiker een foto, titel, beschrijving en adres mee
-    * Deze gegevens worden allen opgeslagen in de database
+    * Deze gegevens worden allen opgeslagen in de uploads database samen met de path naar de foto in de static folder
+    * De upload slaagt alleen als alle velden zijn ingevuld
+    * De naam van de foto mag nog niet bestaan in de static folder zodat er geen conflicten ontstaan bij het ophalen van de foto
 
 7. Als een gebruiker niet tevreden is over een post, kan de gebruiker die de post heeft geupload deze post weer verwijderen.
+    * De upload wordt gewist uit de uploads database
+    * De image wordt verwijderd uit de static folder
 
 8. Verkenpagina waarop nieuwe StudySpots(locaties) te ontdekken zijn die andere gebruikers hebben geupload.
-    * Dit gebeurt door een random post uit de database van posts te kiezen.
+    * Dit gebeurt door een random post uit de uploads database te kiezen
+    * De hoeveelheid likes die een post heeft wordt opgehaald uit de likes database
 
 9. Deze StudySpots kan een gebruiker liken/unliken, favorieten/onfavorieten, of afwijzen waarop er een nieuwe locatie wordt weergeven.
+    * Wanneer er geliked of gefavoriet wordt worden deze opgeslagen in de daarvoor bestemde databases
+    * Waneer de gebruiker kiest voor volgende post wordt er weer een random post ingeladen
 
-10. Een gebruiker kan meer informatie van een StudySpot bekijken. Meer informatie van de post bestaat uit een kaart met de locatie van de StudySpot, de naam van de Studyspot, de gebruiker die de StudySpot heeft geupload, een beschrijving van de StudySpot en het adres van de StudySpot.
+10. De kaart die weergeven wordt bij 'meer informatie' is gemaakt met een google maps API.
+    * De rode pin in de kaart is de locatie die een gebruiker heeft opgegeven tijdens het uploaden van de post.
 
-11. De kaart die weergeven wordt bij 'meer informatie' is gemaakt met een google maps API. De rode pin in de kaart is de locatie die een gebruiker heeft opgegeven tijdens het uploaden van de post.
+11. Gebruikers kunnen naar een favorieten pagina, waar al hun favoriete posts zijn opgeslagen.
 
-12. Gebruikers kunnen naar een favorieten pagina, waar al hun favoriete posts zijn opgeslagen.
-
-13. Op de favorieten pagina is ook de mogelijkheid om meer informatie over de favoriete posts op te vragen, door op de post te klikken.
+12. Op de favorieten pagina is ook de mogelijkheid om meer informatie over de favoriete posts op te vragen, door op de post te klikken.
 
 
 ​
