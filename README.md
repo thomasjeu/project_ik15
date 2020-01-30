@@ -120,6 +120,9 @@ Followers and Following --> Jochem, Iris, Hugo
 * In het bestand "application.py" staan alle python functies die gebruikt worden in de webapplicatie.
 * In het bestand "helpers.py" staan python functies die "application.py" ondersteunen. Dit maakt application.py overzichtelijker.
 
+## Link Youtube Productvideo
+* https://youtu.be/BHWAHeSHBg0
+
 
 ## Databronnen:
     * Google Maps API : [https://developers.google.com/maps/documentation/javascript/tutorial?hl=nl](https://developers.google.com/maps/documentation/javascript/tutorial?hl=nl)
