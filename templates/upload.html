@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block main %}
+
+    <!-- Text top of the page -->
+    <center><h2>Share a place where you like to study</h2></center>
+
     <!-- Form to upload a post -->
     <form action="/upload" method="post" enctype="multipart/form-data">
 
@@ -24,10 +28,10 @@
             <input autocomplete="off" autofocus class="form-control" id="place name" name="place name" placeholder="Name of this spot ..." type="text" required>
         </div>
 
-        <!-- User fills in a discription of the StudySpot -->
-        <p><label for="counter-input" class="label">Photo discription(max 150):  <span id="counter-display" class="tag is-success">0</span></label></p>
+        <!-- User fills in a description of the StudySpot -->
+        <p><label for="counter-input" class="label">Photo description(max 150):  <span id="counter-display" class="tag is-success">0</span></label></p>
         <div class="form-group">
-            <textarea rows="4" cols="40" id="discription" name="discription" placeholder="Tell us what's the best about this place or what you loved most about the chairs ... Whatever it is you want to tell us :) " type="text" maxlength='150' required></textarea>
+            <textarea rows="4" cols="40" id="description" name="description" placeholder="Tell us what's the best about this place or what you loved most about the chairs ... Whatever it is you want to tell us :) " type="text" maxlength='150' required></textarea>
         </div>
 
         <!-- User fills in adress of the StudySpot -->
@@ -50,10 +54,10 @@
     <script>
 
         // source: https://codepen.io/pi/pen/dXbwwa
-        // Discription character counter
+        // description character counter
         (() => {
           const counter = (() => {
-            const input = document.getElementById('discription'),
+            const input = document.getElementById('description'),
               display = document.getElementById('counter-display'),
               changeEvent = (evt) => display.innerHTML = evt.target.value.length,
               getInput = () => input.value,
